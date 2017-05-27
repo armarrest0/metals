@@ -1,0 +1,36 @@
+<!-- $Id: privilege_info.htm 16616 2009-08-27 01:56:35Z liuhui $ -->
+<link rel="stylesheet" type="text/css" href="styles/68ecshop_commin.css">
+{include file="pageheader.htm"}
+<link rel="stylesheet" type="text/css" href="styles/style_jm.css">
+<div class="main-div">
+<form name="theForm" method="post" enctype="multipart/form-data" onsubmit="return validate();">
+    
+    <div class="checkBox_jm" id="pay_div">
+        <div class="title">1.支付金额</div>
+        &nbsp;&nbsp;<div class="title">合计：{$rent_money}元</div>
+    </div>    
+   <div class="checkBox_jm" id="pay_div">
+      <div class="title">2.支付方式</div>
+      <ul class="payment_tab_jm" id="payment_tab">
+        <li>
+            <label style="cursor:pointer;"><input style="cursor:default;" type="radio"  isCod="0" name="payment"  id="payment_other_input" value="0" checked> 请使用支付宝支付</label>
+          <div class="payment_subbox" style="display:inline;">
+            <ul>
+              <!-- {foreach from=$payment_list name="payment_list" item=payment} --> 
+              {if $payment.pay_code eq 'alipay'}
+              <label style="cursor:pointer;"><li><input style="cursor:default;" type="radio" name="payment_other"  value="{$payment.pay_id}" checked ><img align="absmiddle" src="images/pay_{$payment.pay_code}.gif" alt="{$payment.pay_name}" /></li></label>
+              {/if} 
+              <!-- {/foreach} -->
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </div>  
+  
+      <input type="submit" value="支付" class="button" />&nbsp;&nbsp;&nbsp;
+      <input type="hidden" name="act" value="pay" />
+      <input type="hidden" name="rent_id" value="{$rent_id}" />
+</form>
+</div>
+
+{include file="pagefooter.htm"}

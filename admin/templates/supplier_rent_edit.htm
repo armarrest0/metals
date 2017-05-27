@@ -1,0 +1,104 @@
+
+{include file="pageheader.htm"}
+{insert_scripts files="../js/utils.js,listtable.js"}
+<script type="text/javascript" src="../js/calendar.php?lang="></script>
+<link href="../js/calendar/calendar.css" rel="stylesheet" type="text/css" />
+<!-- start add new category form -->
+<div class="main-div">
+    <form action="supplier_rent.php" method="post" name="theForm" enctype="multipart/form-data" onsubmit="return check();">
+    <table width="100%" id="general-table">	
+      <tr>
+        <td class="label">平台店铺名称:</td>
+        <td><input type="text" name="supplier_name" value="{$sinfo.supplier_name}">
+		<font color="red">*</font> <span class="notice-span"></span>
+		</td>
+      </tr>
+    <tr>
+        <td class="label">租赁合同生效时间：</td>
+        <td><input name="rent_start_time" type="text" value="{$sinfo.rent_start_time}" id="rent_start_time" size="15"><input name="selbtn1" type="button" id="selbtn1" onclick="return showCalendar('rent_start_time', '%Y-%m-%d', false, false, 'selbtn1');" value="选择时间" class="button"/>
+		<font color="red">*</font> <span class="notice-span">选择租赁到期时间</span>
+		</td>
+      </tr>  
+    <tr>
+        <td class="label">租赁合同到期时间：</td>
+        <td><input name="rent_end_time" type="text" value="{$sinfo.rent_end_time}" id="rent_end_time" size="15"><input name="selbtn1" type="button" id="selbtn1" onclick="return showCalendar('rent_end_time', '%Y-%m-%d', false, false, 'selbtn1');" value="选择时间" class="button"/>
+		<font color="red">*</font> <span class="notice-span">选择租赁到期时间</span>
+		</td>
+      </tr>
+       <tr>
+        <td class="label">租金：</td>
+        <td><input type="text" name="rent_money" value="{$sinfo.rent_money}" maxlength="13">
+            元&nbsp;&nbsp;<font color="red">*</font> <span class="notice-span">应付租金</span>
+		</td>
+      </tr>
+      <tr>
+      <td  class="label">是否再次续租当前合同：</td>
+      <td>
+        <input type="radio" name="relet" value="1" {if $sinfo.relet eq 1} checked="true" {/if} />是
+        <input type="radio" name="relet" value="0" {if $sinfo.relet eq 0} checked="true" {/if} />否
+      </td>
+    </tr>
+      
+    </table>
+    <div class="button-div">
+      <input type="submit" value="{$lang.button_submit}" />     
+    </div>
+    <input type="hidden" name="act" value="saveinfo" />
+    <input type="hidden" name="suppid" value="{$sinfo.supplier_id}" />
+    <input type="hidden" id="is_pay_ok" name="is_pay_ok" value="{$sinfo.is_pay_ok}" />
+     <input type="hidden" id="rent_compare_start" name="rent_compare_start" value="{$sinfo.rent_start_time}" />
+     <input type="hidden" id="rent_compare_end" name="rent_compare_end" value="{$sinfo.rent_end_time}" />
+      <input type="hidden" id="method_action" name="method_action" value="{$method_action}" />
+  </form>
+</div>
+
+{literal} 
+<script language="JavaScript">
+        
+        function check(){
+            var rent_compare_start = document.getElementById('rent_compare_start').value;
+            var rent_compare_end = document.getElementById('rent_compare_end').value;
+            var is_pay_ok = document.getElementById('is_pay_ok').value;
+           
+            
+            var rent_start_time = document.getElementById('rent_start_time').value;
+            var rent_end_time = document.getElementById('rent_end_time').value;
+            var relet;
+            
+            
+            var temp = document.getElementsByName("relet");
+            for(var i=0;i<temp.length;i++)
+            {
+               if(temp[i].checked)
+                     relet = temp[i].value;
+            }
+            
+            
+            if(rent_start_time>rent_end_time){
+                alert("租赁生效时间不能大于到期时间");
+                return false;
+            }
+            
+            if(relet>0){
+                if(is_pay_ok<1){
+                    alert("当前合同尚未结款,不能续租合同");
+                    return false;
+                }
+                
+                if(rent_start_time<rent_compare_start){
+                    alert("续租生效时间不能小于当前合同生效时间");
+                    return false;
+                }
+                if(rent_start_time<rent_compare_end){
+                    alert("续租生效时间不能小于当前合同到期时间");
+                    return false;
+                }
+            }
+            
+        }
+        
+        
+        
+</script> 
+{/literal}
+{include file="pagefooter.htm"}
