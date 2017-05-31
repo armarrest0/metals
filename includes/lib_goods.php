@@ -124,6 +124,7 @@ function get_top10($cats = '')
 {
     $cats = get_children($cats);
     $where = !empty($cats) ? "AND ($cats OR " . get_extension_goods($cats) . ") " : '';
+    $where .= ' AND g.supplier_id>0 ';
 
     /* 排行统计的时间 */
     switch ($GLOBALS['_CFG']['top10_time'])
@@ -470,8 +471,13 @@ function get_category_recommend_goods($type = '', $cats = '', $brand = 0, $min =
         $sql .= " AND (" . $cats . " OR " . get_extension_goods($cats) .")";
     }
 
+    $sql .= ' AND g.supplier_id>0 ';
+    
     $order_type = $GLOBALS['_CFG']['recommend_order'];
     $sql .= ($order_type == 0) ? ' ORDER BY g.sort_order, g.last_update DESC' : ' ORDER BY RAND()';
+    
+    
+    
     $res = $GLOBALS['db']->selectLimit($sql, $num);
 
     $idx = 0;

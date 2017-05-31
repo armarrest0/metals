@@ -80,8 +80,8 @@ if($supplier){
                     "'$good[brand_id]', '$good[shop_price]', '$good[market_price]', '$good[is_promote]', '$good[zhekou]', '$good[promote_price]', ".
                     "'$good[promote_start_date]', '$good[promote_end_date]', '$good[is_buy]','$good[buymax]','$good[buymax_start_date]','$good[buymax_end_date]','$good[goods_img]', '$good[goods_thumb]', '$good[original_img]', ".
                     "'$good[keywords]', '$good[goods_brief]', '$good[seller_note]', '$good[goods_weight]', '$order_goods[goods_number]',".
-                    " '$good[warn_number]', '$good[integral]', '$good[give_integral]', '$good[is_best]', '$good[is_new]', '$good[is_hot]', '0', '$good[is_alone_sale]', $good[is_shipping], ".
-                    " '$good[goods_desc]', '" . gmtime() . "', '". gmtime() ."', '$good[goods_type]', '$good[rank_integral]', '$supplier[supplier_id]', '0')";
+                    " '$good[warn_number]', '$good[integral]', '$good[give_integral]', '0', '0', '0', '0', '$good[is_alone_sale]', $good[is_shipping], ".
+                    " '$good[goods_desc]', '" . gmtime() . "', '". gmtime() ."', '$good[goods_type]', '$good[rank_integral]', '$supplier[supplier_id]', '1')";
      
      $db->query($sql);
      $insert_id = $db->insert_id();

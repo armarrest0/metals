@@ -11,6 +11,8 @@
             <file>file:/D:/xampp/htdocs/storage/includes/lib_order.php</file>
             <file>file:/D:/xampp/htdocs/storage/admin/templates/order_list.htm</file>
             <file>file:/D:/xampp/htdocs/storage/admin/order.php</file>
+            <file>file:/D:/xampp/htdocs/storage/supplier/includes/inc_menu.php</file>
+            <file>file:/D:/xampp/htdocs/storage/supplier/includes/lib_goods.php</file>
         </group>
     </open-files>
 </project-private>

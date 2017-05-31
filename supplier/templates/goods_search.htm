@@ -20,8 +20,7 @@
     {$lang.keyword} <input type="text" name="keyword" size="15" />
     <input type="button" value="{$lang.button_search}" class="button" onclick="get_search_order()" />
 	{if $is_pre_sale neq '1'}
-	{if $is_goods_trash neq '1'}
-	<input type="button" value="批量导出" class="button" onclick="get_excel()" />
+	{if $is_goods_trash neq '1'}	
 	<input type="hidden" name="supplier_status" value="{$supplier_status}" />
 	{/if}
 	{/if}

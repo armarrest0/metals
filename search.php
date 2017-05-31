@@ -383,6 +383,9 @@ else
     $sql   = "SELECT COUNT(*) FROM " .$ecs->table('goods'). " AS g ".
         "WHERE g.is_delete = 0 AND g.is_on_sale = 1 AND g.is_alone_sale = 1 AND g.is_virtual=0  $attr_in $categories ".
         "AND (( 1 "  . $keywords . $brand . $min_price . $max_price . $intro . $outstock ." ) ".$tag_where." )";
+    
+
+    
     $count = $db->getOne($sql);
 	/* 代码添加_START   By  www.68ecshop.com  */	
     if ($page == 1 && $Recordkw && $count && !$category) Recordkeyword($Recordkw, $count, 'ecshop');  // 代码修改  By   www.68ecshop.com

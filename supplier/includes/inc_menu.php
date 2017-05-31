@@ -13,7 +13,6 @@ $modules['02_cat_and_goods']['03_goods_readybuy']			  = 'goods.php?act=readybuy'
 
 $modules['02_cat_and_goods']['05_comment_manage']		  = 'comment_manage.php?act=list'; //评论
 $modules['02_cat_and_goods']['05_shaidan_manage']   = 'shaidan.php?act=list';
-$modules['02_cat_and_goods']['11_goods_trash']			  = 'goods.php?act=trash';        // 商品回收站
 $modules['02_cat_and_goods']['04_category_list']		  = 'category.php?act=list';
 //代码增加  评论详情
 $modules['02_cat_and_goods']['05_order_comment']   = 'order_comment.php?act=list';

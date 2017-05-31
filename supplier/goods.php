@@ -105,9 +105,11 @@ function admin_goods_list(){
         if ($filter['is_on_sale'] !== '')
         {
             $where .= " AND (is_on_sale = '" . $filter['is_on_sale'] . "')";
+        }else{
+            $where .= " AND is_on_sale=1";
         }
         
-        $where_supp = ($filter['supp']>0) ? 'AND g.supplier_id > 0' : 'AND g.supplier_id = 0';
+        $where_supp = ($filter['supp']>0) ? ' AND g.supplier_id > 0' : ' AND g.supplier_id = 0';
         
         /* 供货商 */
         if(intval($_REQUEST['supp'])>0){
@@ -2186,11 +2188,8 @@ elseif ($_REQUEST['act'] == 'remove')
         clear_cache_files();
         $goods_name = $exc->get_name($goods_id);
 
-        //admin_log(addslashes($goods_name), 'trash', 'goods'); // 记录日志
-
-        $url = 'goods.php?act=query&' . str_replace('act=remove', '', $_SERVER['QUERY_STRING']);
-
-        ecs_header("Location: $url\n");
+        admin_log(addslashes($goods_name), 'trash', 'goods'); // 记录日志
+        make_json_result($smarty->fetch('goods_list.htm'));
         exit;
     }
 }

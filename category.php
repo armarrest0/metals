@@ -769,13 +769,15 @@ function category_get_goods($children, $brand, $min, $max, $ext, $size, $page, $
     
     if($filter==1){
     	
-    	$where .= ' AND g.supplier_id=0 ';
+    	$where .= ' AND g.supplier_id>0 ';
     	
     }elseif($filter==2){
     	
     	$where .= ' AND g.supplier_id>0 ';
     	
-    }else{}
+    }else{
+        $where .= ' AND g.supplier_id>0 ';
+    }
 
     if ($brand > 0)
     {
@@ -855,6 +857,8 @@ function category_get_goods($children, $brand, $min, $max, $ext, $size, $page, $
 			   " ORDER BY $sort $order";
 				
 	}
+
+        
     $res = $GLOBALS['db']->selectLimit($sql, $size, ($page - 1) * $size);
 
     $arr = array();
