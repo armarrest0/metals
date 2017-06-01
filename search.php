@@ -381,7 +381,7 @@ else
    /* fulltext_search_add_END_www.68ecshop.com */
     /* 获得符合条件的商品总数 */
     $sql   = "SELECT COUNT(*) FROM " .$ecs->table('goods'). " AS g ".
-        "WHERE g.is_delete = 0 AND g.is_on_sale = 1 AND g.is_alone_sale = 1 AND g.is_virtual=0  $attr_in $categories ".
+        "WHERE g.is_delete = 0 AND g.is_on_sale = 1 AND g.is_alone_sale = 1 AND g.is_virtual=0 and g.supplier_id>0 $attr_in $categories ".
         "AND (( 1 "  . $keywords . $brand . $min_price . $max_price . $intro . $outstock ." ) ".$tag_where." )";
     
 
@@ -420,7 +420,7 @@ else
             "FROM " .$ecs->table('goods'). " AS g ".
             "LEFT JOIN " . $GLOBALS['ecs']->table('member_price') . " AS mp ".
                     "ON mp.goods_id = g.goods_id AND mp.user_rank = '$_SESSION[user_rank]' ".
-            "WHERE g.is_delete = 0 AND g.is_on_sale = 1 AND g.is_alone_sale = 1 AND g.is_virtual=0 $attr_in $categories ".
+            "WHERE g.is_delete = 0 AND g.is_on_sale = 1 AND g.is_alone_sale = 1 AND g.is_virtual=0 and g.supplier_id>0 $attr_in $categories ".
                 "AND (( 1 " . $keywords . $brand . $min_price . $max_price . $intro . $outstock . " ) ".$tag_where." ) " .
             
 			"ORDER BY if(instr(goods_name,'".$_REQUEST['keywords']."') >0,1,0) desc , $sort $order";
@@ -453,7 +453,7 @@ else
 
         if(empty($ids)) $ids = '-1';
         $sql   = "SELECT COUNT(*) FROM " .$ecs->table('goods'). " AS g ".
-        "WHERE g.is_delete = 0 AND g.is_on_sale = 1 AND g.is_alone_sale = 1 $attr_in $categories ".
+        "WHERE g.is_delete = 0 AND g.is_on_sale = 1 AND g.is_alone_sale = 1 and g.supplier_id>0 $attr_in $categories ".
         "AND (( 1 "  ."and g.goods_id in ({$ids})"." ) ".$tag_where." )";
 		
     $count = $db->getOne($sql);
@@ -489,7 +489,7 @@ else
                 "FROM " .$ecs->table('goods'). " AS g ".
                 "LEFT JOIN " . $GLOBALS['ecs']->table('member_price') . " AS mp ".
                         "ON mp.goods_id = g.goods_id AND mp.user_rank = '$_SESSION[user_rank]' ".
-                "WHERE g.is_delete = 0 AND g.is_on_sale = 1 AND g.is_alone_sale = 1 $attr_in $categories ".
+                "WHERE g.is_delete = 0 AND g.is_on_sale = 1 AND g.is_alone_sale = 1 and g.supplier_id>0 $attr_in $categories ".
                     "AND (( 1 " ."and g.goods_id in ({$ids})". " ) ".$tag_where." ) " .
                 "ORDER BY sort_order asc";  			
 			
@@ -655,7 +655,7 @@ else
     $smarty->assign('promotion_info', get_promotion_info());
 	/* www.68ecshop.com */
 	$sql= "select g.cat_id, count(*) AS cat_count from ".$ecs->table('goods')." AS g ".
-				"WHERE g.is_delete = 0 AND g.is_on_sale = 1 AND g.is_alone_sale = 1 $attr_in ".
+				"WHERE g.is_delete = 0 AND g.is_on_sale = 1 AND g.is_alone_sale = 1 and g.supplier_id>0 $attr_in ".
                 "AND (( 1 " . $categories . $keywords . $brand . $min_price . $max_price . $intro . $outstock . " ) ".$tag_where." ) " .
 				" group by g.cat_id ";
 	//echo $sql;

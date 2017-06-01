@@ -173,6 +173,7 @@ $_LANG['01_goods_buy_list'] = '采购订单';
 $_LANG['03_goods_gobuy'] = '采购商品';
 $_LANG['03_goods_readybuy'] = '已购商品';
 
+$_LANG['02_supplier_credit_loan'] = '信誉贷款申请';
 
 // 代码增加
 $_LANG['05_order_comment'] = '订单评论';
@@ -428,6 +429,10 @@ $_LANG['05_rent_nopay'] = '租金待结';
 $_LANG['05_rent_setting'] = '租金管理';
 $_LANG['05_rent_out'] = '逾期未结';
 $_LANG['05_rent_history'] = '历史结算';
+
+
+$_LANG['06_loan'] = '信誉贷款';
+$_LANG['06_loan_apply'] = '申请贷款';
 
 
 $_LANG['supplier'] = '入驻商管理';

@@ -70,13 +70,16 @@ if($supplier){
     $sql = "SELECT * FROM " . $ecs->table('goods') . " WHERE goods_id = '$order_goods[goods_id]' and supplier_id=0";
     $good = $db->getRow($sql);
         
-        
+    
+    $max_id     = $db->getOne("SELECT MAX(goods_id) + 1 FROM ".$ecs->table('goods'));
+    $goods_sn   = generate_goods_sn($max_id);
+    
      $sql = "INSERT INTO " . $ecs->table('goods') . " (goods_name, goods_name_style, goods_sn, " .
                     "cat_id, brand_id, shop_price, market_price, is_promote, zhekou, promote_price, " .
                     "promote_start_date, promote_end_date, is_buy,buymax,buymax_start_date,buymax_end_date,goods_img, goods_thumb, original_img, keywords, goods_brief, " .
                     "seller_note, goods_weight, goods_number, warn_number, integral, give_integral, is_best, is_new, is_hot, " .
                     "is_on_sale, is_alone_sale, is_shipping, goods_desc, add_time, last_update, goods_type, rank_integral, supplier_id,supplier_status)" .
-                "VALUES ('$good[goods_name]', '$good[goods_name_style]', '$good[goods_sn]', '$good[cat_id]', " .
+                "VALUES ('$good[goods_name]', '$good[goods_name_style]', '$goods_sn', '$good[cat_id]', " .
                     "'$good[brand_id]', '$good[shop_price]', '$good[market_price]', '$good[is_promote]', '$good[zhekou]', '$good[promote_price]', ".
                     "'$good[promote_start_date]', '$good[promote_end_date]', '$good[is_buy]','$good[buymax]','$good[buymax_start_date]','$good[buymax_end_date]','$good[goods_img]', '$good[goods_thumb]', '$good[original_img]', ".
                     "'$good[keywords]', '$good[goods_brief]', '$good[seller_note]', '$good[goods_weight]', '$order_goods[goods_number]',".
@@ -116,5 +119,33 @@ assign_dynamic('receive');
 
 $smarty->assign('msg', $msg);
 $smarty->display('receive.dwt');
+
+
+/**
+ * 为某商品生成唯一的货号
+ * @param   int     $goods_id   商品编号
+ * @return  string  唯一的货号
+ */
+function generate_goods_sn($goods_id)
+{
+    $goods_sn = $GLOBALS['_CFG']['sn_prefix'] . str_repeat('0', 6 - strlen($goods_id)) . $goods_id;
+
+    $sql = "SELECT goods_sn FROM " . $GLOBALS['ecs']->table('goods') .
+            " WHERE goods_sn LIKE '" . mysql_like_quote($goods_sn) . "%' AND goods_id <> '$goods_id' " .
+            " ORDER BY LENGTH(goods_sn) DESC";
+    $sn_list = $GLOBALS['db']->getCol($sql);
+    if (in_array($goods_sn, $sn_list))
+    {
+        $max = pow(10, strlen($sn_list[0]) - strlen($goods_sn) + 1) - 1;
+        $new_sn = $goods_sn . mt_rand(0, $max);
+        while (in_array($new_sn, $sn_list))
+        {
+            $new_sn = $goods_sn . mt_rand(0, $max);
+        }
+        $goods_sn = $new_sn;
+    }
+
+    return $goods_sn;
+}
 
 ?>

@@ -205,6 +205,7 @@ $modules['16_email_manage']['view_sendlist'] = 'view_sendlist.php?act=list';
 /* 代码增加_start By www.68ecshop.com */
 $modules['02_supplier']['06_supplier_tag'] = 'supplier_tag.php?act=list';
 $modules['02_supplier']['05_supplier_rank'] = 'supplier_rank.php?act=list';
+$modules['02_supplier']['02_supplier_credit_loan'] = 'supplier_loan.php?act=list';
 $modules['02_supplier']['01_supplier_reg'] = 'supplier.php?act=list';
 $modules['02_supplier']['02_supplier_list'] = 'supplier.php?act=list&status=1';
 $modules['02_supplier']['03_rebate_nopay'] = 'supplier_rebate.php?act=list&is_pay_ok=0';

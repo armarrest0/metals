@@ -43,6 +43,8 @@ $modules['02_rebate_manage']['03_rebate_pay']       = 'supplier_rebate.php?act=l
 
 $modules['05_rent']['05_rent_nopay']       = 'supplier_rent.php?act=list&is_pay_ok=0'; 
 
+$modules['06_loan']['06_loan_apply']       = 'loan.php?act=list'; 
+
 
 $modules['18_virtual']['virtual_goods_s']   = 'virtual_goods.php?act=list&extension_code=virtual_good'; //虚拟商品列表
 $modules['18_virtual']['virtual_goods_add']    = 'virtual_goods.php?act=add&extension_code=virtual_good';  //添加虚拟商品

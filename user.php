@@ -5711,10 +5711,11 @@ function action_my_comment_send ()
 	$status = ($_CFG['comment_check'] == 1) ? 0 : 1;
 	$rec_id = $_POST['rec_id'];
 	$hide_username = intval($_POST['hide_username']);
-	$buy_time = $db->getOne("SELECT o.add_time FROM " . $ecs->table('order_info') . " AS o
+	$res = $db->getRow("SELECT * FROM " . $ecs->table('order_info') . " AS o
 							 LEFT JOIN " . $ecs->table('order_goods') . " AS og ON o.order_id=og.order_id
 							 WHERE og.rec_id = '$rec_id'");
 	
+        $buy_time = $res['add_time'];
 	/* 自定义标签 */
 	$tags = ($_POST['comment_tag']) ? explode(",", $_POST['comment_tag']) : array();
 	if(is_array($_POST['tags_zi']))
@@ -5736,7 +5737,7 @@ function action_my_comment_send ()
 	$comment_tag = (is_array($tagids)) ? implode(",", $tagids) : '';
 	
 	// 代码增加o_id
-	$sql = "INSERT INTO " . $ecs->table('comment') . "(comment_type, id_value, email, user_name, content, comment_rank, add_time, ip_address, user_id, status, rec_id, comment_tag, buy_time, hide_username, order_id)" . "VALUES ('$comment_type', '$id_value', '$email', '$user_name', '$content', '$comment_rank', '$add_time', '$ip_address', '$user_id', '$status', '$rec_id', '$comment_tag', '$buy_time', '$hide_username', '$o_id')";
+	$sql = "INSERT INTO " . $ecs->table('comment') . "(comment_type, id_value, email, user_name, content, comment_rank, add_time, ip_address, user_id, status, rec_id, comment_tag, buy_time, hide_username, order_id,supplier_id)" . "VALUES ('$comment_type', '$id_value', '$email', '$user_name', '$content', '$comment_rank', '$add_time', '$ip_address', '$user_id', '$status', '$rec_id', '$comment_tag', '$buy_time', '$hide_username', '$o_id','$res[supplier_id]')";
 	
 	$db->query($sql);
 	$db->query("UPDATE " . $ecs->table('order_goods') . " SET comment_state = 1 WHERE rec_id = '$rec_id'");
