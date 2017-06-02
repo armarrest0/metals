@@ -31,9 +31,25 @@ if ($_REQUEST['act'] == 'list')
     /* 查询 */
     $result = suppliers_list();
 
+     foreach ($result['result'] as $k=>$val){
+         $sql = "SELECT * FROM " . $ecs->table('supplier_loan') . " WHERE supplier_id = '$val[supplier_id]' and status=0";
+         $supplier = $db->getRow($sql);
+         if($supplier){
+             $result['result'][$k]['loan_money'] = $supplier['loan_money'];
+             $result['result'][$k]['loan_name'] = $supplier['loan_name'];
+             $result['result'][$k]['loan_desc'] = $supplier['loan_desc'];
+             $result['result'][$k]['loan_start_time'] = local_date('Y-m-d H:i', $supplier['loan_start_time']);
+             $result['result'][$k]['loan_end_time'] = local_date('Y-m-d H:i', $supplier['loan_end_time']);
+         }else{
+             unset($result['result'][$k]);
+         }
+     }
+     
+    
+    
     /* 模板赋值 */
-	$ur_here_lang = $_REQUEST['status'] =='1' ? $_LANG['supplier_list'] : $_LANG['supplier_reg_list'];
-    $smarty->assign('ur_here', $ur_here_lang); // 当前导航
+	
+    $smarty->assign('ur_here', "信誉贷申请列表"); // 当前导航
 
     $smarty->assign('full_page',        1); // 翻页参数
 
@@ -61,6 +77,22 @@ elseif ($_REQUEST['act'] == 'query')
 
     $result = suppliers_list();
 
+    
+     foreach ($result['result'] as $k=>$val){
+         $sql = "SELECT * FROM " . $ecs->table('supplier_loan') . " WHERE supplier_id = '$val[supplier_id]' and status=0";
+         $supplier = $db->getRow($sql);
+         if($supplier){
+             $result['result'][$k]['loan_money'] = $supplier['loan_money'];
+             $result['result'][$k]['loan_name'] = $supplier['loan_name'];
+             $result['result'][$k]['loan_desc'] = $supplier['loan_desc'];
+             $result['result'][$k]['loan_start_time'] = local_date('Y-m-d H:i', $supplier['loan_start_time']);
+             $result['result'][$k]['loan_end_time'] = local_date('Y-m-d H:i', $supplier['loan_end_time']);
+         }else{
+             unset($result['result'][$k]);
+         }
+     }
+    
+    
     $smarty->assign('supplier_list',    $result['result']);
     $smarty->assign('filter',       $result['filter']);
     $smarty->assign('record_count', $result['record_count']);
@@ -73,8 +105,88 @@ elseif ($_REQUEST['act'] == 'query')
     make_json_result($smarty->fetch('supplier_loan_list.htm'), '',
         array('filter' => $result['filter'], 'page_count' => $result['page_count']));
 }
+/*------------------------------------------------------ */
+//-- 编辑信誉贷款
+/*------------------------------------------------------ */
+elseif ($_REQUEST['act']== 'loan_edit')
+{
 
+    $suppliers = array();
 
+     /* 取得供货商信息 */
+     $suppId = $_REQUEST['suppId'];
+// 	 $status = intval($_REQUEST['status']);
+     $sql = "SELECT * FROM " . $ecs->table('supplier') . " WHERE supplier_id = '$id'";
+     $supplier = $db->getRow($sql);
+     if (count($supplier) <= 0)
+     {
+          sys_msg('该供应商不存在！');
+     }
+     
+	/* 省市县 */
+	$supplier_country = $supplier['country'] ?  $supplier['country'] : $_CFG['shop_country'];
+	$smarty->assign('country_list',       get_regions());	
+	$smarty->assign('province_list', get_regions(1, $supplier_country));
+	$smarty->assign('city_list', get_regions(2, $supplier['province']));
+	$smarty->assign('district_list', get_regions(3, $supplier['city']));
+	$smarty->assign('supplier_country', $supplier_country);
+	 /* 供货商等级 */
+	$sql="select rank_name from ". $ecs->table('supplier_rank') ." where rank_id = ".$supplier['rank_id'];
+	$rank_name=$db->getOne($sql);
+	$supplier['rank_name'] = $rank_name;
+	// $sql="select rank_id,rank_name from ". $ecs->table('supplier_rank') ." order by sort_order";
+	//$supplier_rank=$db->getAll($sql);
+	//$smarty->assign('supplier_rank', $supplier_rank);
+	
+	/* 店铺类型 */
+	 $sql="select str_name from ". $ecs->table('street_category') ." where str_id = ".$supplier['type_id'];
+	$type_name=$db->getOne($sql);
+	$supplier['type_name'] = $type_name;
+
+     $smarty->assign('ur_here', $_LANG['edit_supplier']);
+// 	 $lang_supplier_list = $status=='1' ? $_LANG['supplier_list'] :  $_LANG['supplier_reg_list'];
+//      $smarty->assign('action_link', array('href' => 'supplier.php?act=list', 'text' =>$lang_supplier_list ));
+     if ($_REQUEST['status'] == '1')
+     {
+     	$lang_supplier_list = $_LANG['supplier_list'];
+     	$smarty->assign('action_link', array('href' => 'supplier.php?act=list&status=1', 'text' =>$lang_supplier_list ));
+     }
+     else
+     {
+     	$lang_supplier_list = $_LANG['supplier_reg_list'];
+     	$smarty->assign('action_link', array('href' => 'supplier.php?act=list', 'text' =>$lang_supplier_list ));
+     }
+
+     $smarty->assign('form_action', 'update');
+     $smarty->assign('supplier', $supplier);
+
+     assign_query_info();
+
+     $smarty->display('supplier_info.htm');
+   
+
+}
+elseif ($_REQUEST['act']== 'history')
+{
+
+    /* 模板赋值 */
+    $smarty->assign('full_page',   1);
+    $smarty->assign('ur_here',  '历史记录');
+
+    $list = loan_list();
+
+    $smarty->assign('loan_list', $list['item']);
+    $smarty->assign('filter',       $list['filter']);
+    $smarty->assign('record_count', $list['record_count']);
+    $smarty->assign('page_count',   $list['page_count']);
+
+    $sort_flag  = sort_flag($list['filter']);
+    $smarty->assign($sort_flag['tag'], $sort_flag['img']);
+
+    /* 显示商品列表页面 */
+    assign_query_info();
+    $smarty->display('supplier_loan_histroy.htm');   
+}
 /*------------------------------------------------------ */
 //-- 查看、编辑供货商
 /*------------------------------------------------------ */
@@ -398,6 +510,8 @@ function suppliers_list()
         $filter['sort_order'] = empty($_REQUEST['sort_order']) ? 'ASC' : trim($_REQUEST['sort_order']);
 		$filter['status'] = empty($_REQUEST['status']) ? '0' : intval($_REQUEST['status']);
        
+                
+                
         $where = 'WHERE applynum = 3 ';
 		
         if ($filter['supplier_name'])
@@ -578,5 +692,67 @@ function delete_supplier_pic($suppid){
 		@unlink(ROOT_PATH.$row['thumb_url']);
 		@unlink(ROOT_PATH.$row['img_original']);
 	}
+}
+
+
+/*
+ * 取得拍卖活动列表
+ * @return   array
+ */
+function loan_list()
+{
+    $result = get_filter();
+    if ($result === false)
+    {
+        /* 过滤条件 */
+        $filter['keyword']    = empty($_REQUEST['keyword']) ? '' : trim($_REQUEST['keyword']);
+        if (isset($_REQUEST['is_ajax']) && $_REQUEST['is_ajax'] == 1)
+        {
+            $filter['keyword'] = json_str_iconv($filter['keyword']);
+        }
+
+        $filter['sort_by']    = empty($_REQUEST['sort_by']) ? 'loan_id' : trim($_REQUEST['sort_by']);
+        $filter['sort_order'] = empty($_REQUEST['sort_order']) ? 'DESC' : trim($_REQUEST['sort_order']);
+
+        $where = " AND status!=0 ";
+        if (!empty($filter['keyword']))
+        {
+            $where .= " AND loan_name LIKE '%" . mysql_like_quote($filter['keyword']) . "%'";
+        }
+       
+        $sql = "SELECT COUNT(*) FROM " . $GLOBALS['ecs']->table('supplier_loan') .
+                " WHERE 1 $where";
+        $filter['record_count'] = $GLOBALS['db']->getOne($sql);
+
+        /* 分页大小 */
+        $filter = page_and_size($filter);
+
+        /* 查询 */
+        $sql = "SELECT * ".
+                "FROM " . $GLOBALS['ecs']->table('supplier_loan') .
+                " WHERE 1 $where ".
+                " ORDER BY $filter[sort_by] $filter[sort_order] ".
+                " LIMIT ". $filter['start'] .", $filter[page_size]";
+
+        $filter['keyword'] = stripslashes($filter['keyword']);
+        set_filter($filter, $sql);
+    }
+    else
+    {
+        $sql    = $result['sql'];
+        $filter = $result['filter'];
+    }
+    $res = $GLOBALS['db']->query($sql);
+
+    $list = array();
+    while ($row = $GLOBALS['db']->fetchRow($res))
+    {
+        $row['loan_start_time']  = local_date('Y-m-d H:i', $row['loan_start_time']);
+        $row['loan_end_time']    = local_date('Y-m-d H:i', $row['loan_end_time']);
+        $list[] = $row;
+    }
+    $arr = array('item' => $list, 'filter' => $filter, 'page_count' => $filter['page_count'], 'record_count' => $filter['record_count']);
+
+    return $arr;
 }
 ?>

@@ -30,30 +30,36 @@
 
   <table cellpadding="3" cellspacing="1">
     <tr>
-	  <th>申请人</th>
+	 
       <th>{$lang.supplier_name}</th>
       <th>{$lang.supplier_rank}</th>
-      <th>{$lang.supplier_tel}</th>
-	  <th>{$lang.system_fee}</th>
-	  <th>{$lang.supplier_bond}</th>
+      <th>{$lang.supplier_tel}</th>	
           <th>订单总数(笔)</th>
           <th>订单成交金额(元)</th>
           <th>评价平均星级</th>
+           <th>申请人</th>
+          <th>申请贷款金额(元)</th>
+          <th>贷款时间</th>
+          <th>还款时间</th>
+          <th>贷款事由</th>
       <th>{$lang.handler}</th>
     </tr>
     {foreach from=$supplier_list item=supplier}
     <tr>
-	  <td align="center">{$supplier.user_name} </td>
+	
       <td align="center" class="first-cell" style="padding-left:10px;" ><a href="../supplier.php?suppId={$supplier.supplier_id}" target="_blank">{$supplier.supplier_name}</a></td>
       <td align="center">{$supplier.rank_name} </td>
-      <td align="center">{$supplier.tel}</td>
-	  <td align="center">{$supplier.system_fee}</td>
-	  <td align="center">{$supplier.supplier_bond}</td>
+      <td align="center">{$supplier.tel}</td>	
           <td align="center">{$supplier.total_order}</td>
           <td align="center">{$supplier.total_money}</td>
           <td align="center">{$supplier.avarage_rank}</td>	
-      <td align="center">
-          <a href="../supplier.php?suppId={$supplier.supplier_id}" target="_blank">否决</a>&nbsp;|&nbsp;<a href="../supplier.php?suppId={$supplier.supplier_id}" target="_blank">通过</a>
+          <td align="center">{$supplier.loan_name} </td>
+          <td align="center">{$supplier.loan_money}</td>
+          <td align="center">{$supplier.loan_start_time}</td>
+          <td align="center">{$supplier.loan_end_time}</td>
+          <td align="center">{$supplier.loan_desc}</td>
+      <td align="center">          
+          <a href="../supplier_loan.php?act=loan_edit&suppId={$supplier.supplier_id}" target="_blank">否决</a>&nbsp;|&nbsp;<a href="../supplier_loan.php?act=loan_edit&suppId={$supplier.supplier_id}" target="_blank">通过</a>
       </td>
     </tr>
     {foreachelse}

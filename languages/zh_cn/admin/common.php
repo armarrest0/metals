@@ -174,7 +174,8 @@ $_LANG['03_goods_gobuy'] = '采购商品';
 $_LANG['03_goods_readybuy'] = '已购商品';
 
 $_LANG['02_supplier_credit_loan'] = '信誉贷款申请';
-
+$_LANG['02_supplier_credit_loan_history'] = '历史记录';
+$_LANG['03_supplier_credit'] = '信誉贷款管理';
 // 代码增加
 $_LANG['05_order_comment'] = '订单评论';
 // 代码增加

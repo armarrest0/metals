@@ -56,7 +56,7 @@ elseif ($_REQUEST['act'] == 'query')
 {
     $list = loan_list();
 
-    $smarty->assign('auction_list', $list['item']);
+    $smarty->assign('loan_list', $list['item']);
     $smarty->assign('filter',       $list['filter']);
     $smarty->assign('record_count', $list['record_count']);
     $smarty->assign('page_count',   $list['page_count']);
@@ -64,7 +64,7 @@ elseif ($_REQUEST['act'] == 'query')
     $sort_flag  = sort_flag($list['filter']);
     $smarty->assign($sort_flag['tag'], $sort_flag['img']);
 
-    make_json_result($smarty->fetch('auction_list.htm'), '',
+    make_json_result($smarty->fetch('loan_list.htm'), '',
         array('filter' => $list['filter'], 'page_count' => $list['page_count']));
 }
 
@@ -266,8 +266,18 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
     /* 保存数据 */
     if ($is_add)
     {
-        $auction['status'] = 0;
-        $db->autoExecute($ecs->table('supplier_loan'), $auction, 'INSERT');
+        $auction['status'] = 0;        
+        $sql = "SELECT * FROM " . $ecs->table('supplier_loan') . " WHERE supplier_id = '$_SESSION[supplier_id]' and status=0";
+        $supplier = $db->getRow($sql);
+        
+        if($supplier){
+            $links = array(
+                array('href' => 'loan.php?act=list&' . list_link_postfix(), 'text' => '申请列表')
+            );
+            sys_msg('待审核的申请尚在审核中，请务再次填写申请', 0, $links);
+        }else{
+            $db->autoExecute($ecs->table('supplier_loan'), $auction, 'INSERT');
+        }
     }
     else
     {  
