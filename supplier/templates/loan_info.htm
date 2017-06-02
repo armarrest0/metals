@@ -4,12 +4,12 @@
 <link href="../js/calendar/calendar.css" rel="stylesheet" type="text/css" />
 {insert_scripts files="validator.js,../js/transport.org.js,../js/utils.js}
 <div class="main-div">
-<form method="post" action="auction.php" name="theForm" enctype="multipart/form-data" onSubmit="return validate()">
+<form method="post" action="loan.php" name="theForm" enctype="multipart/form-data" onSubmit="return validate()">
 <table cellspacing="1" cellpadding="3" width="100%">
   <tr>
     <td class="label">{$lang.label_act_name}</td>
     <td><input name="loan_name" type="text" id="loan_name" value="{$loan.loan_name}" maxlength="60" />
-    {$lang.notice_act_name}</td>
+    </td>
   </tr>
   <tr>
     <td class="label">{$lang.label_act_desc}</td>
@@ -17,35 +17,27 @@
   </tr>
  <tr>
     <td class="label">贷款金额</td>
-    <td><input name="loan_name" type="text" id="loan_name" value="{$loan.loan_name}" maxlength="60" />
+    <td><input name="loan_money" type="text" id="loan_money" value="{$loan.loan_money}" maxlength="60" />
     元</td>
   </tr>
   <tr>
     <td class="label">{$lang.label_start_time}</td>
-    <td><input name="loan_start_time" type="text" id="start_time" value="{$loan.loan_start_time}" readonly="readonly" />
-      <input name="selbtn1" type="button" id="selbtn1" onclick="return showCalendar('loan_start_time', '%Y-%m-%d %H:%M', '24', false, 'selbtn1');" value="{$lang.btn_select}" class="button" /></td>
+    <td><input name="loan_start_time" type="text" id="loan_start_time"  readonly="readonly" />
+      <input name="selbtn1" type="button" id="selbtn1" onclick="return showCalendar('loan_start_time', '%Y-%m-%d', false, false, 'selbtn1');" value="{$lang.btn_select}" class="button" /></td>
   </tr>
   <tr>
     <td class="label">{$lang.label_end_time}</td>
-    <td><input name="loan_end_time" type="text" id="end_time" value="{$loan.loan_end_time}" readonly="readonly" />
-      <input name="selbtn2" type="button" id="selbtn2" onclick="return showCalendar('loan_end_time', '%Y-%m-%d %H:%M', '24', false, 'selbtn2');" value="{$lang.btn_select}" class="button" /></td>
+    <td><input name="loan_end_time" type="text" id="loan_end_time"  readonly="readonly" />
+      <input name="selbtn2" type="button" id="selbtn2" onclick="return showCalendar('loan_end_time', '%Y-%m-%d', false, false, 'selbtn2');" value="{$lang.btn_select}" class="button" /></td>
   </tr>
  
   <tr>
     <td colspan="2" align="center">
-      {if $loan.loan_id eq 0 or $loan.status eq "0"}
+
       <input type="submit" class="button" value="提交申请" />
       <input type="reset" class="button" value="{$lang.button_reset}" />
-      <input type="hidden" name="act" value="{$form_action}" />
-      {elseif $auction.status_no eq "2"}
-        {if $auction.deposit gt 0}
-        {$lang.settle_frozen_money}
-        <input type="submit" class="button" value="{$lang.unfreeze}" name="unfreeze" />
-        <input type="submit" class="button" value="{$lang.deduct}" name="deduct" />
-        <input type="hidden" name="act" value="settle_money" />
-        {/if}
-      {/if}
-      <input type="hidden" name="id" value="{$auction.act_id}" /></td>
+      <input type="hidden" name="act" value="{$form_action}" />    
+      <input type="hidden" name="id" value="{$loan.loan_id}" /></td>
   </tr>
 </table>
 </form>
@@ -67,16 +59,8 @@ onload = function()
 function validate()
 {
     validator = new Validator("theForm");
-    validator.isNumber('start_price', start_price_not_number, false);
-    validator.isNumber('end_price', end_price_not_number, false);
-
-    if (document.forms['theForm'].elements['no_top'].checked == false)
-    {
-      validator.gt('end_price', 'start_price', end_gt_start);
-    }
-    validator.isNumber('amplitude', amplitude_not_number, false);
-    validator.isNumber('deposit', deposit_not_number, false);
-    validator.islt('start_time', 'end_time', start_lt_end);
+    validator.isNumber('loan_money', loan_money_not_number, false); 
+    validator.islt('loan_start_time', 'loan_end_time', start_lt_end);
     return validator.passed();
 }
 function checked_no_top(o)

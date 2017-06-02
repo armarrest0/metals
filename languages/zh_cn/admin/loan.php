@@ -26,10 +26,11 @@ $_LANG['settle_deposit_ok'] = '处理冻结的保证金成功';
 
 /* list */
 $_LANG['act_is_going'] = '仅显示进行中的活动';
-$_LANG['act_name'] = '申请人';
-$_LANG['goods_name'] = '商品名称';
-$_LANG['start_time'] = '开始时间';
-$_LANG['end_time'] = '结束时间';
+$_LANG['loan_id'] = '编号';
+$_LANG['loan_name'] = '申请人';
+$_LANG['loan_money'] = '贷款金额';
+$_LANG['loan_start_time'] = '贷款时间';
+$_LANG['loan_end_time'] = '还款时间';
 $_LANG['deposit'] = '保证金';
 $_LANG['start_price'] = '起拍价';
 $_LANG['end_price'] = '一口价';
@@ -46,7 +47,7 @@ $_LANG['notice_act_name'] = '如果留空，取拍卖商品的名称（该名称
 $_LANG['label_act_desc'] = '申请事由：';
 $_LANG['label_search_goods'] = '根据商品编号、名称或货号搜索商品';
 $_LANG['label_goods_name'] = '拍卖商品名称：';
-$_LANG['label_start_time'] = '用款时间：';
+$_LANG['label_start_time'] = '贷款时间：';
 $_LANG['label_end_time'] = '还款时间：';
 $_LANG['label_status'] = '当前状态：';
 $_LANG['label_start_price'] = '起拍价：';
@@ -74,12 +75,12 @@ $_LANG['search_result_empty'] = '没有找到商品，请重新搜索';
 $_LANG['pls_select_goods'] = '请选择拍卖商品';
 $_LANG['goods_not_exist'] = '您要拍卖的商品不存在';
 
-$_LANG['js_languages']['start_price_not_number'] = '起拍价格式不正确（数字）';
+$_LANG['js_languages']['loan_money_not_number'] = '贷款金额格式不正确（数字）';
 $_LANG['js_languages']['end_price_not_number'] = '一口价格式不正确（数字）';
-$_LANG['js_languages']['end_gt_start'] = '一口价应该大于起拍价';
+$_LANG['js_languages']['end_gt_start'] = '还款时间应大于贷款时间';
 $_LANG['js_languages']['amplitude_not_number'] = '加价幅度格式不正确（数字）';
 $_LANG['js_languages']['deposit_not_number'] = '保证金格式不正确（数字）';
-$_LANG['js_languages']['start_lt_end'] = '拍卖开始时间不能大于结束时间';
+$_LANG['js_languages']['start_lt_end'] = '贷款时间不能大于还款时间';
 $_LANG['js_languages']['search_is_null'] = '没有搜索到任何商品，请重新搜索';
 
 /* log */

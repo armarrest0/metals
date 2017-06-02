@@ -35,7 +35,7 @@ if ($_REQUEST['act'] == 'list')
 
     $list = loan_list();
 
-    $smarty->assign('auction_list', $list['item']);
+    $smarty->assign('loan_list', $list['item']);
     $smarty->assign('filter',       $list['filter']);
     $smarty->assign('record_count', $list['record_count']);
     $smarty->assign('page_count',   $list['page_count']);
@@ -127,8 +127,7 @@ elseif ($_REQUEST['act'] == 'batch')
             {
                 /* 删除记录 */
                 $sql = "DELETE FROM " . $ecs->table('goods_activity') .
-                        " WHERE act_id " . db_create_in($ids) .
-                        " AND act_type = '" . GAT_AUCTION . "'";
+                        " WHERE act_id " . db_create_in($ids);
                 $db->query($sql);
 
                 /* 记日志 */
@@ -249,68 +248,32 @@ elseif ($_REQUEST['act'] == 'add' || $_REQUEST['act'] == 'edit')
 
 elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
 {
-    /* 检查权限 */
-    admin_priv('auction');
-
+  
     /* 是否添加 */
     $is_add = $_REQUEST['act'] == 'insert';
 
-    /* 检查是否选择了商品 */
-    $goods_id = intval($_POST['goods_id']);
-    if ($goods_id <= 0)
-    {
-        sys_msg($_LANG['pls_select_goods']);
-    }
-    $sql = "SELECT goods_name FROM " . $ecs->table('goods') . " WHERE goods_id = '$goods_id'";
-    $row = $db->getRow($sql);
-    if (empty($row))
-    {
-        sys_msg($_LANG['goods_not_exist']);
-    }
-    $goods_name = $row['goods_name'];
-
     /* 提交值 */
-    $auction = array(
-        'act_id'        => intval($_POST['id']),
-        'act_name'      => empty($_POST['act_name']) ? $goods_name : sub_str($_POST['act_name'], 255, false),
-        'act_desc'      => $_POST['act_desc'],
-        'act_type'      => GAT_AUCTION,
-        'goods_id'      => $goods_id,
-        'product_id'    => empty($_POST['product_id']) ? 0 : $_POST['product_id'],
-        'goods_name'    => $goods_name,
-        'start_time'    => local_strtotime($_POST['start_time']),
-        'end_time'      => local_strtotime($_POST['end_time']),
-        'ext_info'      => serialize(array(
-                    'deposit'       => round(floatval($_POST['deposit']), 2),
-                    'start_price'   => round(floatval($_POST['start_price']), 2),
-                    'end_price'     => empty($_POST['no_top']) ? round(floatval($_POST['end_price']), 2) : 0,
-                    'amplitude'     => round(floatval($_POST['amplitude']), 2),
-                    'no_top'     => !empty($_POST['no_top']) ? intval($_POST['no_top']) : 0
-                )),
-		'supplier_id'   => $_SESSION['supplier_id']
+    $auction = array(      
+        'loan_name'      => $_REQUEST['loan_name'],
+        'loan_desc'      => $_REQUEST['loan_desc'],   
+        'loan_start_time'    => strtotime($_REQUEST['loan_start_time']),
+        'loan_end_time'      => strtotime($_REQUEST['loan_end_time']),    
+	'supplier_id'   => $_SESSION['supplier_id'],
+        'loan_money'      => $_REQUEST['loan_money'],   
+        'loan_desc'      => $_REQUEST['loan_desc'],   
     );
 
     /* 保存数据 */
     if ($is_add)
     {
-        $auction['is_finished'] = 0;
-        $db->autoExecute($ecs->table('goods_activity'), $auction, 'INSERT');
-        $auction['act_id'] = $db->insert_id();
+        $auction['status'] = 0;
+        $db->autoExecute($ecs->table('supplier_loan'), $auction, 'INSERT');
     }
     else
-    {
-        $db->autoExecute($ecs->table('goods_activity'), $auction, 'UPDATE', "act_id = '$auction[act_id]'");
+    {  
+        $db->autoExecute($ecs->table('goods_activity'), $auction, 'UPDATE', "act_id = '$_POST[id]'");
     }
 
-    /* 记日志 */
-    if ($is_add)
-    {
-        admin_log($auction['act_name'], 'add', 'auction');
-    }
-    else
-    {
-        admin_log($auction['act_name'], 'edit', 'auction');
-    }
 
     /* 清除缓存 */
     clear_cache_files();
@@ -319,17 +282,17 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
     if ($is_add)
     {
         $links = array(
-            array('href' => 'auction.php?act=add', 'text' => $_LANG['continue_add_auction']),
-            array('href' => 'auction.php?act=list', 'text' => $_LANG['back_auction_list'])
+            array('href' => 'loan.php?act=list', 'text' => '返回申请列表'),
+            array('href' => 'loan.php?act=edit', 'text' => '修改资料')            
         );
-        sys_msg($_LANG['add_auction_ok'], 0, $links);
+        sys_msg('申请提交成功', 0, $links);
     }
     else
     {
         $links = array(
-            array('href' => 'auction.php?act=list&' . list_link_postfix(), 'text' => $_LANG['back_auction_list'])
+            array('href' => 'loan.php?act=list&' . list_link_postfix(), 'text' => '申请列表')
         );
-        sys_msg($_LANG['edit_auction_ok'], 0, $links);
+        sys_msg('申请编辑成功', 0, $links);
     }
 }
 
@@ -443,23 +406,18 @@ function loan_list()
         {
             $filter['keyword'] = json_str_iconv($filter['keyword']);
         }
-        $filter['is_going']   = empty($_REQUEST['is_going']) ? 0 : 1;
-        $filter['sort_by']    = empty($_REQUEST['sort_by']) ? 'act_id' : trim($_REQUEST['sort_by']);
+
+        $filter['sort_by']    = empty($_REQUEST['sort_by']) ? 'loan_id' : trim($_REQUEST['sort_by']);
         $filter['sort_order'] = empty($_REQUEST['sort_order']) ? 'DESC' : trim($_REQUEST['sort_order']);
 
         $where = " AND supplier_id=".$_SESSION['supplier_id'];
         if (!empty($filter['keyword']))
         {
-            $where .= " AND goods_name LIKE '%" . mysql_like_quote($filter['keyword']) . "%'";
+            $where .= " AND loan_name LIKE '%" . mysql_like_quote($filter['keyword']) . "%'";
         }
-        if ($filter['is_going'])
-        {
-            $now = gmtime();
-            $where .= " AND is_finished = 0 AND start_time <= '$now' AND end_time >= '$now' ";
-        }
-
+       
         $sql = "SELECT COUNT(*) FROM " . $GLOBALS['ecs']->table('supplier_loan') .
-                " WHERE loan_type = '" . GAT_AUCTION . "' $where";
+                " WHERE 1 $where";
         $filter['record_count'] = $GLOBALS['db']->getOne($sql);
 
         /* 分页大小 */
@@ -468,7 +426,7 @@ function loan_list()
         /* 查询 */
         $sql = "SELECT * ".
                 "FROM " . $GLOBALS['ecs']->table('supplier_loan') .
-                " WHERE loan_type = '" . GAT_AUCTION . "' $where ".
+                " WHERE 1 $where ".
                 " ORDER BY $filter[sort_by] $filter[sort_order] ".
                 " LIMIT ". $filter['start'] .", $filter[page_size]";
 
@@ -485,13 +443,9 @@ function loan_list()
     $list = array();
     while ($row = $GLOBALS['db']->fetchRow($res))
     {
-        $ext_info = unserialize($row['ext_info']);
-        $arr = array_merge($row, $ext_info);
-
-        $arr['start_time']  = local_date('Y-m-d H:i', $arr['start_time']);
-        $arr['end_time']    = local_date('Y-m-d H:i', $arr['end_time']);
-
-        $list[] = $arr;
+        $row['loan_start_time']  = local_date('Y-m-d H:i', $row['loan_start_time']);
+        $row['loan_end_time']    = local_date('Y-m-d H:i', $row['loan_end_time']);
+        $list[] = $row;
     }
     $arr = array('item' => $list, 'filter' => $filter, 'page_count' => $filter['page_count'], 'record_count' => $filter['record_count']);
 
