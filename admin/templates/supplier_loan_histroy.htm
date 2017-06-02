@@ -8,24 +8,25 @@
   <form action="javascript:searchActivity()" name="searchForm">
     <img src="images/icon_search.gif" width="26" height="22" border="0" alt="SEARCH" />
     申请人<input type="text" name="keyword" size="30" />
-
     <input type="submit" value="{$lang.button_search}" class="button" />
   </form>
 </div>
 
-<form method="post" action="auction.php" name="listForm" onsubmit="return confirm(batch_drop_confirm);">
+<form method="post" action="supplier_loan.php" name="listForm" onsubmit="return confirm(batch_drop_confirm);">
 <!-- start auction list -->
 <div class="list-div" id="listDiv">
 {/if}
 
   <table cellpadding="3" cellspacing="1">
     <tr>
-      <th><a href="javascript:listTable.sort('loan_id'); ">编号</a>{$sort_loan_id}</th>
-      <th><a href="javascript:listTable.sort('loan_name'); ">申请人</a>{$sort_loan_name}</th>
-      <th><a href="javascript:listTable.sort('loan_money'); ">贷款金额</a>{$sort_loan_money}</th>
-      <th><a href="javascript:listTable.sort('loan_start_time'); ">贷款时间</a>{$sort_start_time}</th>
-      <th><a href="javascript:listTable.sort('loan_end_time'); ">还款时间</a>{$sort_end_time}</th>
+      <th>编号</th>
+      <th>申请人{$sort_loan_name}</th>
+      <th>贷款金额(元){$sort_loan_money}</th>
+      <th>贷款时间{$sort_start_time}</th>
+      <th>还款时间{$sort_end_time}</th>
       <th>申请事由</th>
+      <th>申请时间</th>
+      <th>审核时间</th>
       <th>状态</th>
     </tr>
 
@@ -37,6 +38,8 @@
       <td align="center">{$loan.loan_start_time}</td>
       <td align="center">{$loan.loan_end_time}</td>
       <td align="center">{$loan.loan_desc}</td>
+      <td align="center">{$loan.apply_time}</td>
+      <td align="center">{$loan.verify_time}</td>
       <td align="center">{if $loan.status==1}审核通过{elseif $loan.status==-1}未通过{else}审核中{/if}</td>
     {foreachelse}
     <tr><td class="no-records" colspan="12">{$lang.no_records}</td></tr>
@@ -63,6 +66,7 @@
   listTable.filter.{$key} = '{$item}';
   {/foreach}
 
+
   {literal}
   onload = function()
   {
@@ -78,9 +82,10 @@
   {
 
     var keyword = Utils.trim(document.forms['searchForm'].elements['keyword'].value);
-    listTable.filter['keyword'] = keyword;  
+    listTable.filter['keyword'] = keyword; 
+    listTable.filter['flag'] = 'history';
     listTable.filter['page'] = 1;
-    listTable.loadList("loan_list");
+    listTable.loadList("supplier_loan_histroy");
   }
   {/literal}
 //-->

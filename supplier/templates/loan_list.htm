@@ -13,7 +13,7 @@
   </form>
 </div>
 
-<form method="post" action="auction.php" name="listForm" onsubmit="return confirm(batch_drop_confirm);">
+<form method="post" action="loan.php" name="listForm" onsubmit="return confirm(batch_drop_confirm);">
 <!-- start auction list -->
 <div class="list-div" id="listDiv">
 {/if}
@@ -22,10 +22,12 @@
     <tr>
       <th><a href="javascript:listTable.sort('loan_id'); ">{$lang.loan_id}</a>{$sort_loan_id}</th>
       <th><a href="javascript:listTable.sort('loan_name'); ">{$lang.loan_name}</a>{$sort_loan_name}</th>
-      <th><a href="javascript:listTable.sort('loan_money'); ">{$lang.loan_money}</a>{$sort_loan_money}</th>
+      <th><a href="javascript:listTable.sort('loan_money'); ">{$lang.loan_money}(元)</a>{$sort_loan_money}</th>
       <th><a href="javascript:listTable.sort('loan_start_time'); ">{$lang.loan_start_time}</a>{$sort_start_time}</th>
       <th><a href="javascript:listTable.sort('loan_end_time'); ">{$lang.loan_end_time}</a>{$sort_end_time}</th>
       <th>申请事由</th>
+      <th>申请时间</th>
+      <th>审核时间</th>
       <th>状态</th>
     </tr>
 
@@ -37,6 +39,8 @@
       <td align="center">{$loan.loan_start_time}</td>
       <td align="center">{$loan.loan_end_time}</td>
       <td align="center">{$loan.loan_desc}</td>
+      <td align="center">{$loan.apply_time}</td>
+      <td align="center">{$loan.verify_time}</td>
       <td align="center">{if $loan.status==1}审核通过{elseif $loan.status==-1}未通过{else}审核中{/if}</td>
     {foreachelse}
     <tr><td class="no-records" colspan="12">{$lang.no_records}</td></tr>

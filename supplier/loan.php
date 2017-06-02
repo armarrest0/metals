@@ -261,6 +261,7 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
 	'supplier_id'   => $_SESSION['supplier_id'],
         'loan_money'      => $_REQUEST['loan_money'],   
         'loan_desc'      => $_REQUEST['loan_desc'],   
+        'apply_time'      => time(),
     );
 
     /* 保存数据 */
@@ -453,8 +454,15 @@ function loan_list()
     $list = array();
     while ($row = $GLOBALS['db']->fetchRow($res))
     {
-        $row['loan_start_time']  = local_date('Y-m-d H:i', $row['loan_start_time']);
-        $row['loan_end_time']    = local_date('Y-m-d H:i', $row['loan_end_time']);
+        $row['loan_start_time']  = local_date('Y-m-d', $row['loan_start_time']);
+        $row['loan_end_time']    = local_date('Y-m-d', $row['loan_end_time']);
+        if($row['apply_time']){
+            $row['apply_time']    = local_date('Y-m-d', $row['apply_time']);
+        }        
+        if($row['verify_time']){
+            $row['verify_time']    = local_date('Y-m-d', $row['verify_time']);
+        }
+        
         $list[] = $row;
     }
     $arr = array('item' => $list, 'filter' => $filter, 'page_count' => $filter['page_count'], 'record_count' => $filter['record_count']);
