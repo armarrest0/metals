@@ -261,6 +261,7 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
 	'supplier_id'   => $_SESSION['supplier_id'],
         'loan_money'      => $_REQUEST['loan_money'],   
         'loan_desc'      => $_REQUEST['loan_desc'],   
+        'mobile'      => $_REQUEST['mobile'],
         'apply_time'      => time(),
     );
 
@@ -427,6 +428,30 @@ function loan_list()
             $where .= " AND loan_name LIKE '%" . mysql_like_quote($filter['keyword']) . "%'";
         }
        
+        if(isset($_REQUEST['reuslt_status'])&&$_REQUEST['reuslt_status']!=''){
+            $where .= " AND status =" . $_REQUEST['reuslt_status'] ;
+        }
+        
+        if(isset($_REQUEST['loan_status'])&&$_REQUEST['loan_status']!=''){
+            
+             switch ($_REQUEST['loan_status'])
+            {
+                case 0:
+                    $where .= " AND status = 0 or status = -1" ;
+                    break;
+                case 1:
+                    $aft = time() + 24*3600*30;
+                    $now = time();
+                    $where .= " AND status = 1 AND loan_end_time between ".$now." and ".$aft;
+                    break;
+                case -1:
+                    $now = time();
+                    $where .= " AND status = 1 AND loan_end_time<".$now;
+                    break;
+            }
+       
+        }
+        
         $sql = "SELECT COUNT(*) FROM " . $GLOBALS['ecs']->table('supplier_loan') .
                 " WHERE 1 $where";
         $filter['record_count'] = $GLOBALS['db']->getOne($sql);
@@ -454,6 +479,29 @@ function loan_list()
     $list = array();
     while ($row = $GLOBALS['db']->fetchRow($res))
     {
+        switch ($row['status'])
+        {
+            case 0:
+                $row['loan_status'] = "未开始";
+                break;
+            case 1:
+                if($row['loan_end_time']>time()){
+                    $during = $row['loan_end_time'] - time();
+                    if($during<24*3600*30){
+                        $row['loan_status'] = "即将到期";
+                    }else{
+                        $row['loan_status'] = "进行中";
+                    }
+                   
+                }else{
+                    $row['loan_status'] = "已逾期";
+                }
+                break;
+            case -1:
+                $row['loan_status'] = "未开始";
+                break;
+        }
+        
         $row['loan_start_time']  = local_date('Y-m-d', $row['loan_start_time']);
         $row['loan_end_time']    = local_date('Y-m-d', $row['loan_end_time']);
         if($row['apply_time']){
@@ -462,7 +510,7 @@ function loan_list()
         if($row['verify_time']){
             $row['verify_time']    = local_date('Y-m-d', $row['verify_time']);
         }
-        
+
         $list[] = $row;
     }
     $arr = array('item' => $list, 'filter' => $filter, 'page_count' => $filter['page_count'], 'record_count' => $filter['record_count']);
