@@ -71,6 +71,9 @@ if ($_REQUEST['act'] == 'list')
 elseif ($_REQUEST['act'] == 'edit_rent')
 {	
     $suppid = $_REQUEST['id'];
+    
+    $where = "where 1";
+    
     if($suppid){
         $where .= " AND al.supplier_id = '$suppid' ";
     }    
