@@ -153,6 +153,14 @@ elseif ($_REQUEST['act']== 'loan_edit')
    
 
 }
+
+elseif ($_REQUEST['act']== 'loan_edit_info')
+{
+    $loan_id = $_REQUEST['id'];
+    $smarty->assign('id', $loan_id);
+    assign_query_info();
+    $smarty->display('deny.htm'); 
+}
 elseif ($_REQUEST['act']== 'history')
 {
 
