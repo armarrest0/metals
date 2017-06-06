@@ -3,18 +3,29 @@
 {if $full_page}
 {include file="pageheader.htm"}
 {insert_scripts files="../js/utils.js,listtable.js"}
+<script type="text/javascript" src="../js/calendar.php?lang={$cfg_lang}"></script>
+<link href="../js/calendar/calendar.css" rel="stylesheet" type="text/css" />
 
 <div class="form-div">
   <form action="javascript:searchActivity()" name="searchForm">
     <img src="images/icon_search.gif" width="26" height="22" border="0" alt="SEARCH" />
     申请人<input type="text" name="keyword" size="30" />
-    审核状态：
-     <select name='reuslt_status' style='width:123px;'>
-    <option value='' selected='selected'>请选择</option>
-    <option value='-1'>未通过</option>
-    <option value='1'>审核通过</option>
-    </select>
     
+
+    贷款状态：
+    <select name='loan_status' style='width:123px;'>
+    <option value='0' selected='selected'>请选择</option>
+    <option value='2'>进行中</option>
+    <option value='1'>即将到期</option>
+    <option value='-1'>已逾期</option>
+    </select>
+
+
+    贷款时间&nbsp;&nbsp;
+    <input name="loan_start_time" value="" style="width:80px;" onclick="return showCalendar(this, '%Y-%m-%d', false, false, this);" />
+    还款时间&nbsp;&nbsp;
+    <input name="loan_end_time" value="" style="width:80px;" onclick="return showCalendar(this, '%Y-%m-%d', false, false, this);" />
+  
     <input type="submit" value="{$lang.button_search}" class="button" />
   </form>
 </div>
@@ -28,6 +39,7 @@
     <tr>
       <th>编号</th>
       <th>申请人{$sort_loan_name}</th>
+      <th>手机号码</th>
       <th>贷款金额(元){$sort_loan_money}</th>
       <th>贷款时间{$sort_start_time}</th>
       <th>还款时间{$sort_end_time}</th>
@@ -35,21 +47,22 @@
       <th>申请时间</th>
       <th>审核时间</th>
       <th>审核结果</th>
-      <th>原因</th>
+      <th>贷款状态</th>
     </tr>
 
     {foreach from=$loan_list item=loan}
     <tr>
       <td align="center">{$loan.loan_id}</td>
       <td align="center">{$loan.loan_name}</td>
+      <td align="center">{$loan.mobile}</td>
       <td align="center">{$loan.loan_money}</td>
       <td align="center">{$loan.loan_start_time}</td>
-      <td align="center">{$loan.loan_end_time}</td>
+      <td align="center" style="color:{if $loan.loan_status=='即将到期'}red{elseif $loan.loan_status=='进行中'}green{elseif $loan.loan_status=='已逾期'}red{else}black{/if}">{$loan.loan_end_time}</td>
       <td align="center">{$loan.loan_desc}</td>
       <td align="center">{$loan.apply_time}</td>
       <td align="center">{$loan.verify_time}</td>
       <td align="center">{if $loan.status==1}审核通过{elseif $loan.status==-1}未通过{else}审核中{/if}</td>
-      <td align="center">{$loan.reason}</td>
+      <td align="center" style="color:{if $loan.loan_status=='即将到期'}red{elseif $loan.loan_status=='进行中'}green{elseif $loan.loan_status=='已逾期'}red{else}black{/if}">{$loan.loan_status}</td>
     {foreachelse}
     <tr><td class="no-records" colspan="12">{$lang.no_records}</td></tr>
     {/foreach}
@@ -91,11 +104,16 @@
   {
 
     var keyword = Utils.trim(document.forms['searchForm'].elements['keyword'].value);
-    var reuslt_status = Utils.trim(document.forms['searchForm'].elements['reuslt_status'].value);
+    var loan_status = Utils.trim(document.forms['searchForm'].elements['loan_status'].value);
+    
+    var loan_start_time = Utils.trim(document.forms['searchForm'].elements['loan_start_time'].value);
+    var loan_end_time = Utils.trim(document.forms['searchForm'].elements['loan_end_time'].value);
     
     listTable.filter['keyword'] = keyword; 
-    listTable.filter['reuslt_status'] = reuslt_status; 
-    listTable.filter['flag'] = 'history';
+    listTable.filter['loan_status'] = loan_status;
+    listTable.filter['loan_start_time'] = loan_start_time;
+    listTable.filter['loan_end_time'] = loan_end_time;
+    listTable.filter['flag'] = 'master';
     listTable.filter['page'] = 1;
     listTable.loadList("supplier_loan_histroy");
   }

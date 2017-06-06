@@ -562,6 +562,71 @@ function affirm_received($order_id, $user_id = 0)
             /* 记录日志 */
             order_action($order['order_sn'], $order['order_status'], SS_RECEIVED, $order['pay_status'], '', $GLOBALS['_LANG']['buyer']);
 
+            
+            
+            /* 查询商家信息 */
+            $sql   = 'SELECT * FROM ' . $GLOBALS['ecs']->table('supplier') . " WHERE user_id = '$order[user_id]'";
+            $supplier = $GLOBALS['db']->getRow($sql);
+
+            if($supplier){
+
+                $sql   = 'SELECT * FROM ' . $GLOBALS['ecs']->table('order_goods') . " WHERE order_id = '$order_id'";
+                $order_goods_list = $GLOBALS['db']->getAll($sql);
+
+                foreach($order_goods_list as $order_goods){
+
+                /* 商品信息 */
+                $sql = "SELECT * FROM " . $GLOBALS['ecs']->table('goods') . " WHERE goods_id = '$order_goods[goods_id]' and supplier_id=0";
+                $good = $GLOBALS['db']->getRow($sql);
+
+
+                /* 购买方信息 */
+                $sql = "SELECT * FROM " . $GLOBALS['ecs']->table('goods') . " WHERE from_sn = '$good[goods_sn]' and supplier_id=".$supplier['supplier_id'];
+                $info = $GLOBALS['db']->getRow($sql);
+
+                if($info){
+                    $sql = "UPDATE " . $GLOBALS['ecs']->table('goods') . " SET goods_number = goods_number+" . $order_goods[goods_number] . " WHERE from_sn = '$good[goods_sn]' and supplier_id=".$supplier['supplier_id'];
+                    $GLOBALS['db']->query($sql);
+
+                }else{
+
+                    $max_id     = $GLOBALS['db']->getOne("SELECT MAX(goods_id) + 1 FROM ".$GLOBALS['ecs']->table('goods'));
+                    $goods_sn   = generate_goods_sn($max_id);
+
+                     $sql = "INSERT INTO " . $GLOBALS['ecs']->table('goods') . " (goods_name, goods_name_style, goods_sn, " .
+                                    "cat_id, brand_id, shop_price, market_price, is_promote, zhekou, promote_price, " .
+                                    "promote_start_date, promote_end_date, is_buy,buymax,buymax_start_date,buymax_end_date,goods_img, goods_thumb, original_img, keywords, goods_brief, " .
+                                    "seller_note, goods_weight, goods_number, warn_number, integral, give_integral, is_best, is_new, is_hot, " .
+                                    "is_on_sale, is_alone_sale, is_shipping, goods_desc, add_time, last_update, goods_type, rank_integral, supplier_id,supplier_status,from_sn)" .
+                                "VALUES ('$good[goods_name]', '$good[goods_name_style]', '$goods_sn', '$good[cat_id]', " .
+                                    "'$good[brand_id]', '$good[shop_price]', '$good[market_price]', '$good[is_promote]', '$good[zhekou]', '$good[promote_price]', ".
+                                    "'$good[promote_start_date]', '$good[promote_end_date]', '$good[is_buy]','$good[buymax]','$good[buymax_start_date]','$good[buymax_end_date]','$good[goods_img]', '$good[goods_thumb]', '$good[original_img]', ".
+                                    "'$good[keywords]', '$good[goods_brief]', '$good[seller_note]', '$good[goods_weight]', '$order_goods[goods_number]',".
+                                    " '$good[warn_number]', '$good[integral]', '$good[give_integral]', '0', '0', '0', '0', '$good[is_alone_sale]', $good[is_shipping], ".
+                                    " '$good[goods_desc]', '" . gmtime() . "', '". gmtime() ."', '$good[goods_type]', '$good[rank_integral]', '$supplier[supplier_id]', '1','$good[goods_sn]')";
+
+                     $GLOBALS['db']->query($sql);
+                     $insert_id = $GLOBALS['db']->insert_id();
+
+                     $sql = "SELECT * FROM " . $GLOBALS['ecs']->table('supplier_goods_cat') . " WHERE goods_id = '$insert_id' and cat_id=".$good[cat_id];
+                     $res = $GLOBALS['db']->getRow($sql);
+
+                     if(!$res){
+                         $sql = "INSERT INTO " . $GLOBALS['ecs']->table('supplier_goods_cat') .
+                                " (goods_id, cat_id, supplier_id) " .
+                                "VALUES ('$insert_id', '$good[cat_id]', '$supplier[supplier_id]')";
+                        $GLOBALS['db']->query($sql);
+                     }
+
+
+                }         
+
+                }
+
+            }
+            
+            
+            
             return true;
         }
         else
@@ -1259,5 +1324,32 @@ function deleteRepeat($array){
         }
     }
     return $array;
+}
+
+/**
+ * 为某商品生成唯一的货号
+ * @param   int     $goods_id   商品编号
+ * @return  string  唯一的货号
+ */
+function generate_goods_sn($goods_id)
+{
+    $goods_sn = $GLOBALS['_CFG']['sn_prefix'] . str_repeat('0', 6 - strlen($goods_id)) . $goods_id;
+
+    $sql = "SELECT goods_sn FROM " . $GLOBALS['ecs']->table('goods') .
+            " WHERE goods_sn LIKE '" . mysql_like_quote($goods_sn) . "%' AND goods_id <> '$goods_id' " .
+            " ORDER BY LENGTH(goods_sn) DESC";
+    $sn_list = $GLOBALS['db']->getCol($sql);
+    if (in_array($goods_sn, $sn_list))
+    {
+        $max = pow(10, strlen($sn_list[0]) - strlen($goods_sn) + 1) - 1;
+        $new_sn = $goods_sn . mt_rand(0, $max);
+        while (in_array($new_sn, $sn_list))
+        {
+            $new_sn = $goods_sn . mt_rand(0, $max);
+        }
+        $goods_sn = $new_sn;
+    }
+
+    return $goods_sn;
 }
 ?>

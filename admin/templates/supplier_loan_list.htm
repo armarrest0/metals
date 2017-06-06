@@ -27,7 +27,8 @@
           <th>订单总数(笔)</th>
           <th>订单成交金额(元)</th>
           <th>评价平均星级</th>
-           <th>申请人</th>
+          <th>申请人</th>
+          <th>手机号码</th>
           <th>申请贷款金额(元)</th>
           <th>贷款时间</th>
           <th>还款时间</th>
@@ -45,6 +46,7 @@
           <td align="center">{$supplier.total_money}</td>
           <td align="center">{$supplier.avarage_rank}</td>	
           <td align="center">{$supplier.loan_name} </td>
+          <td align="center">{$supplier.mobile} </td>
           <td align="center">{$supplier.loan_money}</td>
           <td align="center">{$supplier.loan_start_time}</td>
           <td align="center">{$supplier.loan_end_time}</td>
@@ -55,7 +57,7 @@
       </td>
     </tr>
     {foreachelse}
-    <tr><td class="no-records" colspan="13">{$lang.no_records}</td></tr>
+    <tr><td class="no-records" colspan="14">{$lang.no_records}</td></tr>
     {/foreach}
   </table>
 <table id="page-table" cellspacing="0">

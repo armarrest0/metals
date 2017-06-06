@@ -42,8 +42,8 @@
       <th>申请事由</th>
       <th>申请时间</th>
       <th>审核时间</th>
-      <th>审核状态</th>
       <th>审核结果</th>
+      <th>原因</th>
       <th>贷款状态</th>
     </tr>
 
@@ -59,7 +59,7 @@
       <td align="center">{$loan.apply_time}</td>
       <td align="center">{$loan.verify_time}</td>
       <td align="center">{if $loan.status==1}审核通过{elseif $loan.status==-1}未通过{else}审核中{/if}</td>
-      <td align="center">{$loan.verify_time}</td>
+      <td align="center">{$loan.reason}</td>
       <td align="center" style="color:{if $loan.loan_status=='即将到期'}red{elseif $loan.loan_status=='进行中'}green{elseif $loan.loan_status=='已逾期'}red{else}black{/if}">{$loan.loan_status}</td>
     {foreachelse}
     <tr><td class="no-records" colspan="12">{$lang.no_records}</td></tr>

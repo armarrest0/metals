@@ -37,6 +37,7 @@ if ($_REQUEST['act'] == 'list')
          if($supplier){
              $result['result'][$k]['loan_id'] = $supplier['loan_id'];
              $result['result'][$k]['loan_money'] = $supplier['loan_money'];
+             $result['result'][$k]['mobile'] = $supplier['mobile'];
              $result['result'][$k]['loan_name'] = $supplier['loan_name'];
              $result['result'][$k]['loan_desc'] = $supplier['loan_desc'];
              $result['result'][$k]['loan_start_time'] = local_date('Y-m-d', $supplier['loan_start_time']);
@@ -112,6 +113,20 @@ elseif ($_REQUEST['act'] == 'query')
        make_json_result($smarty->fetch('supplier_loan_list.htm'), '',
            array('filter' => $result['filter'], 'page_count' => $result['page_count']));
         
+    }elseif($_REQUEST['flag']=='master'){
+         $list = loan_list();
+
+        $smarty->assign('loan_list', $list['item']);
+        $smarty->assign('filter',       $list['filter']);
+        $smarty->assign('record_count', $list['record_count']);
+        $smarty->assign('page_count',   $list['page_count']);
+
+        $sort_flag  = sort_flag($list['filter']);
+        $smarty->assign($sort_flag['tag'], $sort_flag['img']);
+
+        /* 显示商品列表页面 */
+        make_json_result($smarty->fetch('supplier_loan_master.htm'), '',
+           array('filter' => $list['filter'], 'page_count' => $list['page_count']));
     }else{
         
 
@@ -145,7 +160,7 @@ elseif ($_REQUEST['act']== 'loan_edit')
      $loan_id = $_REQUEST['id'];
      $status = $_REQUEST['status'];
 // 	 $status = intval($_REQUEST['status']);
-     $sql = "UPDATE " . $ecs->table('supplier_loan') . " SET status = '" . $status . "',verify_time='".time()."' WHERE loan_id = '$loan_id'";
+     $sql = "UPDATE " . $ecs->table('supplier_loan') . " SET status = '" . $status . "',verify_time='".time()."',reason='".$_REQUEST['reason']."' WHERE loan_id = '$loan_id'";
      $db->query($sql);
     /* 提示信息 */
     $links[0] = array('href' => 'supplier_loan.php?act=list', 'text' =>'返回上一页');
@@ -153,7 +168,31 @@ elseif ($_REQUEST['act']== 'loan_edit')
    
 
 }
+/*------------------------------------------------------ */
+//-- 编辑信誉贷款
+/*------------------------------------------------------ */
+elseif ($_REQUEST['act']== 'master')
+{
 
+        /* 模板赋值 */
+    $smarty->assign('full_page',   1);
+    $smarty->assign('ur_here',  '信誉贷款管理');
+
+    $list = loan_list();
+
+    $smarty->assign('loan_list', $list['item']);
+    $smarty->assign('filter',       $list['filter']);
+    $smarty->assign('record_count', $list['record_count']);
+    $smarty->assign('page_count',   $list['page_count']);
+
+    $sort_flag  = sort_flag($list['filter']);
+    $smarty->assign($sort_flag['tag'], $sort_flag['img']);
+
+    /* 显示商品列表页面 */
+    assign_query_info();
+    $smarty->display('supplier_loan_master.htm');   
+
+}
 elseif ($_REQUEST['act']== 'loan_edit_info')
 {
     $loan_id = $_REQUEST['id'];
@@ -706,8 +745,52 @@ function loan_list()
             $filter['keyword'] = json_str_iconv($filter['keyword']);
         }
 
+        if(empty($_REQUEST['flag'])){          
+            if($_REQUEST['act']=='master'){
+                $where = " AND status=1 ";
+            }else{
+                $where = " AND status!=0 ";
+            }
+        }
+        
+        if(isset($_REQUEST['reuslt_status'])&&$_REQUEST['reuslt_status']!=''){
+            $where .= " AND status =" . $_REQUEST['reuslt_status'] ;
+        }
+        
+        
+        if(isset($_REQUEST['loan_status'])&&$_REQUEST['loan_status']!=''){
+            
+             switch ($_REQUEST['loan_status'])
+            {
+                case 0:                  
+                    $where .= " AND status = 1";
+                    break;
+                case 1:
+                    $aft = time() + 24*3600*30;
+                    $now = time();
+                    $where .= " AND status = 1 AND loan_end_time between ".$now." and ".$aft;
+                    break;
+                case -1:
+                    $now = time();
+                    $where .= " AND status = 1 AND loan_end_time<".$now;
+                    break;
+                case 2:
+                    $aft = time() + 24*3600*30;
+                    $where .= " AND status = 1 AND loan_end_time>".$aft;
+                    break;
+            }
+       
+        }
+        
 
-        $where = " AND status!=0 ";
+        if($_REQUEST['loan_start_time']){
+            $where .= " AND loan_start_time>=".strtotime($_REQUEST['loan_start_time']);
+        }
+        
+        if($_REQUEST['loan_end_time']){
+            $where .= "  AND loan_end_time<".strtotime($_REQUEST['loan_end_time']);
+        }
+        
         if (!empty($filter['keyword']))
         {
             $where .= " AND loan_name LIKE '%" . mysql_like_quote($filter['keyword']) . "%'";
@@ -739,6 +822,31 @@ function loan_list()
     $list = array();
     while ($row = $GLOBALS['db']->fetchRow($res))
     {
+        
+        switch ($row['status'])
+        {
+            case 0:
+                $row['loan_status'] = "未开始";
+                break;
+            case 1:
+                if($row['loan_end_time']>time()){
+                    $during = $row['loan_end_time'] - time();
+                    if($during<24*3600*30){
+                        $row['loan_status'] = "即将到期";
+                    }else{
+                        $row['loan_status'] = "进行中";
+                    }
+                   
+                }else{
+                    $row['loan_status'] = "已逾期";
+                }
+                break;
+            case -1:
+                $row['loan_status'] = "未开始";
+                break;
+        }
+        
+        
         $row['loan_start_time']  = local_date('Y-m-d', $row['loan_start_time']);
         $row['loan_end_time']    = local_date('Y-m-d', $row['loan_end_time']);
         if($row['apply_time']){
