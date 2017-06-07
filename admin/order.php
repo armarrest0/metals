@@ -4864,6 +4864,7 @@ elseif ($_REQUEST['act'] == 'operate_post')
             }
             $arr['order_status'] = $order_finish ? OS_SPLITED : OS_SPLITING_PART; // 全部分单、部分分单
             $arr['shipping_status']     = $shipping_status;
+            $arr['upper_allow']     = 2;
             update_order($order_id, $arr);
         }
 
@@ -6656,7 +6657,7 @@ function order_list()
 
         /* 查询 */
         if($filter['supp']){
-        	$sql = "SELECT o.order_id, o.order_sn, o.add_time, o.order_status, o.shipping_status, o.order_amount, o.money_paid," .
+        	$sql = "SELECT o.order_id,o.upper_allow, o.order_sn, o.add_time, o.order_status, o.shipping_status, o.order_amount, o.money_paid," .
                     "o.pay_status, o.consignee, o.address, o.email, o.tel, o.extension_code, o.extension_id, " .
                     "(" . order_amount_field('o.') . ") AS total_fee, " .
                     "IFNULL(u.user_name, '" .$GLOBALS['_LANG']['anonymous']. "') AS buyer,supplier_name,o.froms,is_pickup  ".
@@ -6675,7 +6676,7 @@ function order_list()
                 " LIMIT " . ($filter['page'] - 1) * $filter['page_size'] . ",$filter[page_size]";
         	
         }else{
-        	$sql = "SELECT o.order_id, o.order_sn, o.add_time, o.order_status, o.shipping_status, o.order_amount, o.money_paid," .
+        	$sql = "SELECT o.order_id, o.upper_allow, o.order_sn, o.add_time, o.order_status, o.shipping_status, o.order_amount, o.money_paid," .
                     "o.pay_status, o.consignee, o.address, o.email, o.tel, o.extension_code, o.extension_id, " .
                     "(" . order_amount_field('o.') . ") AS total_fee, " .
                     "IFNULL(u.user_name, '" .$GLOBALS['_LANG']['anonymous']. "') AS buyer, o.froms , is_pickup ".

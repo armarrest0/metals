@@ -71,35 +71,46 @@ if($supplier){
     $good = $db->getRow($sql);
         
     
-    $max_id     = $db->getOne("SELECT MAX(goods_id) + 1 FROM ".$ecs->table('goods'));
-    $goods_sn   = generate_goods_sn($max_id);
+    /* 购买方信息 */
+    $sql = "SELECT * FROM " . $ecs->table('goods') . " WHERE from_sn = '$good[goods_sn]' and supplier_id=".$supplier['supplier_id'];
+    $info = $db->getRow($sql);
     
-     $sql = "INSERT INTO " . $ecs->table('goods') . " (goods_name, goods_name_style, goods_sn, " .
-                    "cat_id, brand_id, shop_price, market_price, is_promote, zhekou, promote_price, " .
-                    "promote_start_date, promote_end_date, is_buy,buymax,buymax_start_date,buymax_end_date,goods_img, goods_thumb, original_img, keywords, goods_brief, " .
-                    "seller_note, goods_weight, goods_number, warn_number, integral, give_integral, is_best, is_new, is_hot, " .
-                    "is_on_sale, is_alone_sale, is_shipping, goods_desc, add_time, last_update, goods_type, rank_integral, supplier_id,supplier_status)" .
-                "VALUES ('$good[goods_name]', '$good[goods_name_style]', '$goods_sn', '$good[cat_id]', " .
-                    "'$good[brand_id]', '$good[shop_price]', '$good[market_price]', '$good[is_promote]', '$good[zhekou]', '$good[promote_price]', ".
-                    "'$good[promote_start_date]', '$good[promote_end_date]', '$good[is_buy]','$good[buymax]','$good[buymax_start_date]','$good[buymax_end_date]','$good[goods_img]', '$good[goods_thumb]', '$good[original_img]', ".
-                    "'$good[keywords]', '$good[goods_brief]', '$good[seller_note]', '$good[goods_weight]', '$order_goods[goods_number]',".
-                    " '$good[warn_number]', '$good[integral]', '$good[give_integral]', '0', '0', '0', '0', '$good[is_alone_sale]', $good[is_shipping], ".
-                    " '$good[goods_desc]', '" . gmtime() . "', '". gmtime() ."', '$good[goods_type]', '$good[rank_integral]', '$supplier[supplier_id]', '1')";
-     
-     $db->query($sql);
-     $insert_id = $db->insert_id();
-     
-     $sql = "SELECT * FROM " . $ecs->table('supplier_goods_cat') . " WHERE goods_id = '$insert_id' and cat_id=".$good[cat_id];
-     $res = $db->getRow($sql);
-     
-     if(!$res){
-         $sql = "INSERT INTO " . $ecs->table('supplier_goods_cat') .
-                " (goods_id, cat_id, supplier_id) " .
-                "VALUES ('$insert_id', '$good[cat_id]', '$supplier[supplier_id]')";
+    if($info){
+        $sql = "UPDATE " . $ecs->table('goods') . " SET goods_number = goods_number+" . $order_goods[goods_number] . " WHERE from_sn = '$good[goods_sn]' and supplier_id=".$supplier['supplier_id'];
         $db->query($sql);
-     }
-     
-     
+        
+    }else{
+        
+        $max_id     = $db->getOne("SELECT MAX(goods_id) + 1 FROM ".$ecs->table('goods'));
+        $goods_sn   = generate_goods_sn($max_id);
+
+         $sql = "INSERT INTO " . $ecs->table('goods') . " (goods_name, goods_name_style, goods_sn, " .
+                        "cat_id, brand_id, shop_price, market_price, is_promote, zhekou, promote_price, " .
+                        "promote_start_date, promote_end_date, is_buy,buymax,buymax_start_date,buymax_end_date,goods_img, goods_thumb, original_img, keywords, goods_brief, " .
+                        "seller_note, goods_weight, goods_number, warn_number, integral, give_integral, is_best, is_new, is_hot, " .
+                        "is_on_sale, is_alone_sale, is_shipping, goods_desc, add_time, last_update, goods_type, rank_integral, supplier_id,supplier_status,from_sn)" .
+                    "VALUES ('$good[goods_name]', '$good[goods_name_style]', '$goods_sn', '$good[cat_id]', " .
+                        "'$good[brand_id]', '$good[shop_price]', '$good[market_price]', '$good[is_promote]', '$good[zhekou]', '$good[promote_price]', ".
+                        "'$good[promote_start_date]', '$good[promote_end_date]', '$good[is_buy]','$good[buymax]','$good[buymax_start_date]','$good[buymax_end_date]','$good[goods_img]', '$good[goods_thumb]', '$good[original_img]', ".
+                        "'$good[keywords]', '$good[goods_brief]', '$good[seller_note]', '$good[goods_weight]', '$order_goods[goods_number]',".
+                        " '$good[warn_number]', '$good[integral]', '$good[give_integral]', '0', '0', '0', '0', '$good[is_alone_sale]', $good[is_shipping], ".
+                        " '$good[goods_desc]', '" . gmtime() . "', '". gmtime() ."', '$good[goods_type]', '$good[rank_integral]', '$supplier[supplier_id]', '1','$good[goods_sn]')";
+
+         $db->query($sql);
+         $insert_id = $db->insert_id();
+
+         $sql = "SELECT * FROM " . $ecs->table('supplier_goods_cat') . " WHERE goods_id = '$insert_id' and cat_id=".$good[cat_id];
+         $res = $db->getRow($sql);
+
+         if(!$res){
+             $sql = "INSERT INTO " . $ecs->table('supplier_goods_cat') .
+                    " (goods_id, cat_id, supplier_id) " .
+                    "VALUES ('$insert_id', '$good[cat_id]', '$supplier[supplier_id]')";
+            $db->query($sql);
+         }
+        
+        
+    }         
      
     }
      

@@ -3404,7 +3404,7 @@ function get_final_price($goods_id, $goods_num = '1', $is_spec_price = false, $s
 
     //取得商品促销价格列表
     /* 取得商品信息 */
-    $sql = "SELECT g.promote_price, g.promote_start_date, g.promote_end_date, ".
+    $sql = "SELECT g.*,g.promote_price, g.promote_start_date, g.promote_end_date, ".
                 "IFNULL(mp.user_price, g.shop_price * '" . $discount . "') AS shop_price ".
            " FROM " .$GLOBALS['ecs']->table('goods'). " AS g ".
            " LEFT JOIN " . $GLOBALS['ecs']->table('member_price') . " AS mp ".
@@ -3423,8 +3423,12 @@ function get_final_price($goods_id, $goods_num = '1', $is_spec_price = false, $s
         $promote_price = 0;
     }
 
-    //取得商品会员价格列表
-    $user_price    = $goods['shop_price'];
+    if($goods['supplier_id']){
+        $user_price    = $goods['shop_price'];
+    }else{
+        $user_price    = $goods['trade_price'];
+    }
+  
 
     //比较商品的促销价格，会员价格，优惠价格
     if (empty($volume_price) && empty($promote_price))

@@ -432,7 +432,9 @@ elseif ($_REQUEST['act'] == 'add')
     $smarty->assign('record_count', $goods_list['record_count']);
     $smarty->assign('page_count',   $goods_list['page_count']);
     $smarty->assign('full_page',    1);
-
+    
+ 
+    
     /* 排序标记 */
     $sort_flag  = sort_flag($goods_list['filter']);
     $smarty->assign($sort_flag['tag'], $sort_flag['img']);

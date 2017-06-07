@@ -3825,6 +3825,7 @@ elseif ($_REQUEST['act'] == 'operate')
         ecs_header("Location: $url\n");
         exit;
     }
+     
 
     /* 直接处理还是跳到详细页面 */
     if (($require_note && $action_note == '') || isset($show_invoice_no) || isset($show_refund))
@@ -5405,6 +5406,14 @@ elseif($_REQUEST['act'] == 'export_all_invoice')
     }
 }
 
+elseif($_REQUEST['act'] == 'upper_send')
+{
+    $GLOBALS['db']->query("UPDATE ". $GLOBALS['ecs']->table('order_info') . " SET `upper_allow` = '1' WHERE `order_id` =". $_REQUEST['order_id']);
+    echo "<script>window.location.href='order.php?act=list'</script>";
+    exit;
+    
+}
+
 /*取消开票*/
 function unprovide_provices($order_sns)
 {
@@ -6371,7 +6380,7 @@ function order_list()
         $filter['page_count']     = $filter['record_count'] > 0 ? ceil($filter['record_count'] / $filter['page_size']) : 1;
 
         /* 查询 */
-        $sql = "SELECT o.order_id, o.order_sn, o.add_time, o.order_status, o.shipping_status, o.order_amount, o.money_paid," .
+        $sql = "SELECT o.order_id, o.upper_allow,o.order_sn, o.add_time, o.order_status, o.shipping_status, o.order_amount, o.money_paid," .
                     "o.pay_status, o.consignee, o.address, o.email, o.tel, o.extension_code, o.extension_id, " .
                     "(" . order_amount_field('o.') . ") AS total_fee, " .
                     "IFNULL(u.user_name, '" .$GLOBALS['_LANG']['anonymous']. "') AS buyer ".

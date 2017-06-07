@@ -18,6 +18,8 @@ if (!defined('IN_ECS'))
     die('Hacking attempt');
 }
 
+define('DEBUG_MODE',6);
+
 error_reporting(E_ALL);
 
 if (__FILE__ == '')

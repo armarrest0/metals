@@ -235,7 +235,11 @@
         {$lang.os.$order_status},{$lang.ps.$pay_status},{$lang.ss.$shipping_status}        
     </td>
     <td align="center" valign="top"  nowrap="nowrap">
-     <a href="order.php?act=info&order_id={$order.order_id}">{$lang.detail}</a>
+     {if $order.upper_allow!=1}  
+        等待总店发货
+     {else}
+         <a href="order.php?act=info&order_id={$order.order_id}">{$lang.detail}</a>
+     {/if}
      {if $order.can_remove}
      <br /><a href="javascript:;" onclick="listTable.remove({$order.order_id}, remove_confirm, 'remove_order')">{$lang.remove}</a>
      {/if}

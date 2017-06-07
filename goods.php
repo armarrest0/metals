@@ -332,6 +332,9 @@ if (!empty($_REQUEST['act']) && $_REQUEST['act'] == 'gotopage')
 }
 
 
+
+
+
 /*------------------------------------------------------ */
 //-- PROCESSOR
 /*------------------------------------------------------ */
@@ -688,7 +691,16 @@ $goods_n=$db->getOne('SELECT goods_number FROM' . $ecs->table('goods') . " WHERE
 $smarty->assign('goods_n',$goods_n);
 
 $smarty->assign('now_time',  gmtime());           // 当前系统时间
-$smarty->display('goods.dwt',      $cache_id);
+
+$self_store = $goods['supplier_id']==0 ? 1 : 0;
+
+if($self_store){
+    $smarty->display('goods_self.dwt',      $cache_id);
+}else{
+    $smarty->display('goods.dwt',      $cache_id);
+}
+
+
 
 /*------------------------------------------------------ */
 //-- PRIVATE FUNCTION
