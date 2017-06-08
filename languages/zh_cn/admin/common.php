@@ -490,7 +490,6 @@ $_LANG['01_base'] = '店铺基本设置';
 $_LANG['02_menu'] = '店铺导航栏';
 $_LANG['03_guanggao'] = '店铺主广告';
 $_LANG['04_article'] = '店铺文章';
-$_LANG['05_header'] = '店铺头部自定义';
 $_LANG['06_templates'] = '店铺模板选择';
 $_LANG['07_street'] = '店铺街信息设置';
 $_LANG['08_shipping_list'] = '配送方式';

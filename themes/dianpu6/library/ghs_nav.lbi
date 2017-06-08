@@ -42,7 +42,6 @@
   </div>
 </div>
 <div class="ghs_body">
-  <div class="ghs_content1"> {$shopheader} </div>
   <div class="ghs_title" style="background:{$navcolor};">
     <div class="ghs_content">
       <div class="fl" style="width:840px;"> 

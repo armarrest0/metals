@@ -168,10 +168,26 @@ function get_supplier_goods($gtype=0,$limit=10){
 	if($gtype <= 0){
 		return ;
 	}
-	$sql = "SELECT DISTINCT g.goods_id,g.* FROM ". $GLOBALS['ecs']->table('goods') ." AS g, ". $GLOBALS['ecs']->table('supplier_goods_cat') ." AS gc, ". $GLOBALS['ecs']->table('supplier_cat_recommend') ." AS cr 
-	WHERE cr.recommend_type =".$gtype." AND cr.supplier_id =".$_GET['suppId']." AND cr.cat_id = gc.cat_id AND gc.goods_id = g.goods_id 
-	AND g.is_on_sale = 1 AND g.is_alone_sale = 1 AND g.is_delete = 0 
+        switch ($gtype)
+        {
+            case 1:
+                $sql = "SELECT DISTINCT g.goods_id,g.* FROM ". $GLOBALS['ecs']->table('goods') ." AS g where g.is_best=1 and supplier_id =".$_GET['suppId'].	
+	" AND g.is_on_sale = 1 AND g.is_alone_sale = 1 AND g.is_delete = 0 
 	ORDER BY g.sort_order, g.last_update DESC LIMIT ".$limit;
+                break;
+            case 2:
+                $sql = "SELECT DISTINCT g.goods_id,g.* FROM ". $GLOBALS['ecs']->table('goods') ." AS g where g.is_new=1	and supplier_id =".$_GET['suppId'].	
+	" AND g.is_on_sale = 1 AND g.is_alone_sale = 1 AND g.is_delete = 0 
+	ORDER BY g.sort_order, g.last_update DESC LIMIT ".$limit;
+                break;
+            case 3:
+                $sql = "SELECT DISTINCT g.goods_id,g.* FROM ". $GLOBALS['ecs']->table('goods') ." AS g where g.is_hot=1	and supplier_id =".$_GET['suppId'].	
+	" AND g.is_on_sale = 1 AND g.is_alone_sale = 1 AND g.is_delete = 0 
+	ORDER BY g.sort_order, g.last_update DESC LIMIT ".$limit;
+                break;
+            
+        }
+	
 	
 	$result = $GLOBALS['db']->getAll($sql);
 	

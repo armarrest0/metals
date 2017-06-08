@@ -56,7 +56,6 @@ $modules['05_dianpu_manage']['01_base']               	= 	'shop_config.php?act=l
 $modules['05_dianpu_manage']['02_menu']               	= 	'navigator.php?act=list';
 $modules['05_dianpu_manage']['03_guanggao']             = 	'flashplay.php?act=list';
 $modules['05_dianpu_manage']['04_article']              = 	'article.php?act=list';
-$modules['05_dianpu_manage']['05_header']               = 	'shop_header.php?act=list_edit';
 $modules['05_dianpu_manage']['06_templates']            = 	'template.php?act=list';
 $modules['05_dianpu_manage']['07_street']				= 	'street.php?act=info';
 $modules['05_dianpu_manage']['08_shipping_list']           = 'shipping.php?act=list';
