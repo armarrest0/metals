@@ -102,7 +102,7 @@ a:hover img {
 	font-size:14px
 }
 #focus .panel .nav a:hover, #focus .panel .nav a.current {
-	background:#E31939!important
+	background:#2f3e54!important
 }
 .articleList {
 	float:left;
@@ -128,7 +128,7 @@ a:hover img {
 	font-size:16px;
 	margin-bottom:10px;
 	text-align:center;
-	color:#E31939;
+	color:#e06510;
 	font-family:'微软雅黑', '黑体'
 }
 .articleList h4 a {
@@ -239,7 +239,7 @@ a:hover img {
 	margin:0px 5px 0 0
 }
 .sideCom .body li .ico1 {
-	background:#E31939;
+	background:#2f3e54;
 }
 .sideCom .body li .ico2 {
 	background: #e5e5e5;
@@ -339,7 +339,7 @@ font-size: 14px;
 }
 .first .head .Right a {
 	margin-right:10px;
-	color:#F64F5F; 
+	color:#2f3e54; 
 	cursor:pointer
 }
 
@@ -428,7 +428,7 @@ ul.allList li a {
 ul.allList li a.kind {
 	display:inline-block;
 	padding-left:5px;
-	color:#f64f5f;
+	color:#e06510;
 }
 ul.allList li span {
 	display:inline-block;

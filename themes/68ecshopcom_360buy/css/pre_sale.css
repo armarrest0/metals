@@ -2497,7 +2497,7 @@ span.scrright {
 	height: 30px;
 	margin-top: 5px;
 	line-height: 30px;
-	background: rgb(110, 121, 146) none repeat scroll 0% 0%;
+	background: rgb(47, 62, 84) none repeat scroll 0% 0%;
 	color: #fff;
 	text-align: left;
 	padding-left: 10px;
@@ -2548,12 +2548,14 @@ span.scrright {
 .product .buy3 .n-tg A {
 	DISPLAY: block;
 	color: #fff;
-	background: #E43A3F;
+	background: #e06810;
 	HEIGHT: 30px
 }
 .product .buy3 .n-tg A:hover {
 	text-decoration: none;
-	background: none;
+	background: #fff;
+	border:1px solid #e06810;
+	color:#e06810;
 }
 .product .price3{
 	height:25px;
@@ -2570,7 +2572,7 @@ span.scrright {
 .product .price3 .y-price SPAN {
 	display: block;
 	font-weight: normal;
-	color: #E6393B;
+	color: #e06810;
 	float: left;
 	margin-right: 15px;
 	font-size: 16px;
@@ -2591,7 +2593,7 @@ span.scrright {
 	font-size: 12px;
 }
 .hover1 {
-	border-color: #E31939;
+	border-color: #2f3e54 ;
 }
 /* ԭ commin  */
 .xm-box {

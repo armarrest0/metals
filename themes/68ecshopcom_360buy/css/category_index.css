@@ -391,13 +391,13 @@
 .floorWrapper .mt {
 	height: 55px;
 	line-height: 55px;
-	border-bottom: 2px #aaa solid;
+	border-bottom: 2px #2f3e54  solid;
 }
 .floorWrapper .mt h2 {
 	height: 55px;
 	line-height: 55px;
 	font-size: 24px;
-	color: #666;
+	color: #2f3e54;
 	float: left
 }
 .floorWrapper .mt h2 span {
@@ -474,7 +474,7 @@
 	margin-bottom: 0px;
 }
 .floorWrapper .mainPrice {
-	color: #E22A40;
+	color: #e06810;
 	font-weight: 400;
 	font-size: 20px;
 }
@@ -486,7 +486,7 @@
 	margin-left: 5px;
 }
 .floorWrapper .itemWrapper_hover {
-	border: 2px solid #E22A40;
+	border: 2px solid #e06810;
 	width: 230px;
 	height: 278px;
 	margin-top:-1px;

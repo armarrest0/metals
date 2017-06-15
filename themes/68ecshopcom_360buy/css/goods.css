@@ -40,11 +40,15 @@ font-size: 16px;
 float: left;
 margin-right: 15px;
 cursor: pointer;
-background: none repeat scroll 0% 0% #E31939;
-color: #FFF;
+background: none repeat scroll 0% 0% #fff;
+color: #e06810;
 text-align: center;
 text-decoration: none;
-border: medium none;
+border: 1px solid #e06810;
+}
+.buyNub-buy .u-buy2:hover{
+	background: none repeat scroll 0% 0% #e06810;
+	color: #fff;
 }
 .buyNub-buy-wrap {
 	height: 40px;

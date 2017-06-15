@@ -15,9 +15,9 @@
 	border-left: 1px solid #ccc;
 }
 .list_biaoti h3 {
-	color: #E31939;
+	color: #e06510;
 	font-size: 16px;
-	font-weight: bold;
+	font-weight: normal;
 	position: relative;
 	height:35px;
 	line-height:35px;
@@ -73,7 +73,7 @@
 	left: 9px
 }
 .list_tuangou .list_tt .right h3 span {
-	color: #E31939;
+	color: #e06510;
 	font-size: 14px;
 }
 .list_tuangou .list_tt .right p {
@@ -188,6 +188,12 @@
 	min-height: 230px;
 	margin-bottom: 10px;
 	margin-top: 10px;
+}
+.list_tuangou .gift table td{
+	color:#e06510!important;
+}
+.list_tuangou .gift table td a{
+	color:#e06510;
 }
 .list_tuangou .gift table {
 	float: left;
