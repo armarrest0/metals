@@ -78,6 +78,7 @@ elseif ($_REQUEST['act'] == 'list')
     	$suppliers_list = get_supplier_list();
     	$smarty->assign('supp_list',   $suppliers_list);
     }
+       
     
     $smarty->assign('order_list',   $order_list['orders']);
     $smarty->assign('filter',       $order_list['filter']);
@@ -151,6 +152,9 @@ elseif ($_REQUEST['act'] == 'query')
 
 elseif ($_REQUEST['act'] == 'info')
 {
+    
+     $smarty->assign('supp', $_REQUEST['supp']);
+  
     /* 根据订单id或订单号查询订单信息 */
     if (isset($_REQUEST['order_id']))
     {
@@ -565,6 +569,12 @@ elseif ($_REQUEST['act'] == 'info')
     /* 取得是否存在实体商品 */
     $smarty->assign('exist_real_goods', exist_real_goods($order['order_id']));
 
+    $supplier_id = $_SESSION['supplier_id']?$_SESSION['supplier_id']:0;
+    
+    $smarty->assign('supplier_id', $supplier_id);
+    
+   
+    
     /* 是否打印订单，分别赋值 */
     if (isset($_GET['print']))
     {

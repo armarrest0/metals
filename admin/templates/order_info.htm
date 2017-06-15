@@ -366,7 +366,8 @@
     <td><div align="right"><strong>{$lang.label_action_note}</strong></div></td>
   <td colspan="5"><textarea name="action_note" cols="80" rows="3"></textarea></td>
     </tr>
-  {if $order.upper_allow }   
+
+  {if ($supplier_id == $order.supplier_id && !$supp)||$order.upper_allow}   
   <tr>
     <td><div align="right"></div>
       <div align="right"><strong>{$lang.label_operable_act}</strong> </div></td>
