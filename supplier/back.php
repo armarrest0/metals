@@ -19,6 +19,8 @@ require(dirname(__FILE__) . '/includes/init.php');
 require_once(ROOT_PATH . 'includes/lib_order.php');
 require_once(ROOT_PATH . 'includes/lib_goods.php');
 
+$exc = new exchange($ecs->table('shop_config'), $db, 'code');
+
 $back_type_arr=array('0'=>'退货-退回', '1'=>'<font color=#ff3300>换货-退回</font>', '2'=>'<font color=#ff3300>换货-换出</font>');
 
 
@@ -70,6 +72,22 @@ elseif ($_REQUEST['act'] == 'back_query')
     $sort_flag = sort_flag($result['filter']);
     $smarty->assign($sort_flag['tag'], $sort_flag['img']);
     make_json_result($smarty->fetch('back_list_2.htm'), '', array('filter' => $result['filter'], 'page_count' => $result['page_count']));
+}
+
+/*------------------------------------------------------ */
+//-- 修改退货地址
+/*------------------------------------------------------ */
+elseif ($_REQUEST['act'] == 'edit_refund_address')
+{
+   
+    $code   = $_POST['id'];
+    $code_val = json_str_iconv(trim($_POST['val']));
+
+    if ($exc->edit("value = '$code_val'", $code))
+    {
+        clear_cache_files();
+        make_json_result(stripslashes($code_val));
+    }
 }
 
 /*------------------------------------------------------ */
@@ -211,6 +229,10 @@ elseif ($_REQUEST['act'] == 'back_info')
     $smarty->assign('action_list', $act_list);
 	
 	
+     $refund_address = $GLOBALS['db']->getOne("SELECT value FROM " . $GLOBALS['ecs']->table('shop_config') . " WHERE code =  'refund_address'");
+     $smarty->assign('refund_address', $refund_address);
+     
+    
 	/* 回复留言图片 www.68ecshop.com增加 */
 	$res = $db->getAll("SELECT * FROM ".$ecs->table('back_replay')." WHERE back_id = '$back_id' ORDER BY add_time ASC");
 	foreach ($res as $value)

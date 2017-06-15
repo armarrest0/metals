@@ -2420,6 +2420,14 @@ function action_back_order_detail ()
 	$ecs = $GLOBALS['ecs'];
 	$user_id = $_SESSION['user_id'];
 	
+        
+        $refund_address = $GLOBALS['db']->getOne("SELECT value FROM " . $GLOBALS['ecs']->table('shop_config') . " WHERE code =  'refund_address'");
+        $smarty->assign('refund_address', $refund_address);
+        $refund_name = $GLOBALS['db']->getOne("SELECT value FROM " . $GLOBALS['ecs']->table('shop_config') . " WHERE code =  'refund_name'");
+        $smarty->assign('refund_name', $refund_name);
+        $refund_mobile = $GLOBALS['db']->getOne("SELECT value FROM " . $GLOBALS['ecs']->table('shop_config') . " WHERE code =  'refund_mobile'");
+        $smarty->assign('refund_mobile', $refund_mobile);
+        
 	$back_id = ! empty($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
 	$sql = 'SELECT shipping_id, shipping_code, shipping_name ' . 'FROM ' . $GLOBALS['ecs']->table('shipping') . 'WHERE enabled = 1 ORDER BY shipping_order';
 	$shipping_list = $db->getAll($sql);

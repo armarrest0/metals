@@ -1923,6 +1923,27 @@ menu.className=i==cursel?"active":"";
             </tr>
           </table>
           {/if}
+
+
+            <div class="tabmenu">
+            <ul class="tab pngFix">
+              <li class="active"> <a href="#">退货请按如下信息填写快递单：</a> </li>
+            </ul>
+          </div>
+             <table width="100%" border="0" cellpadding="5" cellspacing="1"  bgcolor="#E6E6E6">            
+            <tr>
+              <td align=center width="15%"  bgcolor="#FFFFFF">收件人：</td>
+              <td colspan=4  bgcolor="#FFFFFF">{$refund_name}</td>
+            </tr>
+            <tr>
+              <td align=center width="15%"  bgcolor="#FFFFFF">收件地址：</td>
+              <td colspan=4  bgcolor="#FFFFFF">{$refund_address}</td>
+            </tr>
+            <tr>
+              <td align=center width="15%"  bgcolor="#FFFFFF">联系方式：</td>
+              <td colspan=4  bgcolor="#FFFFFF">{$refund_mobile}</td>
+            </tr>
+          </table>
           <div class="blank"></div>
 	{if $back_shipping.back_type neq 4 && $back_shipping.status_back lt 6}
           <div class="tabmenu">
