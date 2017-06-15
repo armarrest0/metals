@@ -341,6 +341,7 @@
     <td><div align="right"><strong>{$lang.label_action_note}</strong></div></td>
   <td colspan="5"><textarea name="action_note" cols="80" rows="3"></textarea></td>
     </tr>
+  {if $order.supplier_id == $supplier_id}   
   <tr>
     <td><div align="right"></div>
       <div align="right"><strong>{$lang.label_operable_act}</strong> </div></td>
@@ -403,6 +404,7 @@
         
         <input name="order_id" type="hidden" value="{$smarty.request.order_id}"></td>
     </tr>
+    {/if}  
   <tr>
     <th>{$lang.action_user}</th>
     <th>{$lang.action_time}</th>
