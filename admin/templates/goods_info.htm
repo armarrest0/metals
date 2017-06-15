@@ -289,14 +289,15 @@
                                 <tr>
 					<td class="label">采购价</td>
 					<td>
-						<input type="text" name="trade_price" value="{$goods.trade_price}" size="20" />		
+			
+                                                <input type = "text" name= "trade_price" id = 'trade_price' onkeyup="value=value.replace(/[^\d\.]/g,'')" />  
 						{$lang.require_field}
 					</td>
 				</tr>
 				<tr>
 					<td class="label">{$lang.lab_shop_price}</td>
 					<td>
-						<input type="text" name="shop_price" value="{$goods.shop_price}" size="20" onblur="priceSetted()" />
+						<input type="text" name="shop_price" value="{$goods.shop_price}" size="20" onblur="priceSetted()" onkeyup="value=value.replace(/[^\d\.]/g,'')" />
 						<input type="button" value="{$lang.compute_by_mp}" onclick="marketPriceSetted()" />
 						{$lang.require_field}
 					</td>
@@ -354,8 +355,8 @@
 				<tr>
 					<td class="label">{$lang.lab_market_price}</td>
 					<td>
-						<input type="text" name="market_price" value="{$goods.market_price}" size="20" />
-						<input type="button" value="{$lang.integral_market_price}" onclick="integral_market_price()" />
+						<input type="text" name="market_price" value="{$goods.market_price}" size="20" onkeyup="value=value.replace(/[^\d\.]/g,'')" />
+						<input type="button" value="{$lang.integral_market_price}" onclick="integral_market_price()"/>
 					</td>
 				</tr>
 				<tr>
@@ -554,7 +555,7 @@
 					</td>
 					<!--            <td><input type="text" name="goods_number" value="{$goods.goods_number}" size="20" {if $code neq '' || $goods._attribute neq ''}readonly="readonly"{/if} /><br />-->
 					<td>
-						<input type="text" name="goods_number" value="{$goods.goods_number}" size="20" />
+						<input type="text" name="goods_number" value="{$goods.goods_number}" size="20" onkeyup="value=value.replace(/[^\d]/g,'')" />
 						<br />
 						<span class="notice-span" {if $help_open}style="display:block" {else} style="display:none" {/if} id="noticeStorage">{$lang.notice_storage}</span>
 					</td>
@@ -562,10 +563,10 @@
 				<tr>
 					<td class="label">{$lang.lab_warn_number}</td>
 					<td>
-						<input type="text" name="warn_number" value="{$goods.warn_number}" size="20" />
+						<input type="text" name="warn_number" value="{$goods.warn_number}" size="20"  onkeyup="value=value.replace(/[^\d]/g,'')" />
 					</td>
 				</tr>
-				{/if}
+				{/if} 
 				<tr>
 					<td class="label">{$lang.lab_intro}</td>
 					<td>

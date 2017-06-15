@@ -248,11 +248,11 @@
 		</tr>
 		<tr>
 			<td class="label">平台使用费：</td>
-			<td><input type="text" name="system_fee" value="{if $supplier.system_fee>0.00}{$supplier.system_fee}{/if}"></td>
+			<td><input type="text" name="system_fee" value="{if $supplier.system_fee>0.00}{$supplier.system_fee}{/if}" onkeyup="value=value.replace(/[^\d\.]/g,'')"></td>
 		</tr>
 		<tr>
 		<td class="label">商家保证金：</td>
-		<td><input type="text" name="supplier_bond" value="{if $supplier.supplier_bond}{$supplier.supplier_bond}{/if}"></td>
+		<td><input type="text" name="supplier_bond" value="{if $supplier.supplier_bond}{$supplier.supplier_bond}{/if}" onkeyup="value=value.replace(/[^\d\.]/g,'')"></td>
 		</tr>
 		<tr>
 		<td class="label">分成百分比：</td>
@@ -420,11 +420,11 @@
 		</tr>
 		<tr>
 			<td class="label">平台使用费：</td>
-			<td><input type="text" name="system_fee" value="{if $supplier.system_fee>0.00}{$supplier.system_fee}{/if}"></td>
+			<td><input type="text" name="system_fee" value="{if $supplier.system_fee>0.00}{$supplier.system_fee}{/if}" onkeyup="value=value.replace(/[^\d\.]/g,'')"></td>
 		</tr>
 		<tr>
 		<td class="label">商家保证金：</td>
-		<td><input type="text" name="supplier_bond" value="{if $supplier.supplier_bond}{$supplier.supplier_bond}{/if}"></td>
+		<td><input type="text" name="supplier_bond" value="{if $supplier.supplier_bond}{$supplier.supplier_bond}{/if}" onkeyup="value=value.replace(/[^\d\.]/g,'')"></td>
 		</tr>
 		<tr>
 		<td class="label">分成百分比：</td>

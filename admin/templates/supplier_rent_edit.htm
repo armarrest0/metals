@@ -27,7 +27,7 @@
       </tr>
        <tr>
         <td class="label">租金：</td>
-        <td><input type="text" name="rent_money" value="{$sinfo.rent_money}" maxlength="13">
+        <td><input type="text" name="rent_money" value="{$sinfo.rent_money}" maxlength="13" onkeyup="value=value.replace(/[^\d\.]/g,'')">
             元&nbsp;&nbsp;<font color="red">*</font> <span class="notice-span">应付租金</span>
 		</td>
       </tr>
