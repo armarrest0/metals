@@ -167,7 +167,7 @@ body {
 }
 .spot-goods ul li .hide .detail .number .p2 a {
 	padding: 3px 10px;
-	background: #E4393C;
+	background: #2f3e54;
 	color: #fff;
 	text-decoration: none
 }
@@ -181,7 +181,7 @@ body {
 	display: block
 }
 .spot-goods ul li.open .hide .index {
-	background: #E4393C
+	background: #e06510
 }
 .act-banner {
 	height: 60px;
@@ -200,7 +200,7 @@ body {
 	border: solid 1px #e0e0e0
 }
 .act-list ul li:hover {
-	border: solid 1px #E4393C
+	border: solid 1px #2f3e54
 }
 .act-list ul li.first {
 	padding-left: 0;
@@ -271,7 +271,7 @@ body {
 	float: right;
 }
 .act-list ul li .info .discount span {
-	background: #E4393C ;
+	background: #2f3e54 ;
 	padding: 3px 10px;
 	color: #fff
 }
@@ -355,8 +355,8 @@ body {
 	font-size: 0px;
 }
 #filter .order .curr {
-	border: 1px solid #E4393C;
-	background: #E4393C;
+	border: 1px solid #e06510;
+	background: #e06510;
 	font-weight: bold;
 }
 #filter .order .curr a {

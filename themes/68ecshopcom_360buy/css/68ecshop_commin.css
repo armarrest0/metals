@@ -143,7 +143,7 @@ a:active {
 	text-decoration: none;
 }
 a:hover {
-	color: #E4393C;
+	color: #e06810 ;
 	text-decoration: underline;
 }
 i, cite, em {
@@ -183,7 +183,7 @@ article, aside, dialog, footer, header, section, footer, nav, figure, menu {
 }
 .goods-price em {
 	font-family: Verdana;
-	color: #E31939;
+	color: #e06810;
 }
 /*按钮*/
 .btn2 {
@@ -459,7 +459,7 @@ article, aside, dialog, footer, header, section, footer, nav, figure, menu {
 	WIDTH: 130px
 }
 #recent-view-track .p-price strong {
-	color: #E22A40
+	color: #e06810
 }
 #recent-view-track .no-track {
 	BACKGROUND: url(../images/base/foot.png) no-repeat left bottom;
@@ -560,7 +560,7 @@ article, aside, dialog, footer, header, section, footer, nav, figure, menu {
 	HEIGHT: 16px
 }
 #maybe-like .p-price strong {
-	color: #E22A40
+	color: #e06810
 }
 #guess-scroll {
 	MARGIN-LEFT: 40px;
@@ -653,16 +653,16 @@ article, aside, dialog, footer, header, section, footer, nav, figure, menu {
 	color: #999
 }
 #site-nav a:hover, #site-nav a:active, #site-nav .menu-bd {
-	color: #E31939
+	color: #e06810
 }
 #site-nav .menu-bd a {
 	color: #666
 }
 #site-nav .hover a.menu-hd, #site-nav .sn-menu:hover a.menu-hd {
-	color: #E31939
+	color: #e06810
 }
 #site-nav .menu-bd a:hover, #site-nav .menu-bd a:active {
-	color: #E31939;
+	color: #e06810;
 	text-decoration: underline
 }
 #site-nav {
@@ -699,7 +699,7 @@ article, aside, dialog, footer, header, section, footer, nav, figure, menu {
 	display: none
 }
 #site-nav .mui-global-iconfont {
-	color: #E31939
+	color: #e06810
 }
 #site-nav .sn-cart .mui-global-iconfont {
 	position: relative;
@@ -822,7 +822,7 @@ article, aside, dialog, footer, header, section, footer, nav, figure, menu {
 	color: #666
 }
 #site-nav .menu-bd a:hover, #site-nav .menu-bd a:active {
-	color: #c40000
+	color: #e06810
 }
 #site-nav .sn-quick-menu iframe.menu-bd {
 	border: 0;
@@ -1127,7 +1127,7 @@ article, aside, dialog, footer, header, section, footer, nav, figure, menu {
 	overflow: hidden
 }
 .mallSearch-form {
-	border: solid #E31939;
+	border: solid #2f3e54 ;
 	border-width: 3px 0 3px 3px
 }
 #mallSearch legend {
@@ -1181,7 +1181,7 @@ article, aside, dialog, footer, header, section, footer, nav, figure, menu {
 	letter-spacing: 4px;
 	cursor: pointer;
 	color: #fff;
-	background-color: #E31939;
+	background-color: #2f3e54 ;
 	height: 32px;
 	overflow: hidden;
 	_right: -1px
@@ -1465,7 +1465,7 @@ margin:0
 	margin-bottom: 5px;
 	font-size: 26px;
 	line-height: 1;
-	color:#E31939
+	color:#e06810
 }
 .site-footer .info-text {
 	float: left;
@@ -1522,7 +1522,7 @@ margin:0
 	width: 35px;
 	z-index: 99999;
 	padding-top: 1px;
-	background-color: #333333;
+	background-color: #2f3e54;
 }
 .sidebar-nav .mods {
 	position: relative;
@@ -1534,13 +1534,13 @@ margin:0
 	position: relative;
 	border: 0;
 	z-index: 1;
-	background-color: transparent;
+	background-color:transparent;
 	-webkit-transition: border-color ease .2s, background-color ease .2s;
 	-moz-transition: border-color ease .2s, background-color ease .2s;
 	transition: border-color ease .2s, background-color ease .2s
 }
 .sidebar-nav .mod:hover, .sidebar-nav .mod.active {
-	background: #C40000!important;
+	background: #e06810!important;
 	z-index: 2
 }
 .sidebar-nav .mod.active {
@@ -1694,7 +1694,7 @@ margin:0
 }
 .sidebar-nav .online-service {
 	color: #fff!important;
-	background: #C40000!important
+	background: #e06810!important
 }
 .sidebar-nav .online-service table {
 	color: #fff;
@@ -2066,16 +2066,16 @@ margin:0
 	margin-bottom:10px;	
 }
 .sidebar-nav .dropdown .form h2 strong{
-	color:#E31939;
+	color:#e06810;
 	float:left;
-	border-bottom:2px #E31939 solid
+	border-bottom:2px #e06810 solid
 }
 .sidebar-nav .dropdown .form h2 span{
 	float:right;
 	font-size:12px;
 }
 .sidebar-nav .dropdown .form h2 span a.right_register{
-	background:#E31939;
+	background:#e06810;
 	color:#ffffff;
 	padding:2px 5px;
 	text-decoration:none;
@@ -2128,7 +2128,7 @@ margin:0
 }
 .sidebar-nav .dropdown .form .item div.safety a{
 	float:right;
-	color:#E31939;
+	color:#e06810;
 	text-decoration:none	
 }
 .sidebar-nav .dropdown .form .item .btn-img{
@@ -2136,7 +2136,7 @@ margin:0
 	height:30px;
 	line-height:30px;
 	color:#ffffff;
-	background:#E31939;
+	background:#e06810;
 	text-align:center;
 	border:none;
 	cursor:pointer
@@ -2213,7 +2213,7 @@ dt#qqdt {
 	float: left
 }
 .globa-nav {
-	border-bottom: 2px #E31939 solid;
+	border-bottom: 2px #2f3e54  solid;
 	height: 37px;
 	padding-top: 5px;
 	background: #fff
@@ -2235,7 +2235,7 @@ dt#qqdt {
 	height: 38px;
 	line-height: 38px;
 	z-index: 9999;
-	background: #E31939;
+	background: #2f3e54 ;
 	position: absolute;
 	top: 0px;
 	left: 0;
@@ -2283,7 +2283,7 @@ dt#qqdt {
 	font-size: 15px
 }
 .globa-nav ul.allMenu li a.nav:hover, .globa-nav ul.allMenu li a.current {
-	color: #E31939!important;
+	color: #e06810!important;
 }
 .globa-nav ul.sideMenu2 {
 	font-size: 14px;
@@ -2374,7 +2374,7 @@ dt#qqdt {
 	padding: 0px 15px;
 }
 .all_cat .list .cat {
-	border-bottom: solid 1px #e7e7e7;
+	border-bottom: solid 1px #2f3e54;
 	height: 40px;
 	padding: 12px 0px;
 	position: absolute;
@@ -2399,7 +2399,7 @@ dt#qqdt {
 .all_cat .list .cat .catName strong {
 	FONT-WEIGHT: 400;
 	FONT-SIZE: 14px;
-	background: url(../images/header/ico.png) no-repeat;
+	background: url(../images/header/ico_1.png) no-repeat;
 	color: #3C3C3C!important;
 	padding-left: 42px;
 	display: block;
@@ -2535,7 +2535,7 @@ dt#qqdt {
 }
 .all_cat .list .hideMap {
 	background: #fff;
-	border: solid 1px #DE1838;
+	border: solid 1px #2f3e54;
 	box-shadow: 1px 1px 8px #dfdfdf;
 	display: none;
 	left: 208px;
@@ -2617,7 +2617,7 @@ dt#qqdt {
 .all_cat .list .hideMap .topMap .subBrand dt {
 	FONT-WEIGHT: 400;
 	FONT-SIZE: 14px;
-	color: #E22A40;
+	color: #e06810;
 	padding: 10px 0px;
 	height: 20px;
 	line-height: 20px;
@@ -2711,7 +2711,7 @@ a:hover img {
 	text-decoration: none
 }
 .red, a.red, .topMenu .login .red {
-	color: #E4393C
+	color: #e06510
 }
 .topMenu .login a:hover {
 	color: #c00!important;
@@ -2765,7 +2765,7 @@ a:hover img {
 	color: #c60000;
 }
 .search-type .cur, .search-type li.cur:hover {
-	background-color: #E31939;
+	background-color: #2f3e54 ;
 	color: #fff;
 	font-weight: 700;
 }
@@ -2820,7 +2820,7 @@ a:hover img {
 	color: #999;
 }
 .p-price strong, .p-market strong {
-	color: #e4393c;
+	color: #e06810;
 }
 .p-price strong.best_goods_price{
 	color:#ffffff;	

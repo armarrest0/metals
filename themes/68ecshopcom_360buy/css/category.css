@@ -163,7 +163,7 @@ a:hover, a:active {
 }
 #sortlist li a.curr{
 	color:#ffffff;
-	background:#E31939;	
+	background:#e06810;	
 }
 #sortlist .curr a {
 	font-weight: 700;
@@ -657,8 +657,8 @@ a:hover, a:active {
 	background-position: -50px 0px;
 }
 #filter .order dd.curr {
-	border: 1px solid #E4393C;
-	background: #E4393C;
+	border: 1px solid #e06810;
+	background: #e06810;
 }
 #filter .order dd.curr a {
 	color: #fff

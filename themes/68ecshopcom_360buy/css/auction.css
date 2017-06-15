@@ -145,7 +145,7 @@ height: 34px;
 	background: #fcfcfc;
 	overflow: hidden
 }
-.layout_list h2{height:35px;line-height:35px;border-bottom:2px solid #E31939;font-size:14px;text-indent:10px;}
+.layout_list h2{height:35px;line-height:35px;border-bottom:2px solid #2f3e54;font-size:20px;text-indent:10px;}
 .layout_list ul {
 	width: 100%;
 	margin-top:10px;
@@ -195,7 +195,7 @@ height: 34px;
 }
 .layout_list ul li .layout_cont .layout_price span{
 	font-size:16px;	
-	color:#E31939
+	color:#e06810
 }
 .layout_list ul li .layout_cont .layout_price em{
 	font-size:12px;

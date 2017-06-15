@@ -48,7 +48,7 @@ a {
 }
 .nav-tag .selected span {
   color: #ffffff;
-  background: #E4393C;
+  background: #e06810;
 }
 .mui-page {
 	padding: 1em 0;
@@ -67,7 +67,7 @@ a {
 	float: left
 }
 .mui-page-wrap a {
-	color: #E22A40;
+	color: #e06810;
 	cursor: pointer;
 	float: left;
 	text-decoration: none
@@ -246,7 +246,7 @@ button.mui-btn-s-primary, button.mui-btn-s {
 	height: 20px;
 *height:22px;
 	line-height: 17px;
-	background: #E22A40;
+	background: #e06810;
 	bordeR: none;
 	color: #fff
 }
@@ -677,7 +677,7 @@ html {
 	font-weight: bold;
 }
 .flow-title span.guanzhu {
-	background: #E22A40;
+	background: #e06810;
 	padding: 2px 10px;
 	color: #ffffff;
 	border-radius: 3px;
@@ -716,7 +716,7 @@ html {
 	vertical-align: middle
 }
 .flow-desc a strong {
-	color: #E22A40;
+	color: #e06810;
 }
 .flow-main {
 	float: right;
@@ -1094,5 +1094,5 @@ html {
 	line-height:26px;	
 }
 .flow-score p span{
-	color:#E43C3F;	
+	color:#e06810;	
 }

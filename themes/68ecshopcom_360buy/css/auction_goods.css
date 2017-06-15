@@ -59,6 +59,7 @@
 	float: left;
 	width: 260px;
 }
+
 .p-info .list-info .list_info_s {
 	float: left;
 	width: 360px;
@@ -73,7 +74,7 @@
 }
 .p-info .list-info .f4 span {
 	clear: both;
-	color: #E31939;
+	color: #e06510;
 	font-size: 16px;
 	font-weight: bold;
 }
@@ -130,7 +131,7 @@
 .quantity-form .bnt_blue {
 	vertical-align: middle;
 	font-weight: bold;
-	background: #E31939;
+	background: #2f3e54;
 	width: 100px;
 	height: 32px;
 	line-height: 32px;
@@ -334,7 +335,7 @@ a.decrement:hover, a.increment:hover {
 	margin-top: 10px
 }
 .a-pinfo .smt {
-	border-bottom: 2px solid #E31939;
+	border-bottom: 2px solid #2f3e54;
 	text-align: center;
 	height: 35px;
 	line-height: 35px;
@@ -352,7 +353,7 @@ a.decrement:hover, a.increment:hover {
 	cursor: pointer
 }
 .a-pinfo .smt .tab .curr {
-	background-color: #E31939;
+	background-color: #2f3e54;
 	color: #fff
 }
 .a-pinfo .smt .extra {
