@@ -89,21 +89,7 @@
 <div>
   <input type="hidden" name="act" value="batch" />
   <input type="hidden" name="supplier_status" value="{$supplier_status}" />
-  <select name="type" id="selAction" onchange="changeAction()">
-    <option value="">{$lang.select_please}</option>
-    <option value="trash">{$lang.trash}</option>
-    {if $supplier_status eq '1'}
-    <option value="on_sale">{$lang.on_sale}</option>
-    <option value="not_on_sale">{$lang.not_on_sale}</option>   
-    <option value="best">{$lang.best}</option>
-    <option value="not_best">{$lang.not_best}</option>
-    <option value="new">{$lang.new}</option>
-    <option value="not_new">{$lang.not_new}</option>
-    <option value="hot">{$lang.hot}</option>
-    <option value="not_hot">{$lang.not_hot}</option>
-    {/if}
-	   
-  </select>
+  
   <select name="target_cat" style="display:none">
     <option value="0">{$lang.select_please}</option>{$cat_list}
   </select>
@@ -121,7 +107,7 @@
   {if $code neq 'real_goods'}
   <input type="hidden" name="extension_code" value="{$code}" />
   {/if}
-  <input type="submit" value="{$lang.button_submit}" id="btnSubmit" name="btnSubmit" class="button" disabled="true" />
+ 
 </div>
 </form>
 

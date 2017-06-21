@@ -206,7 +206,7 @@ echo $json->encode($arr);
 //-- 商品列表，商品回收站
 /*------------------------------------------------------ */
 
-if ($_REQUEST['act'] == 'list' || $_REQUEST['act'] == 'trash')
+if ($_REQUEST['act'] == 'list')
 {
 
    admin_priv('goods_list');
@@ -246,6 +246,112 @@ if ($_REQUEST['act'] == 'list' || $_REQUEST['act'] == 'trash')
     assign_query_info();
     $htm_file = ($_REQUEST['act'] == 'list') ?
         'orders.htm' : (($_REQUEST['act'] == 'trash') ? 'goods_trash.htm' : 'group_list.htm');
+    $smarty->display($htm_file);
+}
+
+
+/*------------------------------------------------------ */
+//-- 商品列表，商品回收站
+/*------------------------------------------------------ */
+
+elseif ($_REQUEST['act'] == 'orgin_list' || $_REQUEST['act'] == 'trash')
+{
+	admin_priv('goods_list');
+    require_once(ROOT_PATH . '/' . ADMIN_PATH . '/includes/inc_menu.php');
+    $cat_id = empty($_REQUEST['cat_id']) ? 0 : intval($_REQUEST['cat_id']);
+    $code   = empty($_REQUEST['extension_code']) ? '' : trim($_REQUEST['extension_code']);
+    $suppliers_id = isset($_REQUEST['suppliers_id']) ? (empty($_REQUEST['suppliers_id']) ? '' : trim($_REQUEST['suppliers_id'])) : '';
+    $is_on_sale = isset($_REQUEST['is_on_sale']) ? ((empty($_REQUEST['is_on_sale']) && $_REQUEST['is_on_sale'] === 0) ? '' : trim($_REQUEST['is_on_sale'])) : '';
+
+    $handler_list = array();
+    $handler_list['virtual_card'][] = array('url'=>'virtual_card.php?act=card', 'title'=>$_LANG['card'], 'img'=>'icon_send_bonus.gif');
+    $handler_list['virtual_card'][] = array('url'=>'virtual_card.php?act=replenish', 'title'=>$_LANG['replenish'], 'img'=>'icon_add.gif');
+    $handler_list['virtual_card'][] = array('url'=>'virtual_card.php?act=batch_card_add', 'title'=>$_LANG['batch_card_add'], 'img'=>'icon_output.gif');
+
+    if ($_REQUEST['act'] == 'orgin_list' && isset($handler_list[$code]))
+    {
+        $smarty->assign('add_handler',      $handler_list[$code]);
+    }
+
+    /* 供货商名 */
+    $suppliers_list_name = suppliers_list_name();
+    $suppliers_exists = 1;
+    if (empty($suppliers_list_name))
+    {
+        $suppliers_exists = 0;
+    }
+    $smarty->assign('is_on_sale', $is_on_sale);
+    $smarty->assign('suppliers_id', $suppliers_id);
+    $smarty->assign('suppliers_exists', $suppliers_exists);
+    $smarty->assign('suppliers_list_name', $suppliers_list_name);
+    unset($suppliers_list_name, $suppliers_exists);
+
+    /* 模板赋值 */
+    $goods_ur = array('' => $_LANG['01_goods_list'], 'virtual_card'=>$_LANG['50_virtual_card_list']);
+	if ($_REQUEST['act'] == 'orgin_list' && $_REQUEST['supplier_status']=='1')
+	{
+		$ur_here = $_LANG['01_goods_list_pass1'];
+	}
+	elseif ($_REQUEST['act'] == 'orgin_list' && $_REQUEST['supplier_status']=='0')
+	{
+		$ur_here = $_LANG['01_goods_list_pass2'];
+	}
+	elseif ($_REQUEST['act'] == 'orgin_list' && $_REQUEST['supplier_status']=='-1')
+	{
+		$ur_here = $_LANG['01_goods_list_pass3'];
+	}
+	elseif ($_REQUEST['act'] == 'orgin_list' && $_REQUEST['supplier_status']=='')
+	{
+		$ur_here = $_LANG['01_goods_list'];
+	}
+	else
+	{
+		$ur_here = $_LANG['11_goods_trash'];
+	}
+
+	
+    $smarty->assign('ur_here', $ur_here);
+	$smarty->assign('supplier_status', $_REQUEST['supplier_status']);
+    $action_link = ($_REQUEST['act'] == 'orgin_list') ? add_link($code) : array('href' => 'goods.php?act=list', 'text' => $_LANG['01_goods_list']);
+    $smarty->assign('action_link',  $action_link);
+    $smarty->assign('code',     $code);
+  //  $smarty->assign('cat_list',     cat_list(0, $cat_id));
+    //$smarty->assign('cat_list',     cat_list_2(0, $cat_id));
+	$smarty->assign('cat_list',     cat_list_supplier(0, $cat_id));
+    $smarty->assign('brand_list',   get_brand_list());
+    $smarty->assign('intro_list',   get_intro_list());
+    $smarty->assign('lang',         $_LANG);
+    $smarty->assign('list_type',    $_REQUEST['act'] == 'orgin_list' ? 'goods' : 'trash');
+    $smarty->assign('use_storage',  empty($_CFG['use_storage']) ? 0 : 1);
+
+    $suppliers_list = suppliers_list_info(' is_check = 1 ');
+    $suppliers_list_count = count($suppliers_list);
+    $smarty->assign('suppliers_list', ($suppliers_list_count == 0 ? 0 : $suppliers_list)); // 取供货商列表
+
+    $goods_list = goods_list($_REQUEST['act'] == 'orgin_list' ? 0 : 1, ($_REQUEST['act'] == 'orgin_list') ? (($code == '') ? 1 : 0) : -1);
+    $smarty->assign('goods_list',   $goods_list['goods']);
+    $smarty->assign('filter',       $goods_list['filter']);
+    $smarty->assign('record_count', $goods_list['record_count']);
+    $smarty->assign('page_count',   $goods_list['page_count']);
+    $smarty->assign('full_page',    1);
+
+    /* 排序标记 */
+    $sort_flag  = sort_flag($goods_list['filter']);
+    $smarty->assign($sort_flag['tag'], $sort_flag['img']);
+
+    /* 获取商品类型存在规格的类型 */
+    $specifications = get_goods_type_specifications();
+    $smarty->assign('specifications', $specifications);
+    
+    if (isset($_CFG['supplier_addbest']))
+    {
+        $smarty->assign('is_addbest', $_CFG['supplier_addbest']);
+    }
+    
+    /* 显示商品列表页面 */
+    assign_query_info();
+    $htm_file = ($_REQUEST['act'] == 'orgin_list') ?
+        'goods_list.htm' : (($_REQUEST['act'] == 'trash') ? 'goods_trash.htm' : 'group_list.htm');
     $smarty->display($htm_file);
 }
 
@@ -449,7 +555,7 @@ elseif ($_REQUEST['act'] == 'add')
         'goods_add.htm' : (($_REQUEST['act'] == 'trash') ? 'goods_trash.htm' : 'goods_add.htm');
     $smarty->display('goods_add.htm');
 }
-elseif ($_REQUEST['act'] == 'edit' || $_REQUEST['act'] == 'copy')
+elseif ($_REQUEST['act'] == 'orgin_add' || $_REQUEST['act'] == 'edit' || $_REQUEST['act'] == 'copy')
 {
     admin_priv('goods_manage');
     //include_once(ROOT_PATH . 'includes/fckeditor/fckeditor.php'); // 包含 html editor 类文件
@@ -460,7 +566,7 @@ elseif ($_REQUEST['act'] == 'edit' || $_REQUEST['act'] == 'copy')
 
 	// 代码增加_end_derek20150129admin_goods  www.68ecshop.com
 
-    $is_add = $_REQUEST['act'] == 'add'; // 添加还是编辑的标识
+    $is_add = $_REQUEST['act'] == 'orgin_add'; // 添加还是编辑的标识
     $is_copy = $_REQUEST['act'] == 'copy'; //是否复制
     $code = empty($_REQUEST['extension_code']) ? '' : trim($_REQUEST['extension_code']);
     $code=$code=='virual_card' ? 'virual_card': '';
@@ -894,7 +1000,7 @@ elseif ($_REQUEST['act'] == 'edit' || $_REQUEST['act'] == 'copy')
     $smarty->assign('weight_unit', $is_add ? '1' : ($goods['goods_weight'] >= 1 ? '1' : '0.001'));
     $smarty->assign('cfg', $_CFG);
     $smarty->assign('form_act', $is_add ? 'insert' : ($_REQUEST['act'] == 'edit' ? 'update' : 'insert'));
-    if ($_REQUEST['act'] == 'add' || $_REQUEST['act'] == 'edit')
+    if ($_REQUEST['act'] == 'orgin_add' || $_REQUEST['act'] == 'edit')
     {
         $smarty->assign('is_add', true);
     }
@@ -1685,11 +1791,11 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
     //$link[3] = list_link($is_insert, $code);
 	if($is_insert)
 	 {
-		$link[3] = array('href' => 'goods.php?act=list&supplier_status=0' , 'text' => '返回商品列表');
+		$link[3] = array('href' => 'goods.php?act=orgin_list&supplier_status=0' , 'text' => '返回商品列表');
 	 }
 	 else
 	{
-		$link[3] = array('href' => 'goods.php?act=list&supplier_status=' . $_REQUEST['supplier_status'], 'text' => '返回商品列表');
+		$link[3] = array('href' => 'goods.php?act=orgin_list&supplier_status=' . $_REQUEST['supplier_status'], 'text' => '返回商品列表');
 	 }
 
 
@@ -3805,7 +3911,7 @@ function order_list()
  */
 function add_link($extension_code = '')
 {
-    $href = 'goods.php?act=add';
+    $href = 'goods.php?act=orgin_add';
     if (!empty($extension_code))
     {
         $href .= '&extension_code=' . $extension_code;
@@ -3820,7 +3926,7 @@ function add_link($extension_code = '')
         $text = $GLOBALS['_LANG']['03_goods_add'];
     }
 
-    return array('href' => $href, 'text' => "采购商品");
+    return array('href' => $href, 'text' => "添加商品");
 }
 
 /**

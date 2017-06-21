@@ -5,12 +5,14 @@ if (!defined('IN_ECS'))
     die('Hacking attempt');
 }
 
-$modules['02_cat_and_goods']['01_goods_buy_list']       = 'goods.php?act=list&supplier_status=1';         // 商品列表
-
-$modules['02_cat_and_goods']['03_goods_gobuy']			  = 'goods.php?act=add';          // 添加商品
-$modules['02_cat_and_goods']['03_goods_readybuy']			  = 'goods.php?act=readybuy';          // 已购商品
-
-
+//$modules['02_cat_and_goods']['01_goods_buy_list']       = 'goods.php?act=list&supplier_status=1';         // 商品列表
+//
+//$modules['02_cat_and_goods']['03_goods_gobuy']			  = 'goods.php?act=add';          // 采购订单
+//$modules['02_cat_and_goods']['03_goods_readybuy']			  = 'goods.php?act=readybuy';          // 已购商品
+$modules['02_cat_and_goods']['03_goods_add']			  = 'goods.php?act=orgin_add';          // 添加新商品
+$modules['02_cat_and_goods']['01_goods_list_pass1']       = 'goods.php?act=orgin_list&supplier_status=1';         // 商品列表
+$modules['02_cat_and_goods']['01_goods_list_pass2']       = 'goods.php?act=orgin_list&supplier_status=0';         // 商品列表
+$modules['02_cat_and_goods']['01_goods_list_pass3']       = 'goods.php?act=orgin_list&supplier_status=-1';         // 商品列表
 $modules['02_cat_and_goods']['05_comment_manage']		  = 'comment_manage.php?act=list'; //评论
 $modules['02_cat_and_goods']['05_shaidan_manage']   = 'shaidan.php?act=list';
 $modules['02_cat_and_goods']['04_category_list']		  = 'category.php?act=list';
