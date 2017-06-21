@@ -989,7 +989,7 @@ function goods_list($is_delete, $real_goods=1, $conditions = '')
 
 /* 代码增加_虚拟团购_START  www.68ecshop.com */
          if(!$real_goods && $filter['extension_code'] == 'virtual_good'){
-             $sql = "SELECT distinct(g.goods_id), goods_name, goods_type, goods_sn, shop_price, is_on_sale, is_best, is_new, is_hot, sort_order,supplier_status, goods_number, integral, " .
+             $sql = "SELECT distinct(g.goods_id), goods_name, goods_type, goods_sn, shop_price, is_on_sale, is_best, is_new, is_hot, sort_order,supplier_status, goods_number, integral,main_storage,self_storage, " .
                     " (promote_price > 0 AND promote_start_date <= '$today' AND promote_end_date >= '$today') AS is_promote ".
                     " FROM " . $GLOBALS['ecs']->table('goods') . " AS g,".$GLOBALS['ecs']->table('supplier_goods_cat')." as sgc,".$GLOBALS['ecs']->table('virtual_district')." as dis, ".
                         $GLOBALS['ecs']->table('virtual_goods_district')." as dig".
@@ -997,7 +997,7 @@ function goods_list($is_delete, $real_goods=1, $conditions = '')
                     " ORDER BY $filter[sort_by] $filter[sort_order] ".
                     " LIMIT " . $filter['start'] . ",$filter[page_size]";
          }else{
-             $sql = "SELECT distinct(g.goods_id), goods_name, goods_type, goods_sn, shop_price, is_on_sale, is_best, is_new, is_hot, sort_order,supplier_status, goods_number, integral, " .
+             $sql = "SELECT distinct(g.goods_id), goods_name, goods_type, goods_sn, shop_price, is_on_sale, is_best, is_new, is_hot, sort_order,supplier_status, goods_number, integral,main_storage,self_storage, " .
                     " (promote_price > 0 AND promote_start_date <= '$today' AND promote_end_date >= '$today') AS is_promote ".
                     " FROM " . $GLOBALS['ecs']->table('goods') . " AS g,".$GLOBALS['ecs']->table('supplier_goods_cat')." as sgc WHERE sgc.goods_id=g.goods_id AND is_delete='$is_delete' AND sgc.supplier_id='". $_SESSION['supplier_id'] ."' $where" .
                     " ORDER BY $filter[sort_by] $filter[sort_order] ".
@@ -1026,7 +1026,7 @@ function goods_list($is_delete, $real_goods=1, $conditions = '')
         foreach($res as $key => $value){
            $str = $str.$value['district_name']. ',';
         }
-         $row[$k]['district']  = substr($str,0,strlen($str)-1); 
+         $row[$k]['district']  = substr($str,0,strlen($str)-1);  
     }
      /* 代码增加_虚拟团购_END www.68ecshop.com */
     return array('goods' => $row, 'filter' => $filter, 'page_count' => $filter['page_count'], 'record_count' => $filter['record_count']);

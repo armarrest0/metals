@@ -86,6 +86,7 @@ elseif ($_REQUEST['act'] == 'list')
     $smarty->assign('page_count',   $order_list['page_count']);
     $smarty->assign('sort_order_time', '<img src="images/sort_desc.gif">');
 
+
     /* 显示模板 */
     assign_query_info();
     $smarty->display('order_list.htm');
@@ -6667,7 +6668,7 @@ function order_list()
 
         /* 查询 */
         if($filter['supp']){
-        	$sql = "SELECT o.order_id,o.upper_allow, o.order_sn, o.add_time, o.order_status, o.shipping_status, o.order_amount, o.money_paid," .
+        	$sql = "SELECT o.order_id,o.upper_allow, o.order_sn, o.add_time, o.order_status, o.shipping_status, o.order_amount, o.money_paid,o.supplier_id," .
                     "o.pay_status, o.consignee, o.address, o.email, o.tel, o.extension_code, o.extension_id, " .
                     "(" . order_amount_field('o.') . ") AS total_fee, " .
                     "IFNULL(u.user_name, '" .$GLOBALS['_LANG']['anonymous']. "') AS buyer,supplier_name,o.froms,is_pickup  ".
@@ -6686,7 +6687,7 @@ function order_list()
                 " LIMIT " . ($filter['page'] - 1) * $filter['page_size'] . ",$filter[page_size]";
         	
         }else{
-        	$sql = "SELECT o.order_id, o.upper_allow, o.order_sn, o.add_time, o.order_status, o.shipping_status, o.order_amount, o.money_paid," .
+        	$sql = "SELECT o.order_id, o.upper_allow, o.order_sn, o.add_time, o.order_status, o.shipping_status, o.order_amount, o.money_paid,o.supplier_id," .
                     "o.pay_status, o.consignee, o.address, o.email, o.tel, o.extension_code, o.extension_id, " .
                     "(" . order_amount_field('o.') . ") AS total_fee, " .
                     "IFNULL(u.user_name, '" .$GLOBALS['_LANG']['anonymous']. "') AS buyer, o.froms , is_pickup ".

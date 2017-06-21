@@ -26,10 +26,9 @@
     <th><a href="javascript:listTable.sort('is_best'); ">店内{$lang.is_best}</a>{$sort_is_best}</th>
     <th><a href="javascript:listTable.sort('is_new'); ">店内{$lang.is_new}</a>{$sort_is_new}</th>
     <th><a href="javascript:listTable.sort('is_hot'); ">店内{$lang.is_hot}</a>{$sort_is_hot}</th>
-    {/if}
-    {if $use_storage}
-    <th><a href="javascript:listTable.sort('goods_number'); ">{$lang.goods_number}</a>{$sort_goods_number}</th>
-    {/if}
+    {/if}   
+    <th><a href="javascript:listTable.sort('goods_number'); "></a>店内库存</th>
+    <th><a href="javascript:listTable.sort('goods_number'); "></a>总店库存</th>
     <th>标签</th> <!-- 晒单插件 增加 by www.68ecshop.com -->
     <th>{$lang.handler}</th>
   <tr>
@@ -52,9 +51,9 @@
     <td align="center"><img src="images/{if $goods.is_new}yes{else}no{/if}.gif" onclick="listTable.toggle(this, 'toggle_new', {$goods.goods_id})" /></td>
     <td align="center"><img src="images/{if $goods.is_hot}yes{else}no{/if}.gif" onclick="listTable.toggle(this, 'toggle_hot', {$goods.goods_id})" /></td>
     {/if}
-    {if $use_storage}
-    <td align="center"><span>{$goods.goods_number}</span></td>
-    {/if}
+
+    <td align="center"><span>{$goods.self_storage}</span></td>
+    <td align="center"><span>{$goods.main_storage}</span></td>
     <td align="center"><a href="goods_tag.php?act=list&goods_id={$goods.goods_id}" >标签</a></td> <!-- 晒单插件 增加 by www.68ecshop.com -->
     <td align="center">
       <a href="../goods.php?id={$goods.goods_id}" target="_blank" title="{$lang.view}"><img src="images/icon_view.gif" width="16" height="16" border="0" /></a>

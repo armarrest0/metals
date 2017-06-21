@@ -382,7 +382,7 @@ elseif ($_REQUEST['act'] == 'info')
     /* 取得订单商品及货品 */
     $goods_list = array();
     $goods_attr = array();
-    $sql = "SELECT o.*, IF(o.product_id > 0, p.product_number, g.goods_number) AS storage, o.goods_attr, g.suppliers_id, IFNULL(b.brand_name, '') AS brand_name, p.product_sn
+    $sql = "SELECT o.*, IF(o.product_id > 0, p.product_number, g.goods_number) AS storage, o.goods_attr, g.suppliers_id, g.main_storage, g.self_storage, IFNULL(b.brand_name, '') AS brand_name, p.product_sn
             FROM " . $ecs->table('order_goods') . " AS o
                 LEFT JOIN " . $ecs->table('products') . " AS p
                     ON p.product_id = o.product_id
@@ -408,7 +408,8 @@ elseif ($_REQUEST['act'] == 'info')
                 }
             }
         }
-
+        
+        
         $row['formated_subtotal']       = price_format($row['goods_price'] * $row['goods_number']);
         $row['formated_goods_price']    = price_format($row['goods_price']);
 
@@ -2704,7 +2705,15 @@ elseif ($_REQUEST['act'] == 'operate')
     elseif (isset($_POST['to_shipping']))
 	{
 	   $invoice_no = empty($_REQUEST['invoice_no']) ? '' : trim($_REQUEST['invoice_no']);  //快递单号
-
+           $self_storage = $_POST['self_storage'];
+           $send = $_POST['send'];
+           
+           foreach($self_storage as $key=>$value){
+               if($value<$send[$key]){
+                   sys_msg("店内商品库存不足", 0);
+               }
+           }
+           
        if (!empty($invoice_no))
         {
         $order_id = intval(trim($order_id));
@@ -2782,6 +2791,8 @@ elseif ($_REQUEST['act'] == 'operate')
                 {
                     continue;
                 }
+                
+                
 
                 /* 超级礼包 */
                 if (($goods_value['extension_code'] == 'package_buy') && (count($goods_value['package_goods_list']) > 0))
@@ -2925,7 +2936,8 @@ elseif ($_REQUEST['act'] == 'operate')
             if (!empty($goods_list))
             {
                 foreach ($goods_list as $value)
-                {
+                {                    
+                    
                     // 商品（实货）（虚货）
                     if (empty($value['extension_code']) || $value['extension_code'] == 'virtual_card')
                     {
@@ -3082,7 +3094,7 @@ elseif ($_REQUEST['act'] == 'operate')
     if ($goods_list)
     {
         foreach ($goods_list as $value)
-        {
+        {           
             if ($value['is_real'])
             {
                 $exist_real_goods++;
@@ -3190,6 +3202,15 @@ elseif ($_REQUEST['act'] == 'operate')
         }
     }
 
+    foreach ($delivery_stock_result as $value)
+    {
+         $minus_stock_sql = "UPDATE " . $GLOBALS['ecs']->table('goods') . "
+                                    SET self_storage = self_storage - " . $value['send_number']  . "
+                                    WHERE goods_id = " . $value['goods_id'];
+
+                $GLOBALS['db']->query($minus_stock_sql, 'SILENT');
+    }
+    
     /* 发货 */
     /* 处理虚拟卡 商品（虚货） */
     if (is_array($virtual_goods) && count($virtual_goods) > 0)
@@ -3206,7 +3227,6 @@ elseif ($_REQUEST['act'] == 'operate')
 
         foreach ($delivery_stock_result as $value)
         {
-
             /* 商品（实货）、超级礼包（实货） */
             if ($value['is_real'] != 0)
             {
@@ -3217,13 +3237,7 @@ elseif ($_REQUEST['act'] == 'operate')
                                         SET product_number = product_number - " . $value['sums'] . "
                                         WHERE product_id = " . $value['product_id'];
                     $GLOBALS['db']->query($minus_stock_sql, 'SILENT');
-                }
-
-                $minus_stock_sql = "UPDATE " . $GLOBALS['ecs']->table('goods') . "
-                                    SET goods_number = goods_number - " . $value['sums'] . "
-                                    WHERE goods_id = " . $value['goods_id'];
-
-                $GLOBALS['db']->query($minus_stock_sql, 'SILENT');
+                }               
             }
         }
     }
@@ -3302,6 +3316,9 @@ elseif ($_REQUEST['act'] == 'operate')
     /* 清除缓存 */
     clear_cache_files();
 
+    
+    
+    
     /* 操作成功 */
     $links[] = array('text' => $_LANG['09_delivery_order'], 'href' => 'order.php?act=delivery_list');
     $links[] = array('text' => $_LANG['delivery_sn'] . $_LANG['detail'], 'href' => 'order.php?act=delivery_info&delivery_id=' . $delivery_id);

@@ -264,12 +264,12 @@
         {assign var="shipping_status" value="$order.shipping_status"}
         {$lang.os.$order_status},{$lang.ps.$pay_status},{$lang.ss.$shipping_status}
     </td>
-    <td align="center" valign="top"  nowrap="nowrap">
-     {if $order.supplier_id}   
-        {if $order.upper_allow}
+    <td align="center" valign="top"  nowrap="nowrap">        
+     {if $order.supplier_id>0}   
+        {if $order.upper_allow>0}
         <a href="order.php?act=info&order_id={$order.order_id}">{$lang.detail}</a>
         {else}
-           尚未提交申请
+           尚未提交发货申请
         {/if}
      {else}
      <a href="order.php?act=info&order_id={$order.order_id}">{$lang.detail}</a>

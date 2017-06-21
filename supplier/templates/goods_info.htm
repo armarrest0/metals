@@ -395,8 +395,12 @@ width:auto;
           <tr>
             <td class="label"><a href="javascript:showNotice('noticeStorage');" title="{$lang.form_notice}"><img src="images/notice.gif" width="16" height="16" border="0" alt="{$lang.form_notice}"></a> {$lang.lab_goods_number}</td>
 <!--            <td><input type="text" name="goods_number" value="{$goods.goods_number}" size="20" {if $code neq '' || $goods._attribute neq ''}readonly="readonly"{/if} /><br />-->
-            <td><input type="text" name="goods_number" value="{$goods.goods_number}" size="20" /><br />
+            <td><input type="text" id="goods_number" name="goods_number" value="{$goods.goods_number}" size="20" /><br />
             <span class="notice-span" {if $help_open}style="display:block" {else} style="display:none" {/if} id="noticeStorage">{$lang.notice_storage}</span></td>
+          </tr>
+          <tr>
+            <td class="label">申请入库总店数量</td>
+            <td><input type="text" id="main_storage" name="main_storage" value="{$goods.main_storage}" size="20" /></td>
           </tr>
           <tr>
             <td class="label">{$lang.lab_warn_number}</td>
@@ -747,6 +751,14 @@ function getElementsByClassName(n)
          }
       }
   }
+    var goods_number = document.getElementById('goods_number').value;
+    var main_storage = document.getElementById('main_storage').value;        
+
+    if(main_storage-goods_number>0){
+        alert("总店入库商品数不能大于库存总数");
+        return false;
+    }
+  
     Ajax.call('goods.php?is_ajax=1&act=check_goods_sn', "goods_sn=" + goods_sn + "&goods_id=" + goods_id, callback, "GET", "JSON");
 }
 
@@ -1357,7 +1369,8 @@ function chu (result)
       {
         document.getElementById('goods_sn_notice').innerHTML = "";
       }
-    }
+    } 
+    
     Ajax.call('goods.php?is_ajax=1&act=check_goods_sn', "goods_sn=" + goods_sn + "&goods_id=" + goods_id, callback, "GET", "JSON");
   }
 
