@@ -61,7 +61,7 @@
 </div>
 {/if}
 
-<form action="order.php?act=my" method="post" name="theForm" onsubmit="return check_order();">
+<form action="order.php?act=to_shipping" method="post" name="theForm" onsubmit="return check_order();">
 <div class="list-div" style="margin-bottom: 5px" id="separate_div">
 <table width="100%" cellpadding="3" cellspacing="1">
   <tbody><tr>
@@ -80,7 +80,7 @@
 
     <td scope="col"><div align="center"><strong>总店发货数量</strong></div></td>
   </tr>
-   {foreach from=$goods_list item=goods}
+   {foreach from=$goods_list item=goods key=key}
   <tr>
     <td>
     {if $goods.goods_id gt 0 && $goods.extension_code neq 'package_buy'}
@@ -101,17 +101,20 @@
     <td>{$goods.goods_sn}</td>
     <td>{$goods.product_sn}</td>
     <td><div align="right">{$goods.formated_goods_price}</div></td>
-    <td><div align="right">{$goods.goods_number}
+    <td><div align="right">{$goods.goods_number}<input type="hidden" name="{$key}" id="{$key}"  value="{$goods.goods_number}" />
     </div></td>
     <td><div align="right">{$goods.self_storage}
     </div></td>
     <td><div align="right">{$goods.main_storage}
     </div></td>
-    <td><input type="text" name="self_send" id="self_send"  value="" max="{$goods.self_storage}"  onkeyup="value=value.replace(/[^\d\.]/g,'')" /></td>
+    <td align="right">数量：<input type="text" name="self_send" id="self_{$key}" onchange="calcu(this.id)"  value="" max="{$goods.self_storage}"  onkeyup="value=value.replace(/[^\d\.]/g,'')" /></td>
 
-    <td><input type="text" name="main_send" id="main_send"  value="" max="{$goods.main_storage}"  onkeyup="value=value.replace(/[^\d\.]/g,'')" /></td>
+    <td align="right">数量：<input type="text" name="main_send" id="main_{$key}" onchange="calcu(this.id)"  value="" max="{$goods.main_storage}"  onkeyup="value=value.replace(/[^\d\.]/g,'')" /></td>
   </tr>
   {/foreach}
+  <tr>
+        <td colspan="10" align="right">快递单号：<input name="invoice_no" id="invoice_no" type="text"  value=""  /></td>
+  </tr>
   <tr>
         <td colspan="10" align="right"><input name="to_shipping" type="submit"  value="确认发货" class="button" /></td>
   </tr>
@@ -120,20 +123,53 @@
 
 </form>
 <script language="JavaScript">
-    function check_order(){
-        var self_max = document.getElementById("self_send").getAttribute("max");
-        var main_max = document.getElementById("main_send").getAttribute("max");
+    function calcu(x){            
+        var self=document.getElementById(x).value;
+        var arr = x.split("_");
+        var id = arr[1];
+        var total=document.getElementById(id).value;
         
-        var self_val = document.getElementById("self_send").value;
-        var main_val = document.getElementById("main_send").value;        
-        if(self_val>self_max){
-            alert("发货数量不能大于店内库存");
+        if(self>total){
+            alert("发货数量不能大于订单商品数");
+            document.getElementById(x).value = 0;
             return false;
         }
-        if(main_val>main_max){
-            alert("总店发货数量不能大于总店库存");
-            return false;
+        
+        if(arr[0]=='main'){
+            document.getElementById("self_"+id).value = total - self;
         }
+        
+        if(arr[0]=='self'){
+            document.getElementById("main_"+id).value = total - self;
+        }
+    }
+    
+    function check_order(){
+        var self_maxs = document.getElementsByName("self_send");
+        var main_maxs = document.getElementsByName("main_send");
+        
+        
+        for (var k = 0; k < self_maxs.length; k++) {
+            var self_max = self_maxs[k].getAttribute("max");
+            var main_max = main_maxs[k].getAttribute("max");
+            
+            var self_val = self_maxs[k].value;
+            var main_val = main_maxs[k].value;      
+            
+            if(!self_val){
+                alert("发货数量不能为空");
+                return false;
+            }
+            
+            if(self_val>self_max){
+                alert("发货数量不能大于店内库存");
+                return false;
+            }
+            if(main_val>main_max){
+                alert("总店发货数量不能大于总店库存");
+                return false;
+            }
+        }        
     }
 </script>   
 {include file="pagefooter.htm"}
