@@ -339,6 +339,7 @@
 </table>
 </div>
 
+    
 <div class="list-div" style="margin-bottom: 5px">
 <table cellpadding="3" cellspacing="1">
   <tr>
@@ -357,9 +358,10 @@
     <td colspan="2">
     <!-- 如果为预售活动的订单，那么预售活动为成功处理前，不能发货 -->
     <!-- {if $is_pre_sale == 0 || $pre_sale_success == 1} -->
-    <input name="invoice_no" type="text" style="color:#00F" value="请输入快递单号" />
-    <input name="to_shipping" type="submit" style="color:#F00" value="一键发货" class="button" />
-    <input name="up_send" type="button" value="申请总店发货" class="button" onclick="javascript:alert('提交申请成功!');window.location.href='order.php?act=upper_send&order_id={$smarty.request.order_id}'"/>
+    <input name="invoice_no" type="text"  value="请输入快递单号" />
+    <input name="to_shipping" type="submit"  value="一键发货" class="button" />
+    <input name="separate_order" type="button"  value="分货发送" class="button" onclick="javascript:window.location.href='order.php?act=info&separate_order=1&order_id={$smarty.request.order_id}'" />
+
     <!-- {/if} -->
     </td>
     <td><div align="right"><strong style="color:#c00">若一键发货请忽略此操作</strong></div></td><td colspan="2">

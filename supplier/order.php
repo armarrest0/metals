@@ -640,7 +640,13 @@ elseif ($_REQUEST['act'] == 'info')
 
         /* 显示模板 */
         assign_query_info();
-        $smarty->display('order_info.htm');
+        
+        if($_REQUEST['separate_order']){
+            $smarty->display('separate_order.htm');
+        }else{
+            $smarty->display('order_info.htm');
+        }
+        
     }
 }
 
@@ -5430,6 +5436,8 @@ elseif($_REQUEST['act'] == 'upper_send')
     exit;
     
 }
+
+
 
 /*取消开票*/
 function unprovide_provices($order_sns)

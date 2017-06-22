@@ -1,0 +1,139 @@
+<!-- $Id: order_info.htm 17060 2010-03-25 03:44:42Z liuhui $ -->
+
+{include file="pageheader.htm"}
+{insert_scripts files="topbar.js,../js/utils.js,listtable.js,selectzone.js,../js/common.js"}
+{if $user}
+<div id="topbar">
+  <div align="right"><a href="" onclick="closebar(); return false"><img src="images/close.gif" border="0" /></a></div>
+  <table width="100%" border="0">
+    <caption><strong> {$lang.buyer_info} </strong></caption>
+    <tr>
+      <td> {$lang.email} </td>
+      <td> <a href="mailto:{$user.email}">{$user.email}</a> </td>
+    </tr>
+    <tr>
+      <td> {$lang.user_money} </td>
+      <td> {$user.formated_user_money} </td>
+    </tr>
+    <tr>
+      <td> {$lang.pay_points} </td>
+      <td> {$user.pay_points} </td>
+    </tr>
+    <tr>
+      <td> {$lang.rank_points} </td>
+      <td> {$user.rank_points} </td>
+    </tr>
+    <tr>
+      <td> {$lang.rank_name} </td>
+      <td> {$user.rank_name} </td>
+    </tr>
+    <tr>
+      <td> {$lang.bonus_count} </td>
+      <td> {$user.bonus_count} </td>
+    </tr>
+  </table>
+
+  {foreach from=$address_list item=address}
+  <table width="100%" border="0">
+    <caption><strong> {$lang.consignee} : {$address.consignee|escape} </strong></caption>
+    <tr>
+      <td> {$lang.email} </td>
+      <td> <a href="mailto:{$address.email|escape}">{$address.email|escape}</a> </td>
+    </tr>
+    <tr>
+      <td> {$lang.address} </td>
+      <td> {$address.address|escape} </td>
+    </tr>
+    <tr>
+      <td> {$lang.zipcode} </td>
+      <td> {$address.zipcode|escape} </td>
+    </tr>
+    <tr>
+      <td> {$lang.tel} </td>
+      <td> {$address.tel|escape} </td>
+    </tr>
+    <tr>
+      <td> {$lang.mobile} </td>
+      <td> {$address.mobile|escape} </td>
+    </tr>
+  </table>
+  {/foreach}
+</div>
+{/if}
+
+<form action="order.php?act=my" method="post" name="theForm" onsubmit="return check_order();">
+<div class="list-div" style="margin-bottom: 5px" id="separate_div">
+<table width="100%" cellpadding="3" cellspacing="1">
+  <tbody><tr>
+        <th colspan="10">分货发送操作</th>
+  </tr>
+  <tr>
+    <td scope="col"><div align="center"><strong>{$lang.goods_name_brand}</strong></div></td>
+    <td scope="col"><div align="center"><strong>{$lang.goods_shouhou}</strong></div></td>
+    <td scope="col"><div align="center"><strong>{$lang.goods_sn}</strong></div></td>
+    <td scope="col"><div align="center"><strong>{$lang.product_sn}</strong></div></td>
+    <td scope="col"><div align="center"><strong>{$lang.goods_price}</strong></div></td>
+    <td scope="col"><div align="center"><strong>{$lang.goods_number}</strong></div></td>
+    <td scope="col"><div align="center"><strong>店内库存</strong></div></td>
+    <td scope="col"><div align="center"><strong>总店库存</strong></div></td>
+    <td scope="col"><div align="center"><strong>店内发货数量</strong></div></td>
+
+    <td scope="col"><div align="center"><strong>总店发货数量</strong></div></td>
+  </tr>
+   {foreach from=$goods_list item=goods}
+  <tr>
+    <td>
+    {if $goods.goods_id gt 0 && $goods.extension_code neq 'package_buy'}
+    <a href="../goods.php?id={$goods.goods_id}" target="_blank">{$goods.goods_name} {if $goods.brand_name}[ {$goods.brand_name} ]{/if}
+    {if $goods.is_gift}{if $goods.goods_price > 0}{$lang.remark_favourable}{else}{$lang.remark_gift}{/if}{/if}
+    {if $goods.parent_id > 0}{$lang.remark_fittings}{/if}</a>
+    {elseif $goods.goods_id gt 0 && $goods.extension_code eq 'package_buy'}
+    <a href="javascript:void(0)" onclick="setSuitShow({$goods.goods_id})" style="font-size:15px;color:#ff0000;font-weight:bold;" >{$goods.goods_name}<span style="color:#FF0000;">{$lang.remark_package}</span></a>
+    <div id="suit_{$goods.goods_id}" style="padding-left:20px;">
+	包括以下商品：<br />
+        {foreach from=$goods.package_goods_list item=package_goods_list}
+          <a href="../goods.php?id={$package_goods_list.goods_id}" target="_blank">{$package_goods_list.goods_name}</a><br />
+        {/foreach}
+    </div>
+    {/if}
+    </td>
+    <td>{$goods.shouhou}</td>
+    <td>{$goods.goods_sn}</td>
+    <td>{$goods.product_sn}</td>
+    <td><div align="right">{$goods.formated_goods_price}</div></td>
+    <td><div align="right">{$goods.goods_number}
+    </div></td>
+    <td><div align="right">{$goods.self_storage}
+    </div></td>
+    <td><div align="right">{$goods.main_storage}
+    </div></td>
+    <td><input type="text" name="self_send" id="self_send"  value="" max="{$goods.self_storage}"  onkeyup="value=value.replace(/[^\d\.]/g,'')" /></td>
+
+    <td><input type="text" name="main_send" id="main_send"  value="" max="{$goods.main_storage}"  onkeyup="value=value.replace(/[^\d\.]/g,'')" /></td>
+  </tr>
+  {/foreach}
+  <tr>
+        <td colspan="10" align="right"><input name="to_shipping" type="submit"  value="确认发货" class="button" /></td>
+  </tr>
+</tbody></table>
+</div>    
+
+</form>
+<script language="JavaScript">
+    function check_order(){
+        var self_max = document.getElementById("self_send").getAttribute("max");
+        var main_max = document.getElementById("main_send").getAttribute("max");
+        
+        var self_val = document.getElementById("self_send").value;
+        var main_val = document.getElementById("main_send").value;        
+        if(self_val>self_max){
+            alert("发货数量不能大于店内库存");
+            return false;
+        }
+        if(main_val>main_max){
+            alert("总店发货数量不能大于总店库存");
+            return false;
+        }
+    }
+</script>   
+{include file="pagefooter.htm"}
