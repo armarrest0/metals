@@ -391,10 +391,17 @@
         <input name="invalid" type="submit" value="{$lang.op_invalid}" class="button" />
         {/if} {if $operable_list.return}
         <!--<input name="return" type="submit" value="{$lang.op_return}" class="button" />-->
-        {/if} {if $operable_list.to_delivery}
-        <input name="to_delivery" type="submit" value="{$lang.op_to_delivery}" class="button"/>
-        <input name="order_sn" type="hidden" value="{$order.order_sn}" />
-        {/if} <input name="after_service" type="submit" value="{$lang.op_after_service}" class="button" />{if $operable_list.remove}
+        {/if}
+        
+        {if $operable_list.to_delivery}
+            {if $order.separate_order&&$order.invoice_no}
+                已配货,待总店确认发货
+            {else}
+                <input name="to_delivery" type="submit" value="{$lang.op_to_delivery}" class="button"/>
+                <input name="order_sn" type="hidden" value="{$order.order_sn}" />
+            {/if}        
+        {/if}
+        <input name="after_service" type="submit" value="{$lang.op_after_service}" class="button" />{if $operable_list.remove}
         <input name="remove" type="submit" value="{$lang.remove}" class="button" onClick="return window.confirm('{$lang.js_languages.remove_confirm}');" />
         {/if}
         {if $order.extension_code eq "group_buy"}{$lang.notice_gb_ship}{/if}

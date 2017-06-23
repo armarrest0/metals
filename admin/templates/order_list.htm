@@ -262,7 +262,13 @@
         {assign var="order_status" value="$order.order_status"}
         {assign var="pay_status" value="$order.pay_status"}
         {assign var="shipping_status" value="$order.shipping_status"}
-        {$lang.os.$order_status},{$lang.ps.$pay_status},{$lang.ss.$shipping_status}
+        {if $order.separate_order==1}  
+            {if $order.shipping_status==5}
+                分店已配货,尚有部分商品待本店发货
+            {/if}
+        {else}
+            {$lang.ps.$pay_status},{$lang.ss.$shipping_status}  
+        {/if}
     </td>
     <td align="center" valign="top"  nowrap="nowrap">        
      {if $order.supplier_id>0}   

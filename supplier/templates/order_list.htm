@@ -219,6 +219,7 @@
     <th><a href="javascript:listTable.sort('total_fee', 'DESC'); ">{$lang.total_fee}</a>{$sort_total_fee}</th>
     <th><a href="javascript:listTable.sort('order_amount', 'DESC'); ">{$lang.order_amount}</a>{$sort_order_amount}</th>
     <th>{$lang.all_status}</th>
+    <th>是否是分开发货订单</th>
     <th>{$lang.handler}</th>
   <tr>
   {foreach from=$order_list item=order key=okey}
@@ -232,7 +233,20 @@
         {assign var="order_status" value="$order.order_status"}
         {assign var="pay_status" value="$order.pay_status"}
         {assign var="shipping_status" value="$order.shipping_status"}
-        {$lang.os.$order_status},{$lang.ps.$pay_status},{$lang.ss.$shipping_status}        
+        {if $order.separate_order==1}  
+            {if $order.shipping_status==5}
+                已配货,待总店确认发货
+            {/if}
+        {else}
+            {$lang.ps.$pay_status},{$lang.ss.$shipping_status}  
+        {/if}
+    </td>
+    <td align="center" valign="top" nowrap="nowrap">      
+        {if $order.separate_order==1}  
+            是
+        {else}
+            否
+        {/if}
     </td>
     <td align="center" valign="top"  nowrap="nowrap">
 

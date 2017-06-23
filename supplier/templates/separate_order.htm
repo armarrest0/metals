@@ -61,7 +61,7 @@
 </div>
 {/if}
 
-<form action="order.php?act=to_shipping" method="post" name="theForm" onsubmit="return check_order();">
+<form action="order.php?act=operate" method="post" name="theForm" onsubmit="return check_order();">
 <div class="list-div" style="margin-bottom: 5px" id="separate_div">
 <table width="100%" cellpadding="3" cellspacing="1">
   <tbody><tr>
@@ -120,7 +120,9 @@
   </tr>
 </tbody></table>
 </div>    
-
+    <input type="hidden" name="order_id" value="{$order_id}" id="order_id" />
+    <input type="hidden" name="to_shipping" value="1" id="to_shipping" />
+    <input type="hidden" name="separate_order" value="1" id="separate_order" />
 </form>
 <script language="JavaScript">
     function calcu(x){            

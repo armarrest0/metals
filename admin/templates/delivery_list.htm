@@ -32,6 +32,7 @@
     <th><a href="javascript:listTable.sort('consignee', 'DESC'); ">{$lang.consignee}</a>{$sort_consignee}</th>
     <th><a href="javascript:listTable.sort('update_time', 'DESC'); ">{$lang.label_update_time}</a>{$sort_update_time}</th>
     <th>{$lang.label_suppliers_name}</th>
+    <th>是否是分货订单</th>
     <th>{$lang.label_delivery_status}</th>
     <th>{$lang.operator}</th>
     <th>{$lang.handler}</th>
@@ -44,7 +45,24 @@
     <td align="left" valign="top"><a href="mailto:{$delivery.email}"> {$delivery.consignee|escape}</a></td>
     <td align="center" valign="top" nowrap="nowrap">{$delivery.update_time}</td>
     <td align="center" valign="top" nowrap="nowrap">{$delivery.suppliers_name}</td>
-    <td align="center" valign="top" nowrap="nowrap">{$delivery.status_name}</td>
+    <td align="center" valign="top" nowrap="nowrap">
+        {if $delivery.separate_order==1}
+            是
+        {else}
+            否
+        {/if} 
+    </td>
+    <td align="center" valign="top" nowrap="nowrap">
+        {if $delivery.separate_order==1}
+            {if $delivery.invoice_no_main!=''}
+                {$delivery.status_name}
+            {else}
+                分店已配货，等待本店配货操作
+            {/if}
+        {else}
+            {$delivery.status_name}
+        {/if}        
+    </td>
     <td align="center" valign="top" nowrap="nowrap">{$delivery.action_user}</td>
     <td align="center" valign="top"  nowrap="nowrap">
      <a href="order.php?act=delivery_info&delivery_id={$delivery.delivery_id}">{$lang.detail}</a>

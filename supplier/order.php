@@ -638,6 +638,7 @@ elseif ($_REQUEST['act'] == 'info')
         $smarty->assign('ur_here', $_LANG['order_info']);
         $smarty->assign('action_link', array('href' => 'order.php?act=list&' . list_link_postfix(), 'text' => $_LANG['01_order_list']));
 
+        $smarty->assign('order_id', $_REQUEST['order_id']);
         /* 显示模板 */
         assign_query_info();
         
@@ -2709,7 +2710,7 @@ elseif ($_REQUEST['act'] == 'operate')
 //-- start一键发货 增加 by www.68ecshop.com
 /*------------------------------------------------------ */
     elseif (isset($_POST['to_shipping']))
-	{
+	{           
 	   $invoice_no = empty($_REQUEST['invoice_no']) ? '' : trim($_REQUEST['invoice_no']);  //快递单号
            $self_storage = $_POST['self_storage'];
            $send = $_POST['send'];
@@ -2719,6 +2720,8 @@ elseif ($_REQUEST['act'] == 'operate')
                    sys_msg("店内商品库存不足", 0);
                }
            }
+       
+       
            
        if (!empty($invoice_no))
         {
@@ -2911,13 +2914,18 @@ elseif ($_REQUEST['act'] == 'operate')
         $delivery['status'] = 2; // 正常
         $delivery['order_id'] = $order_id;
 
+        if($_POST['separate_order']){
+            $delivery['separate_order'] = $_POST['separate_order'];
+        }
+        $delivery['order_id'] = $order_id;
+        
         /* 过滤字段项 */
         $filter_fileds = array(
                                'order_sn', 'add_time', 'user_id', 'how_oos', 'shipping_id', 'shipping_fee',
                                'consignee', 'address', 'country', 'province', 'city', 'district', 'sign_building',
                                'email', 'zipcode', 'tel', 'mobile', 'best_time', 'postscript', 'insure_fee',
                                'agency_id', 'delivery_sn', 'action_user', 'update_time',
-                               'suppliers_id', 'status', 'order_id', 'shipping_name'
+                               'suppliers_id', 'status', 'order_id', 'shipping_name', 'separate_order'
                                );
         $_delivery = array();
         foreach ($filter_fileds as $value)
@@ -3016,14 +3024,25 @@ elseif ($_REQUEST['act'] == 'operate')
             /* 标记订单为已确认 "发货中" */
             /* 更新发货时间 */
             $order_finish = get_order_finish($order_id);
-            $shipping_status = SS_SHIPPED_ING;
+            if($_POST['separate_order']){
+                $shipping_status = 5;
+            }else{
+                $shipping_status = SS_SHIPPED_ING;
+            }
+            
             if ($order['order_status'] != OS_CONFIRMED && $order['order_status'] != OS_SPLITED && $order['order_status'] != OS_SPLITING_PART)
             {
                 $arr['order_status']    = OS_CONFIRMED;
                 $arr['confirm_time']    = GMTIME_UTC;
             }
             $arr['order_status'] = $order_finish ? OS_SPLITED : OS_SPLITING_PART; // 全部分单、部分分单
+            if($_POST['separate_order']){
+                $arr['upper_allow'] = 1;           
+                $arr['separate_order'] = $_POST['separate_order'];              
+            }
+            
             $arr['shipping_status']     = $shipping_status;
+            
             update_order($order_id, $arr);
 		}
 
@@ -3263,7 +3282,12 @@ elseif ($_REQUEST['act'] == 'operate')
     /* 标记订单为已确认 "已发货" */
     /* 更新发货时间 */
     $order_finish = get_all_delivery_finish($order_id);
-    $shipping_status = ($order_finish == 1) ? SS_SHIPPED : SS_SHIPPED_PART;
+    if(!$_POST['separate_order']){
+        $shipping_status = ($order_finish == 1) ? SS_SHIPPED : SS_SHIPPED_PART;
+    }else{
+        $arr['upper_allow']     = 1;
+    }
+    
     $arr['shipping_status']     = $shipping_status;
     $arr['shipping_time']       = GMTIME_UTC; // 发货时间
     $arr['invoice_no']          = trim($order['invoice_no'] . '<br>' . $invoice_no, '<br>');
@@ -6405,7 +6429,7 @@ function order_list()
         $filter['page_count']     = $filter['record_count'] > 0 ? ceil($filter['record_count'] / $filter['page_size']) : 1;
 
         /* 查询 */
-        $sql = "SELECT o.order_id, o.upper_allow,o.order_sn, o.add_time, o.order_status, o.shipping_status, o.order_amount, o.money_paid," .
+        $sql = "SELECT o.order_id, o.upper_allow,o.order_sn, o.add_time, o.separate_order, o.order_status, o.shipping_status, o.order_amount, o.money_paid," .
                     "o.pay_status, o.consignee, o.address, o.email, o.tel, o.extension_code, o.extension_id, " .
                     "(" . order_amount_field('o.') . ") AS total_fee, " .
                     "IFNULL(u.user_name, '" .$GLOBALS['_LANG']['anonymous']. "') AS buyer ".
@@ -7347,6 +7371,8 @@ function delivery_order_info($delivery_id, $delivery_sn = '')
         $delivery['formated_add_time']       = local_date($GLOBALS['_CFG']['time_format'], $delivery['add_time']);
         $delivery['formated_update_time']    = local_date($GLOBALS['_CFG']['time_format'], $delivery['update_time']);
 
+        $delivery['formated_shipping_time_main']    = local_date($GLOBALS['_CFG']['time_format'], $delivery['shipping_time_main']);
+        
         $return_order = $delivery;
     }
 
