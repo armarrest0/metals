@@ -450,7 +450,7 @@ elseif ($_REQUEST['act'] == 'info')
     /* 取得订单商品及货品 */
     $goods_list = array();
     $goods_attr = array();
-    $sql = "SELECT o.*, IF(o.product_id > 0, p.product_number, g.goods_number) AS storage, o.goods_attr, g.suppliers_id, IFNULL(b.brand_name, '') AS brand_name, p.product_sn
+    $sql = "SELECT o.*, IF(o.product_id > 0, p.product_number, g.goods_number) AS storage, o.goods_attr, g.suppliers_id, g.main_storage, g.self_storage, IFNULL(b.brand_name, '') AS brand_name, p.product_sn
             FROM " . $ecs->table('order_goods') . " AS o
                 LEFT JOIN " . $ecs->table('products') . " AS p
                     ON p.product_id = o.product_id
@@ -476,6 +476,20 @@ elseif ($_REQUEST['act'] == 'info')
                 }
             }
         }
+        
+        
+        $sql = "SELECT * FROM " . $ecs->table('delivery_goods') .  " AS d
+                LEFT JOIN " . $ecs->table('delivery_order') . " AS o
+                    ON d.delivery_id = o.delivery_id WHERE d.goods_id = '$row[goods_id]' and o.order_id=".$row['order_id'];
+        $rs = $db->query($sql);
+        $arr = array();
+        while ($one = $db->fetchRow($rs))
+        {
+             $row['self_send'] = $one['self_send'];
+        }
+        
+        
+        
 
         $row['formated_subtotal']       = price_format($row['goods_price'] * $row['goods_number']);
         $row['formated_goods_price']    = price_format($row['goods_price']);

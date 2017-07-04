@@ -107,9 +107,10 @@
     </div></td>
     <td><div align="right">{$goods.main_storage}
     </div></td>
-    <td align="right">数量：<input type="text" name="self_send" id="self_{$key}" onchange="calcu(this.id)"  value="" max="{$goods.self_storage}"  onkeyup="value=value.replace(/[^\d\.]/g,'')" /></td>
+    <td align="right">数量：<input type="text" name="self_send[]" id="self_{$key}" onchange="calcu(this.id)"  value="" max="{$goods.self_storage}"  onkeyup="value=value.replace(/[^\d\.]/g,'')" /></td>
 
-    <td align="right">数量：<input type="text" name="main_send" id="main_{$key}" onchange="calcu(this.id)"  value="" max="{$goods.main_storage}"  onkeyup="value=value.replace(/[^\d\.]/g,'')" /></td>
+    <td align="right">数量：<input type="text" name="main_send[]" id="main_{$key}" onchange="calcu(this.id)"  value="" max="{$goods.main_storage}"  onkeyup="value=value.replace(/[^\d\.]/g,'')" /><input type="hidden" name="send_info[]" id="send_info_{$key}" value="{$goods.goods_id}" /></td>
+
   </tr>
   {/foreach}
   <tr>
@@ -131,7 +132,7 @@
         var id = arr[1];
         var total=document.getElementById(id).value;
         
-        if(self>total){
+        if(self-total>0){
             alert("发货数量不能大于订单商品数");
             document.getElementById(x).value = 0;
             return false;
@@ -147,8 +148,8 @@
     }
     
     function check_order(){
-        var self_maxs = document.getElementsByName("self_send");
-        var main_maxs = document.getElementsByName("main_send");
+        var self_maxs = document.getElementsByName("self_send[]");
+        var main_maxs = document.getElementsByName("main_send[]");
         
         
         for (var k = 0; k < self_maxs.length; k++) {
@@ -163,14 +164,17 @@
                 return false;
             }
             
-            if(self_val>self_max){
+            if(self_val-self_max>0){
                 alert("发货数量不能大于店内库存");
                 return false;
             }
-            if(main_val>main_max){
+            if(main_val-main_max>0){
                 alert("总店发货数量不能大于总店库存");
                 return false;
             }
+            
+            document.getElementById("send_info_"+k).value = document.getElementById("send_info_"+k).value + "|" + self_val + "|" + main_val;
+            
         }        
     }
 </script>   

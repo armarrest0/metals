@@ -2721,7 +2721,16 @@ elseif ($_REQUEST['act'] == 'operate')
                }
            }
        
+       $self_send = $_POST['self_send'];
+       $main_send = $_POST['main_send'];
+       $send_info = $_POST['send_info'];    
        
+       $arr = array();
+       foreach($send_info as $val){
+           $info = explode("|", $val);
+           $key = $info[0];
+           $arr[$key] = $val;
+       }
            
        if (!empty($invoice_no))
         {
@@ -2955,6 +2964,14 @@ elseif ($_REQUEST['act'] == 'operate')
                     // 商品（实货）（虚货）
                     if (empty($value['extension_code']) || $value['extension_code'] == 'virtual_card')
                     {
+                        $goods_id = $value['goods_id'];
+                       
+                        if($arr[$goods_id]){                            
+                            $sendinfo = explode("|", $arr[$goods_id]);
+                            $self_send = $sendinfo[1];
+                            $main_send = $sendinfo[2];                            
+                        }
+                        
                         $delivery_goods = array('delivery_id' => $delivery_id,
                                                 'goods_id' => $value['goods_id'],
                                                 'product_id' => $value['product_id'],
@@ -2966,7 +2983,9 @@ elseif ($_REQUEST['act'] == 'operate')
                                                 'send_number' => $value['goods_number'],
                                                 'parent_id' => 0,
                                                 'is_real' => $value['is_real'],
-                                                'goods_attr' => $value['goods_attr']
+                                                'goods_attr' => $value['goods_attr'],
+                                                'self_send' => $self_send,
+                                                'main_send' => $main_send,
                                                 );
                         /* 如果是货品 */
                         if (!empty($value['product_id']))
