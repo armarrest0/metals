@@ -2949,7 +2949,7 @@ elseif ($_REQUEST['act'] == 'operate')
                 $deliver_info = explode("_",$delivery_choose);
  
                 $db->query("UPDATE " . $ecs->table('order_info') . " SET shipping_id_main = '$deliver_info[0]',shipping_name_main = '".$deliver_info[1]."' WHERE order_id = " . $order_id);
-                $db->query("UPDATE " . $ecs->table('delivery_order') . " SET invoice_no_main = '$invoice_no',add_time_main = '".time()."',shipping_id_main = '$deliver_info[0]',shipping_name_main = '".$deliver_info[1]."' WHERE order_id = " . $order_id);
+                $db->query("UPDATE " . $ecs->table('delivery_order') . " SET invoice_no_main = '$invoice_no',add_time_main = '".gmtime()."',shipping_id_main = '$deliver_info[0]',shipping_name_main = '".$deliver_info[1]."' WHERE order_id = " . $order_id);
                 
             }else{
                 $invoice_no = empty($_REQUEST['invoice_no']) ? '' : trim($_REQUEST['invoice_no']);  //快递单号
@@ -7761,6 +7761,7 @@ function delivery_order_info($delivery_id, $delivery_sn = '')
         $delivery['formated_update_time']    = local_date($GLOBALS['_CFG']['time_format'], $delivery['update_time']);
 
         $delivery['formated_shipping_time_main']    = local_date($GLOBALS['_CFG']['time_format'], $delivery['add_time_main']);
+
         
         $return_order = $delivery;
     }
