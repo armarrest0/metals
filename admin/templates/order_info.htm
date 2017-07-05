@@ -276,7 +276,16 @@
     <td><div align="right"><strong>{$lang.label_action_note}</strong></div></td>
   <td colspan="5"><textarea name="action_note" cols="80" rows="3"></textarea></td>
     </tr>
-
+ <tr>
+    <td><div align="right"><strong>选择发货方式</strong></div></td>
+    <td colspan="5">
+        {foreach from=$deliverys item=delivery key=key}
+        <input type="radio" name="delivery_choose" value="{$delivery.shipping_id}_{$delivery.shipping_name}" {if $key == 0}checked{/if}>{$delivery.shipping_name}</input>
+        {/foreach}
+    </td>
+    </tr>
+    
+    
   {if ($supplier_id == $order.supplier_id && !$supp)||$order.upper_allow}   
   <tr>
     <td><div align="right"></div>

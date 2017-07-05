@@ -86,6 +86,15 @@
   <tbody align="center"><tr>
     <th colspan="2">总店发货信息</th>
   </tr>  
+  <tr>
+    <td><div><strong>配送方式</strong></div></td>
+    <td colspan="3">
+        {if $delivery_order.shipping_name_main!=''}
+            {$delivery_order.shipping_name_main}
+        {else}
+            暂未发货
+        {/if}        
+  </tr>  
     <tr>
     <td><div><strong>{$lang.label_invoice_no}</strong></div></td>
     <td colspan="3">
@@ -103,7 +112,8 @@
         {else}
             暂未发货
         {/if}  
-  </tr>    
+  </tr>  
+  
 </tbody></table>
 </div>
 {/if}
@@ -125,14 +135,23 @@
   </tr>
   {foreach from=$goods_list item=goods}
   <tr>
-    <td>
+    <td align="center">
     <a href="../goods.php?id={$goods.goods_id}" target="_blank">{$goods.goods_name} {if $goods.brand_name}[ {$goods.brand_name} ]{/if}
     </td>
-    <td><div align="left">{$goods.goods_sn}</div></td>
-    <td><div align="left">{$goods.product_sn}</div></td>
-    <td><div align="left">{$goods.goods_attr|nl2br}</div></td>
-    <td><div align="left">{$goods.send_number}</div></td>
-    <td><div align="left">{$goods.send_number}</div></td>
+    <td><div align="center">{$goods.goods_sn}</div></td>
+    <td><div align="center">{$goods.product_sn}</div></td>
+    <td><div align="center">{$goods.goods_attr|nl2br}</div></td>
+    <td><div align="center">{$goods.send_number}</div></td>
+    
+    {if $delivery_order.separate_order}
+        <td><div align="center">{$goods.self_send}</div></td>
+        <td><div align="center">{$goods.main_send}</div></td>
+    {else}
+        <td><div align="center">{$goods.send_number}</div></td>
+        <td><div align="center">0</div></td>
+    {/if}
+    
+    
   </tr>
   {/foreach}
 </table>

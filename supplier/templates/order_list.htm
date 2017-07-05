@@ -236,6 +236,8 @@
         {if $order.separate_order==1}  
             {if $order.shipping_status==5}
                 已配货,待总店确认发货
+            {else if $order.shipping_status==1}
+                总店已配货，正在发货中    
             {/if}
         {else}
             {$lang.ps.$pay_status},{$lang.ss.$shipping_status}  
@@ -250,7 +252,7 @@
     </td>
     <td align="center" valign="top"  nowrap="nowrap">
 
-        {if $order.upper_allow==1}  
+        {if empty($order.shipping_time_main)&&$order.shipping_status == 5}  
         等待总店发货
         {else}
             <a href="order.php?act=info&order_id={$order.order_id}">{$lang.detail}</a>

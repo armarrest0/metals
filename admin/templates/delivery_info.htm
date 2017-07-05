@@ -121,7 +121,7 @@
   </tr>
   <tr>
     <td><div align="right"><strong>{$lang.label_shipping}</strong></div></td>
-    <td>{if $exist_real_goods}{if $delivery_order.shipping_id > 0}{$delivery_order.shipping_name}{else}{$lang.require_field}{/if} {if $delivery_order.insure_fee > 0}（{$lang.label_insure_fee}{$delivery_order.formated_insure_fee}）{/if}{/if}</td>
+    <td>{if $exist_real_goods}{if $delivery_order.shipping_id_main > 0}{$delivery_order.shipping_name_main}{else}{$lang.require_field}{/if} {if $delivery_order.insure_fee > 0}（{$lang.label_insure_fee}{$delivery_order.formated_insure_fee}）{/if}{/if}</td>
     <td><div align="right"><strong>{$lang.label_shipping_fee}</strong></div></td>
     <td>{$delivery_order.shipping_fee}</td>
   </tr>
@@ -157,17 +157,21 @@
     <td scope="col"><div align="center"><strong>{$lang.goods_sn}</strong></div></td>
     <td scope="col"><div align="center"><strong>{$lang.product_sn}</strong></div></td>
     <td scope="col"><div align="center"><strong>{$lang.goods_attr}</strong></div></td>
-    <td scope="col"><div align="center"><strong>{$lang.label_send_number}</strong></div></td>
+    <td scope="col"><div align="center"><strong>订单商品数量</strong></div></td>
+    <td scope="col"><div align="center"><strong>分店发货数量</strong></div></td>
+    <td scope="col"><div align="center"><strong>总店发货数量</strong></div></td>
   </tr>
   {foreach from=$goods_list item=goods}
   <tr>
-    <td>
+    <td align="center">
     <a href="../goods.php?id={$goods.goods_id}" target="_blank">{$goods.goods_name} {if $goods.brand_name}[ {$goods.brand_name} ]{/if}
     </td>
-    <td><div align="left">{$goods.goods_sn}</div></td>
-    <td><div align="left">{$goods.product_sn}</div></td>
-    <td><div align="left">{$goods.goods_attr|nl2br}</div></td>
-    <td><div align="left">{$goods.send_number}</div></td>
+    <td><div align="center">{$goods.goods_sn}</div></td>
+    <td><div align="center">{$goods.product_sn}</div></td>
+    <td><div align="center">{$goods.goods_attr|nl2br}</div></td>
+    <td><div align="center">{$goods.send_number}</div></td>
+    <td><div align="center">{$goods.self_send}</div></td>
+    <td><div align="center">{$goods.main_send}</div></td>
   </tr>
   {/foreach}
 </table>

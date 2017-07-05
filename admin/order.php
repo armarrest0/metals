@@ -736,6 +736,11 @@ elseif ($_REQUEST['act'] == 'info')
     }
     else
     {
+        
+        $sql = "SELECT * FROM " . $ecs->table('shipping') . " WHERE supplier_id = 0 and is_default_show=1";
+        $deliverys = $db->getAll($sql);
+        $smarty->assign('deliverys', $deliverys);
+        
 
         /* 模板赋值 */
         $smarty->assign('ur_here', $_LANG['order_info']);
@@ -2940,6 +2945,12 @@ elseif ($_REQUEST['act'] == 'operate')
             if($_POST['separate_order']){
                 $invoice_no = empty($_REQUEST['invoice_no_main']) ? '' : trim($_REQUEST['invoice_no_main']);  //快递单号
                 $order_sn = $_POST['order_sn'];
+                $delivery_choose = $_POST['delivery_choose'];
+                $deliver_info = explode("_",$delivery_choose);
+ 
+                $db->query("UPDATE " . $ecs->table('order_info') . " SET shipping_id_main = '$deliver_info[0]',shipping_name_main = '".$deliver_info[1]."' WHERE order_id = " . $order_id);
+                $db->query("UPDATE " . $ecs->table('delivery_order') . " SET invoice_no_main = '$invoice_no',add_time_main = '".time()."',shipping_id_main = '$deliver_info[0]',shipping_name_main = '".$deliver_info[1]."' WHERE order_id = " . $order_id);
+                
             }else{
                 $invoice_no = empty($_REQUEST['invoice_no']) ? '' : trim($_REQUEST['invoice_no']);  //快递单号
             }
@@ -3117,10 +3128,8 @@ elseif ($_REQUEST['act'] == 'operate')
         /* 生成发货单 */
         /* 获取发货单号和流水号 */
         
-        if($_POST['separate_order']){        
-                $db->query("UPDATE " . $ecs->table('delivery_order') . " SET invoice_no_main = '$invoice_no',add_time_main = '".time()."' WHERE order_id = " . $order_id);
-                
-        }else{      
+        if(!$_POST['separate_order']){      
+           
                 $delivery['delivery_sn'] = get_delivery_sn();
                 $delivery_sn = $delivery['delivery_sn'];
 
@@ -3486,7 +3495,11 @@ elseif ($_REQUEST['act'] == 'operate')
 
     /* 修改发货单信息 */
     $invoice_no = trim($invoice_no);
-    $_delivery['invoice_no'] = $invoice_no;
+     if($_POST['separate_order']){ 
+         $_delivery['invoice_no_main'] = $invoice_no;    
+     }else{
+         $_delivery['invoice_no'] = $invoice_no;
+     }
     $_delivery['status'] = 0; // 0，为已发货
     $query = $db->autoExecute($ecs->table('delivery_order'), $_delivery, 'UPDATE', "delivery_id = $delivery_id", 'SILENT');
     if (!$query)
@@ -3503,8 +3516,8 @@ elseif ($_REQUEST['act'] == 'operate')
     $arr['shipping_status']     = $shipping_status;
     if($_POST['separate_order']){ 
         $arr['shipping_time_main']       = GMTIME_UTC; // 发货时间
-        $arr['invoice_no_main']          = trim($order['invoice_no'] . '<br>' . $invoice_no, '<br>');
-        $arr['upper_allow']       = 0; // 发货时间
+        $arr['invoice_no_main']          = trim($invoice_no, '<br>');
+        $arr['upper_allow']       = 1; 
     }else{
         $arr['shipping_time']       = GMTIME_UTC; // 发货时间
         $arr['invoice_no']          = trim($order['invoice_no'] . '<br>' . $invoice_no, '<br>');
@@ -7747,7 +7760,7 @@ function delivery_order_info($delivery_id, $delivery_sn = '')
         $delivery['formated_add_time']       = local_date($GLOBALS['_CFG']['time_format'], $delivery['add_time']);
         $delivery['formated_update_time']    = local_date($GLOBALS['_CFG']['time_format'], $delivery['update_time']);
 
-        $delivery['formated_shipping_time_main']    = local_date($GLOBALS['_CFG']['time_format'], $delivery['shipping_time_main']);
+        $delivery['formated_shipping_time_main']    = local_date($GLOBALS['_CFG']['time_format'], $delivery['add_time_main']);
         
         $return_order = $delivery;
     }

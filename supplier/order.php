@@ -763,6 +763,9 @@ elseif ($_REQUEST['act'] == 'delivery_info')
                   WHERE delivery_id = " . $delivery_order['delivery_id'];
     $goods_list = $GLOBALS['db']->getAll($goods_sql);
 
+    
+    
+    
     /* 是否存在实体商品 */
     $exist_real_goods = 0;
     if ($goods_list)
@@ -6448,7 +6451,7 @@ function order_list()
         $filter['page_count']     = $filter['record_count'] > 0 ? ceil($filter['record_count'] / $filter['page_size']) : 1;
 
         /* 查询 */
-        $sql = "SELECT o.order_id, o.upper_allow,o.order_sn, o.add_time, o.separate_order, o.order_status, o.shipping_status, o.order_amount, o.money_paid," .
+        $sql = "SELECT o.order_id, o.upper_allow,o.order_sn, o.add_time, o.separate_order, o.shipping_time_main, o.order_status, o.shipping_status, o.order_amount, o.money_paid," .
                     "o.pay_status, o.consignee, o.address, o.email, o.tel, o.extension_code, o.extension_id, " .
                     "(" . order_amount_field('o.') . ") AS total_fee, " .
                     "IFNULL(u.user_name, '" .$GLOBALS['_LANG']['anonymous']. "') AS buyer ".
@@ -7390,7 +7393,7 @@ function delivery_order_info($delivery_id, $delivery_sn = '')
         $delivery['formated_add_time']       = local_date($GLOBALS['_CFG']['time_format'], $delivery['add_time']);
         $delivery['formated_update_time']    = local_date($GLOBALS['_CFG']['time_format'], $delivery['update_time']);
 
-        $delivery['formated_shipping_time_main']    = local_date($GLOBALS['_CFG']['time_format'], $delivery['shipping_time_main']);
+        $delivery['formated_shipping_time_main']    = local_date($GLOBALS['_CFG']['time_format'], $delivery['add_time_main']);
         
         $return_order = $delivery;
     }
