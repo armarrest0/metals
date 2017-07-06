@@ -396,7 +396,7 @@
       <div align="right"><strong>{$lang.label_operable_act}</strong> </div></td>
     <!-- 一键发货begin 修改 by www.68ecshop.com  -->  
     {if $order.pay_status == 2 && $order.shipping_status != 1 && $order.order_status == 1 }
-    <td colspan="2">
+    <td colspan="5">
     <!-- 如果为预售活动的订单，那么预售活动为成功处理前，不能发货 -->
     <!-- {if $is_pre_sale == 0 || $pre_sale_success == 1} -->
     <input name="invoice_no" type="text"  value="请输入快递单号" />
@@ -405,34 +405,13 @@
 
     <!-- {/if} -->
     </td>
-    <td><div align="right"><strong style="color:#c00">若一键发货请忽略此操作</strong></div></td><td colspan="2">
     {else}
     <td colspan="5">
     {/if}
     <!-- 一键发货end 修改 by www.68ecshop.com --> 
     {if $supplier_id == $order.supplier_id}
     
-        {if $operable_list.confirm}
-        <input name="confirm" type="submit" value="{$lang.op_confirm}" class="button" />
-        {/if} {if $operable_list.pay}
-        <input name="pay" type="submit" value="{$lang.op_pay}" class="button" />
-        {/if} {if $operable_list.unpay}
-        <input name="unpay" type="submit" class="button" value="{$lang.op_unpay}" />
-        {/if} {if $operable_list.prepare && ($is_pre_sale == 0 || $pre_sale_success == 1)}
-        <input name="prepare" type="submit" value="{$lang.op_prepare}" class="button" />
-        {/if} {if $operable_list.split && ($is_pre_sale == 0 || $pre_sale_success == 1)}
-        <input name="ship" type="submit" value="{$lang.op_split}" class="button" />
-        {/if} {if $operable_list.unship}
-        <input name="unship" type="submit" value="{$lang.op_unship}" class="button" />
-        {/if} {if $operable_list.receive}
-        <input name="receive" type="submit" value="{$lang.op_receive}" class="button" />
-        {/if} {if $operable_list.cancel}
-        <input name="cancel" type="submit" value="{$lang.op_cancel}" class="button" />
-        {/if} {if $operable_list.invalid}
-        <input name="invalid" type="submit" value="{$lang.op_invalid}" class="button" />
-        {/if} {if $operable_list.return}
-        <!--<input name="return" type="submit" value="{$lang.op_return}" class="button" />-->
-        {/if}
+      
         
         {if $operable_list.to_delivery}
             {if $order.separate_order&&$order.invoice_no}
@@ -442,7 +421,7 @@
                 <input name="order_sn" type="hidden" value="{$order.order_sn}" />
             {/if}        
         {/if}
-        <input name="after_service" type="submit" value="{$lang.op_after_service}" class="button" />{if $operable_list.remove}
+        {if $operable_list.remove}
         <input name="remove" type="submit" value="{$lang.remove}" class="button" onClick="return window.confirm('{$lang.js_languages.remove_confirm}');" />
         {/if}
         {if $order.extension_code eq "group_buy"}{$lang.notice_gb_ship}{/if}
@@ -481,6 +460,33 @@
   </tr>
   {/foreach}
 </table>
+    
+
+{if $order.separate_order}    
+    {if $order.invoice_no_main}
+    <div class="list-div" style="margin-bottom: 5px">
+    <!-- {if $order.invoices and $order.shipping_name neq '门店自提'} -->
+    <table width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
+     <tr>
+        <th align="center">物流跟踪</th>
+      </tr>
+      <tr>
+        <td bgcolor="#ffffff">
+                    <ul id='ul_i' class="rec-nav">
+                
+                         <li id="div_i_1" class="selected"><a href='javascript:;' onclick="get_invoice_info('{$order.shipping_name}','{$order.invoice_no}',1)">物流1</a></li>
+                         <li id="div_i_2"><a href='javascript:;' onclick="get_invoice_info('{$order.shipping_name_main}','{$order.invoice_no_main}',2)">物流2</a></li>
+                    </ul>
+            
+                    <div id="retData"></div>
+            </td>
+      </tr>
+    </table>
+    <!-- {/if} -->
+    </div>
+    {/if}
+{else}       
+ <div class="list-div" style="margin-bottom: 5px">   
 <!-- {if $order.invoices and $order.shipping_name neq '门店自提'} -->
 <table width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
  <tr>
@@ -498,6 +504,8 @@
   </tr>
 </table>
 <!-- {/if} -->
+</div>
+{/if}
 </div>
 </form>
 {literal}
