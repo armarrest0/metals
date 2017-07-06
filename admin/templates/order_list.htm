@@ -265,8 +265,10 @@
         {if $order.separate_order==1}  
             {if $order.shipping_status==5}
                 分店已配货,尚有部分商品待本店发货
-            {else if $order.shipping_status==1}
+            {elseif ($order.shipping_status==1&&$order.order_status!=2)}
                 东西已配齐，已发货
+            {else}
+                {$order.order_status_info}
             {/if}
         {else}
             {$lang.ps.$pay_status},{$lang.ss.$shipping_status}  

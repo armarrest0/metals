@@ -6449,6 +6449,8 @@ function handle_order_money_change($order, &$msgs, &$links)
  */
 function order_list()
 {
+    global $_LANG;
+    
     $result = get_filter();
     if ($result === false)
     {
@@ -6778,6 +6780,9 @@ function order_list()
         /*增值税发票_添加_START_www.68ecshop.com*/
         $row[$key]['formatted_add_time'] = local_date('Y-m-d H:i',$value['add_time']);
         $row[$key]['formatted_inv_money'] = price_format($value['inv_money']);
+        
+        $row[$key]['order_status_info'] =  $_LANG['os'][$value['order_status']] . ',' . $_LANG['ps'][$value['pay_status']] . ',' . $_LANG['ss'][$value['shipping_status']];
+        
 		/*增值税发票_添加_END_www.68ecshop.com*/
 		if ($value['order_status'] == OS_INVALID || $value['order_status'] == OS_CANCELED)
         {

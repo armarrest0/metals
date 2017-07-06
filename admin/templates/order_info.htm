@@ -89,8 +89,10 @@
     <td>{if $order.separate_order==1}  
             {if $order.shipping_status==5}
                 分店已配货,尚有部分商品待本店发货
-            {else if $order.shipping_status==1}
-                东西已配齐，已发货               
+            {elseif ($order.shipping_status==1&&$order.order_status!=2)}
+                东西已配齐，已发货
+            {else}
+                {$order.status}
             {/if}
         {else}
             {$lang.ps.$pay_status},{$lang.ss.$shipping_status}  
@@ -348,6 +350,16 @@
     {else}
     <td colspan="5">
     {/if}
+    {if $operable_list.to_delivery}
+            {if $order.separate_order&&$order.invoice_no_main}
+                已配货，发货中
+            {else}        
+                <input type="text" onblur="if(this.value=='') this.value='请输入快递单号';"  onfocus="if(this.value=='请输入快递单号') this.value='';" value="请输入快递单号"   name="invoice_no_main"  style="color:#00F">   
+        
+                <input name="to_shipping" type="submit" style="color:#F00" value="一键发货" class="button" />
+               
+            {/if}        
+        {/if}
         <input name="order_id" type="hidden" value="{$smarty.request.order_id}"></td>
     </tr>
      {/if}

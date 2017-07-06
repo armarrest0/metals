@@ -6212,6 +6212,8 @@ function handle_order_money_change($order, &$msgs, &$links)
  */
 function order_list()
 {
+    global $_LANG;
+    
     $result = get_filter();
     if ($result === false)
     {
@@ -6507,6 +6509,8 @@ function order_list()
 	{
 		$row[$key]['tuihuan'] = 1;
 	}
+        
+        $row[$key]['order_status_info'] =  $_LANG['os'][$value['order_status']] . ',' . $_LANG['ps'][$value['pay_status']] . ',' . $_LANG['ss'][$value['shipping_status']];
     }
     $arr = array('orders' => $row, 'filter' => $filter, 'page_count' => $filter['page_count'], 'record_count' => $filter['record_count']);
 	/*增值税发票_添加_START_www.68ecshop.com*/
