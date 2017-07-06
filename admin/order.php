@@ -7542,7 +7542,7 @@ function delivery_list()
         $filter['page_count']     = $filter['record_count'] > 0 ? ceil($filter['record_count'] / $filter['page_size']) : 1;
 
         /* 查询 */
-        $sql = "SELECT delivery_id, delivery_sn, order_sn, order_id, add_time, action_user, consignee, country,
+        $sql = "SELECT delivery_id, delivery_sn, order_sn, order_id, add_time, action_user, consignee, country,add_time_main,
                        province, city, district, tel, status, update_time, email, suppliers_id, separate_order, invoice_no_main
                 FROM " . $GLOBALS['ecs']->table("delivery_order") . "
                 $where
@@ -7571,6 +7571,7 @@ function delivery_list()
     foreach ($row AS $key => $value)
     {
         $row[$key]['add_time'] = local_date($GLOBALS['_CFG']['time_format'], $value['add_time']);
+        $row[$key]['add_time_main'] = local_date($GLOBALS['_CFG']['time_format'], $value['add_time_main']);
         $row[$key]['update_time'] = local_date($GLOBALS['_CFG']['time_format'], $value['update_time']);
         if ($value['status'] == 1)
         {

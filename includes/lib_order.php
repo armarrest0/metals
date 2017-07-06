@@ -460,6 +460,7 @@ function order_info($order_id, $order_sn = '')
         $order['formated_surplus']        = price_format($order['surplus'], false);
         $order['formated_order_amount']   = price_format(abs($order['order_amount']), false);
         $order['formated_add_time']       = local_date($GLOBALS['_CFG']['time_format'], $order['add_time']);
+        $order['formated_shipping_time_main']       = local_date($GLOBALS['_CFG']['time_format'], $order['shipping_time_main']);
         
 		$sql_invoices = "SELECT invoice_no,shipping_name FROM ".$GLOBALS['ecs']->table('delivery_order')." WHERE order_id = ".$order['order_id']." AND status = 0";
 		$order['invoices'] = $GLOBALS['db']->getAll($sql_invoices);

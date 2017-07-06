@@ -235,9 +235,9 @@
         {assign var="shipping_status" value="$order.shipping_status"}
         {if $order.separate_order==1}  
             {if $order.shipping_status==5}
-                已配货,待总店确认发货
+                已配货,待总店完成配货发货工作
             {else if $order.shipping_status==1}
-                总店已配货，正在发货中    
+                东西已配齐，已发货    
             {/if}
         {else}
             {$lang.ps.$pay_status},{$lang.ss.$shipping_status}  
