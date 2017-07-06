@@ -79,7 +79,15 @@
     <td width="18%"><div align="right"><strong>{$lang.label_order_sn}</strong></div></td>
     <td width="34%">{$order.order_sn}{if $order.extension_code eq "group_buy"}<a href="group_buy.php?act=edit&id={$order.extension_id}">{$lang.group_buy}</a>{elseif $order.extension_code eq "exchange_goods"}<a href="exchange_goods.php?act=edit&id={$order.extension_id}">{$lang.exchange_goods}</a>{/if}</td>
     <td width="15%"><div align="right"><strong>{$lang.label_order_status}</strong></div></td>
-    <td>{$order.status}</td>
+    <td>
+        {if $order.shipping_status==5}
+                分店已配货,尚有部分商品待本店发货
+            {elseif ($order.shipping_status==1&&$order.order_status!=2)}
+                东西已配齐，已发货
+            {else}
+                {$order.status}
+            {/if}
+    </td>
   </tr>
   <tr>
     <td><div align="right"><strong>{$lang.label_user_name}</strong></div></td>
@@ -382,6 +390,8 @@
 
     
 <div class="list-div" style="margin-bottom: 5px">
+    
+{if $order.supplier_id == $supplier_id && $order.shipping_status!=1}       
 <table cellpadding="3" cellspacing="1">
   <tr>
     <th colspan="6">{$lang.action_info}</th>
@@ -390,7 +400,7 @@
     <td><div align="right"><strong>{$lang.label_action_note}</strong></div></td>
   <td colspan="5"><textarea name="action_note" cols="80" rows="3"></textarea></td>
     </tr>
-  {if $order.supplier_id == $supplier_id}   
+  
   <tr>
     <td><div align="right"></div>
       <div align="right"><strong>{$lang.label_operable_act}</strong> </div></td>
@@ -440,25 +450,7 @@
         
         <input name="order_id" type="hidden" value="{$smarty.request.order_id}"></td>
     </tr>
-    {/if}  
-  <tr>
-    <th>{$lang.action_user}</th>
-    <th>{$lang.action_time}</th>
-    <th>{$lang.order_status}</th>
-    <th>{$lang.pay_status}</th>
-    <th>{$lang.shipping_status}</th>
-    <th>{$lang.action_note}</th>
-  </tr>
-  {foreach from=$action_list item=action}
-  <tr>
-    <td><div align="center">{$action.action_user}</div></td>
-    <td><div align="center">{$action.action_time}</div></td>
-    <td><div align="center">{$action.order_status}</div></td>
-    <td><div align="center">{$action.pay_status}</div></td>
-    <td><div align="center">{$action.shipping_status}</div></td>
-    <td>{$action.action_note|nl2br}</td>
-  </tr>
-  {/foreach}
+    {/if}   
 </table>
     
 
