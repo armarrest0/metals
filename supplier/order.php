@@ -3221,7 +3221,7 @@ elseif ($_REQUEST['act'] == 'operate')
     }
     else
     {
-        $delivery_stock_sql = "SELECT DG.goods_id, DG.is_real, SUM(DG.send_number) AS sums, G.goods_number, G.goods_name, DG.send_number
+        $delivery_stock_sql = "SELECT DG.goods_id, DG.is_real, SUM(DG.send_number) AS sums, G.goods_number, G.goods_name, DG.send_number,DG.self_send,DG.main_send 
         FROM " . $GLOBALS['ecs']->table('delivery_goods') . " AS DG, " . $GLOBALS['ecs']->table('goods') . " AS G
         WHERE DG.goods_id = G.goods_id
         AND DG.delivery_id = '$delivery_id'
@@ -3252,7 +3252,7 @@ elseif ($_REQUEST['act'] == 'operate')
     foreach ($delivery_stock_result as $value)
     {
          $minus_stock_sql = "UPDATE " . $GLOBALS['ecs']->table('goods') . "
-                                    SET self_storage = self_storage - " . $value['send_number']  . "
+                                    SET self_storage = self_storage - " . $value['self_send']  . ",main_storage = main_storage - " . $value['main_send']  . " 
                                     WHERE goods_id = " . $value['goods_id'];
 
                 $GLOBALS['db']->query($minus_stock_sql, 'SILENT');
