@@ -1680,8 +1680,10 @@ menu.className=i==cursel?"active":"";
                       <div class="hidden_wuliu"><img src="images/drop.gif" width="12" height="12" onclick="hiddenSubNav('subNav_{$item.order_id}')" /></div>
 						<ul id='ul_i_{$item.order_id}' class="rec-nav">
 						{foreach from=$item.invoices name=name_i item=invoice_info}
-							<li id="div_i_{$item.order_id}_{$smarty.foreach.name_i.iteration}"><a href='javascript:;' onclick="get_invoice_info2('{$invoice_info.shipping_name}','{$invoice_info.invoice_no}','{$smarty.foreach.name_i.iteration}','{$item.order_id}')">物流{$smarty.foreach.name_i.iteration}</a></li>
+							<li id="div_i_{$item.order_id}_{$smarty.foreach.name_i.iteration}"><a href='javascript:;' onclick="get_invoice_info2('{$invoice_info.shipping_name}','{$invoice_info.invoice_no}','{$smarty.foreach.name_i.iteration}','{$item.order_id}')">物流{$smarty.foreach.name_i.iteration}</a></li>                                                       
 						{/foreach}
+                                                 <li id="div_i_{$item.order_id}_2"><a href='javascript:;' onclick="get_invoice_info2('{$item.shipping_name_main}','{$item.invoice_no_main}','2','{$item.order_id}')">物流2</a></li>
+
 						</ul>
                       <div id="retData_{$item.order_id}"></div>
                       <!-- {/if} --> 

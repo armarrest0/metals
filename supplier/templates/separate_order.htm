@@ -151,7 +151,10 @@
         var self_maxs = document.getElementsByName("self_send[]");
         var main_maxs = document.getElementsByName("main_send[]");
         
+        var invoice_no = document.getElementById('invoice_no').value;
         
+       
+            
         for (var k = 0; k < self_maxs.length; k++) {
             var self_max = self_maxs[k].getAttribute("max");
             var main_max = main_maxs[k].getAttribute("max");
@@ -170,6 +173,11 @@
             }
             if(main_val-main_max>0){
                 alert("总店发货数量不能大于总店库存");
+                return false;
+            }
+            
+             if(!invoice_no){
+                alert("快递单号不能为空");
                 return false;
             }
             
