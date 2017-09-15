@@ -156,23 +156,7 @@ function collectResponses(result)
         </table>
         </span> </div>
       
-       <div class="mod qrcode J-stie-68"> <a href="javascript:;" class="btn">
-        <table>
-          <tbody>
-            <tr>
-              <td><i></i></td>
-            </tr>
-            <tr>
-              <td>官 方<br>
-                微 信</td>
-            </tr>
-          </tbody>
-        </table>
-        </a>
-        <div class="dropdown  dropdown_t" style="display: none; opacity: 1; margin-right: 0px;"> <span></span>
-          <p>扫描二维码，码上有礼！</p>
-          <span class="cart_arrow" style="background:none;border:none"><b class="arrow-1"></b> <b class="arrow-2"></b></span> </div>
-      </div> 
+     
     </div>
     <div class="bottom-items">
       <div class="mod top disabled"> <a href="javascript:;" class="btn">

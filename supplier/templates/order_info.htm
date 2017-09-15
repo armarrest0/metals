@@ -409,7 +409,7 @@
     <td colspan="5">
     <!-- 如果为预售活动的订单，那么预售活动为成功处理前，不能发货 -->
     <!-- {if $is_pre_sale == 0 || $pre_sale_success == 1} -->
-    <input name="invoice_no" type="text"  value="请输入快递单号" />
+    <input name="invoice_no" type="text"   onblur="if(this.value=='') this.value='请输入快递单号';" onfocus="if(this.value=='请输入快递单号') this.value='';" value="请输入快递单号" style="color:#00F"/>
     <input name="to_shipping" type="submit"  value="一键发货" class="button" />
     <input name="separate_order" type="button"  value="分货发送" class="button" onclick="javascript:window.location.href='order.php?act=info&separate_order=1&order_id={$smarty.request.order_id}'" />
 

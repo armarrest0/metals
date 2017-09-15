@@ -109,16 +109,17 @@
     </div></td>
     <td align="right">数量：<input type="text" name="self_send[]" id="self_{$key}" onchange="calcu(this.id)"  value="" max="{$goods.self_storage}"  onkeyup="value=value.replace(/[^\d\.]/g,'')" /></td>
 
-    <td align="right">数量：<input type="text" name="main_send[]" id="main_{$key}" onchange="calcu(this.id)"  value="" max="{$goods.main_storage}"  onkeyup="value=value.replace(/[^\d\.]/g,'')" /><input type="hidden" name="send_info[]" id="send_info_{$key}" value="{$goods.goods_id}" /></td>
+    <td align="right">数量：<input type="text" name="main_send[]" id="main_{$key}" onchange="calcu(this.id)"  value="" max="{$goods.main_storage}"  onkeyup="value=value.replace(/[^\d\.]/g,'')" /><input type="hidden" name="send_info[]" id="send_info_{$key}" value="" /></td>
 
   </tr>
   {/foreach}
   <tr>
-        <td colspan="10" align="right">快递单号：<input name="invoice_no" id="invoice_no" type="text"  value=""  /></td>
+        <td colspan="10" align="right">快递单号：<input name="invoice_no" id="invoice_no" type="text"  onblur="if(this.value=='') this.value='请输入快递单号';" onfocus="if(this.value=='请输入快递单号') this.value='';" value="请输入快递单号"  style="color:#00F"/></td>
   </tr>
   <tr>
         <td colspan="10" align="right"><input name="to_shipping" type="submit"  value="确认发货" class="button" /></td>
   </tr>
+  
 </tbody></table>
 </div>    
     <input type="hidden" name="order_id" value="{$order_id}" id="order_id" />
@@ -150,6 +151,9 @@
     function check_order(){
         var self_maxs = document.getElementsByName("self_send[]");
         var main_maxs = document.getElementsByName("main_send[]");
+        var self_total=0;
+        var main_total=0;
+        
         
         var invoice_no = document.getElementById('invoice_no').value;
         
@@ -162,10 +166,7 @@
             var self_val = self_maxs[k].value;
             var main_val = main_maxs[k].value;      
             
-            if(!self_val){
-                alert("发货数量不能为空");
-                return false;
-            }
+            
             
             if(self_val-self_max>0){
                 alert("发货数量不能大于店内库存");
@@ -176,14 +177,26 @@
                 return false;
             }
             
-             if(!invoice_no){
+            document.getElementById("send_info_"+k).value = '{$goods.goods_id}' + "|" + self_val + "|" + main_val;            
+            self_total += parseFloat(self_val);
+            main_total += parseFloat(main_val);
+        }        
+        
+        if(main_total<1){
+             alert("总部发货不能全为0");
+                return false;
+        }
+        if(self_total<1){
+             return true;
+        }else{
+            if(!invoice_no){
                 alert("快递单号不能为空");
                 return false;
             }
-            
-            document.getElementById("send_info_"+k).value = document.getElementById("send_info_"+k).value + "|" + self_val + "|" + main_val;
-            
-        }        
+        }
+        
+        
+        
     }
 </script>   
 {include file="pagefooter.htm"}

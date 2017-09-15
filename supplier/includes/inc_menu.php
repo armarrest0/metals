@@ -71,4 +71,12 @@ $modules['10_priv_admin']['admin_list']             = 'privilege.php?act=list';
 //$modules['10_priv_admin']['admin_role']             = 'role.php?act=list';
 
 $modules['20_chat']['customer']       = 'customer.php?act=list';         // 客服管理
-?>
+
+
+
+
+
+$modules['06_stats']['report_order'] = 'order_stats.php?act=list';
+$modules['06_stats']['sale_list'] = 'sale_list.php?act=list';
+
+

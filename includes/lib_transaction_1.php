@@ -161,6 +161,8 @@ function get_user_orders_1($user_id, $num = 10, $start = 0,$where='')
 						'handler'        => $row['handler'],
 						'shipping_id'    => $row['shipping_id'],
 						'shipping_name'  => $row['shipping_name'],
+                                                'shipping_name_main'  => $row['shipping_name_main'],
+                                                'invoice_no_main'  => $row['invoice_no_main'],
 						'shipping_name_2'=> (strpos($row['shipping_name'],'同城快递') != FALSE ? "同城快递" : $row['shipping_name']),
 						'shipping_status'=> $row['shipping_status'],
 						'pay_id'         => ($cod_code == 'cod' ? '' : $row['pay_id']),
