@@ -436,6 +436,7 @@ $_LANG['05_rent_history'] = '历史结算';
 $_LANG['06_loan'] = '信誉贷款';
 $_LANG['06_loan_apply'] = '申请贷款';
 
+$_LANG['forecast'] = '订单预测';
 
 $_LANG['supplier'] = '入驻商管理';
 $_LANG['supplier_manage'] = '供应商编辑与审核';

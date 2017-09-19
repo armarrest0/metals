@@ -78,5 +78,5 @@ $modules['20_chat']['customer']       = 'customer.php?act=list';         // ховц
 
 $modules['06_stats']['report_order'] = 'order_stats.php?act=list';
 $modules['06_stats']['sale_list'] = 'sale_list.php?act=list';
-
+$modules['06_stats']['forecast'] = 'sale_general.php?act=list';
 

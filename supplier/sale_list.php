@@ -119,7 +119,7 @@ function get_sale_list($is_pagination = true){
   
     /* 查询数据的条件 */
     $where = " WHERE og.order_id = oi.order_id". order_query_sql('finished', 'oi.') .
-             " AND oi.add_time >= '".$filter['start_date']."' AND oi.add_time < '" . ($filter['end_date'] + 86400) . "'";
+             " AND oi.add_time >= '".$filter['start_date']."' AND oi.add_time < '" . ($filter['end_date'] + 86400) . "' AND supplier_id=".$_SESSION['supplier_id'];
     
     $sql = "SELECT COUNT(og.goods_id) FROM " .
            $GLOBALS['ecs']->table('order_info') . ' AS oi,'.
