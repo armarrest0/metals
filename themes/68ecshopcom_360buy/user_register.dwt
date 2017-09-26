@@ -57,7 +57,7 @@ function erweima1(obj, sType) { var oDiv = document.getElementById(obj); if (sTy
                 	<form action="register.php" method="post" id="formRegister" name="formRegister">
                         <input type="hidden" id="register_type" name="register_type" value="${register_type}" />
                         <ul class="register_tab">
-                            <li id="li_register_type_mobile" class="tab_item fl" register_type="mobile">手机注册<span class="bg_ff"></span></li>
+                        
                             <li id="li_register_type_email" class="tab_item cur fl" register_type="email">邮箱注册<span class="bg_ff"></span></li>
                             <li class="have_account fr">已有账号！<a href="user.php?act=login">登录</a></li>
                         </ul>
@@ -65,7 +65,7 @@ function erweima1(obj, sType) { var oDiv = document.getElementById(obj); if (sTy
 					<form action="register.php" method="post" id="formUser" name="formUser" >
 						<div class="form">
 						<input type="hidden" name="register_type" value="{$register_type}" />
-							<!-- {if $register_type eq 'email'} -->
+					
 							<div class="item">
 								<input name="email" type="text" id="email" placeholder="{$lang.label_email}" onblur="checkEmail(this)" class="text email" />
 								<i class="i-email"></i>
@@ -73,15 +73,7 @@ function erweima1(obj, sType) { var oDiv = document.getElementById(obj); if (sTy
 									<span class="label" id="email_notice"></span>
 								</div>
 							</div>
-							<!-- {else} -->
-							<div class="item">
-								<input name="mobile_phone" type="text" id="mobile_phone" placeholder="{$lang.other_mobile_phone}" onblur="checkMobilePhone(this)"  class="text" />
-								<i class="i-phone"></i>
-								<div>
-									<span class="label" id="mobile_phone_notice"></span>
-								</div>
-							</div>
-							<!-- {/if} -->
+							
 							<div id="o-password">
 								<div class="item">
 									<input name="password" type="password" id="password" placeholder="{$lang.label_password}" onblur="check_password(this.value);" onkeyup="checkIntensity(this.value)" class="text" />

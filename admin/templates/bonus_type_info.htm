@@ -17,12 +17,12 @@
       <a href="javascript:showNotice('Type_money_a');" title="{$lang.form_notice}">
       <img src="images/notice.gif" width="16" height="16" border="0" alt="{$lang.form_notice}"></a>{$lang.type_money}</td>
     <td>
-    <input type="text" name="type_money" value="{$bonus_arr.type_money}" size="20" />
+    <input type="text" name="type_money" value="{$bonus_arr.type_money}" size="20"  onkeyup="value=value.replace(/[^\d\.]/g,'')" />
     <br /><span class="notice-span" {if $help_open}style="display:block" {else} style="display:none" {/if} id="Type_money_a">{$lang.type_money_notic}</span>    </td>
   </tr>
   <tr>
     <td class="label"><a href="javascript:showNotice('NoticeMinGoodsAmount');" title="{$lang.form_notice}"> <img src="images/notice.gif" width="16" height="16" border="0" alt="{$lang.form_notice}" /></a>{$lang.min_goods_amount}</td>
-    <td><input name="min_goods_amount" type="text" id="min_goods_amount" value="{$bonus_arr.min_goods_amount}" size="20" />
+    <td><input name="min_goods_amount" type="text" id="min_goods_amount" value="{$bonus_arr.min_goods_amount}" size="20"   onkeyup="value=value.replace(/[^\d\.]/g,'')" />
     <br /><span class="notice-span" {if $help_open}style="display:block" {else} style="display:none" {/if} id="NoticeMinGoodsAmount">{$lang.notice_min_goods_amount}</span> </td>
   </tr>
   <tr>

@@ -21,13 +21,13 @@
       <td align="right">{$lang.label_address}</td>
       <td><input name="address" type="text" id="address" size="30"></td>
       <td align="right">{$lang.label_zipcode}</td>
-      <td><input name="zipcode" type="text" id="zipcode" size="30"></td>
+      <td><input name="zipcode" type="text" id="zipcode" size="30" onkeyup="value=value.replace(/[^\d\.]/g,'')" ></td>
     </tr>
     <tr>
       <td align="right">{$lang.label_tel}</td>
-      <td><input name="tel" type="text" id="tel" size="30"></td>
+      <td><input name="tel" type="text" id="tel" size="30" onkeyup="value=value.replace(/[^\d\.]/g,'')" ></td>
       <td align="right">{$lang.label_mobile}</td>
-      <td><input name="mobile" type="text" id="mobile" size="30"></td>
+      <td><input name="mobile" type="text" id="mobile" size="30" onkeyup="value=value.replace(/[^\d\.]/g,'')" ></td>
     </tr>
     <tr>
       <td align="right">{$lang.label_area}</td>

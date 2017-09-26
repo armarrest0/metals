@@ -340,7 +340,7 @@ function addGift()
     cell.innerHTML = '<input name="gift_id[]" type="checkbox" value="' + id + '" checked="checked" />' + name;
     var cell = row.insertCell(-1);
     cell.align = 'right';
-    cell.innerHTML = '<input name="gift_price[]" type="text" value="0" size="10" style="text-align:right" />' +
+    cell.innerHTML = '<input name="gift_price[]" type="text" value="0" size="10" style="text-align:right"  onkeyup="value=value.replace(/[^(0-9).]/g,\'\')" />' +
                      '<input name="gift_name[]" type="hidden" value="' + name + '" />';
   }
 }

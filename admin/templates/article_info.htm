@@ -57,7 +57,7 @@
       </tr>
       <tr>
         <td class="narrow-label">{$lang.email}</td>
-        <td><input type="text" name="author_email" maxlength="60" value="{$article.author_email|escape}" /></td>
+        <td><input type="text" name="author_email"  id="author_email" maxlength="60" value="{$article.author_email|escape}" /></td>
       </tr>
       <tr>
         <td class="narrow-label">{$lang.keywords}</td>
@@ -153,13 +153,17 @@ function validate()
 {
   var validator = new Validator('theForm');
   validator.required('title', no_title);
+  var amail = document.getElementById("author_email").value;
 {/literal}
 {if $article.cat_id >= 0}
   validator.isNullOption('article_cat',no_cat);
 {/if}
 {literal}
 
-  return validator.passed();
+  var flag = validator.passed();
+  var flag2 = isEmail(amail);
+  
+  return flag&&flag2;
 }
 
 document.getElementById("tabbar-div").onmouseover = function(e)
@@ -272,5 +276,17 @@ function catChanged()
 
   return true;
 }
+
+
+function isEmail(strEmail) {
+if (strEmail.search(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/) != -1)
+{
+    return true;
+}else{
+    alert("邮箱格式错误");
+    return false;
+}
+}
+
 </script>
 {include file="pagefooter.htm"}

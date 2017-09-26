@@ -462,15 +462,13 @@ $(document).ready(function(e) {
             </table>
 
   			<div class="blank"></div>
-            <!-- {if $item_list}-->
-            <!-- #BeginLibraryItem "/library/pages.lbi" --><!-- #EndLibraryItem -->
-            <!-- {else}-->
+       
             <table width="100%" border="0" cellspacing="1" cellpadding="0" class="item_list">
             	<tr>
            		   <td colspan="5" align="center">没有任何晒单评价记录</td>
               	</tr>
             </table>
-            <!-- {/if}-->
+
             <!--{/if} -->
             
             

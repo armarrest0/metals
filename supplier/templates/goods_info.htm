@@ -36,8 +36,7 @@ width:auto;
       <p>
         <span class="tab-front" id="general-tab">{$lang.tab_general}</span><span
         class="tab-back" id="detail-tab">{$lang.tab_detail}</span><span
-        class="tab-back" id="mix-tab">{$lang.tab_mix}</span>{if $goods_type_list}<span
-        class="tab-back" id="properties-tab">{$lang.tab_properties}</span>{/if}<span
+        class="tab-back" id="mix-tab">{$lang.tab_mix}</span><span
         class="tab-back" id="gallery-tab">{$lang.tab_gallery}</span><!--span
         class="tab-back" id="linkgoods-tab">{$lang.tab_linkgoods}</span>{if $code eq ''}<sp
                                                                     an
@@ -55,12 +54,7 @@ width:auto;
         <table width="90%" id="general-table" align="center">
           <tr>
             <td class="label">{$lang.lab_goods_name}</td>
-            <td><input type="text" name="goods_name" value="{$goods.goods_name|escape}" style="float:left;color:{$goods_name_color};" size="30" /><div style="background-color:{$goods_name_color};float:left;margin-left:2px;" id="font_color" onclick="ColorSelecter.Show(this);"><img src="images/color_selecter.gif" style="margin-top:-1px;" /></div><input type="hidden" id="goods_name_color" name="goods_name_color" value="{$goods_name_color}" />&nbsp;
-            <select name="goods_name_style">
-              <option value="">{$lang.select_font}</option>
-              {html_options options=$lang.font_styles selected=$goods_name_style}
-            </select>
-            {$lang.require_field}</td>
+            <td><input type="text" name="goods_name" value="{$goods.goods_name|escape}" style="float:left;color:{$goods_name_color};" size="30" /></td>
           </tr>
           <tr>
             <td class="label">
@@ -142,7 +136,7 @@ width:auto;
             <td>
              <!-- 代码修改_start_derek20150129admin_goods  www.68ecshop.com -->
             
-            <input id="brand_search" name="brand_search" type="text" value="{$brand_name_val|default:请输入……}" onclick="onC_search()" onblur="onB_search()" oninput="onK_search(this.value)" />
+             <input id="brand_search" name="brand_search" type="text" value="{$brand_name_val|default:请输入……}" onclick="onC_search()" onblur="onB_search()" oninput="onK_search(this.value)"  readonly/>
             <input id="brand_search_bf" name="brand_search_bf" type="hidden" value="{$brand_name_val}" />
             <input id="brand_search_jt" name="brand_search_jt" type="hidden" value="0" />
             <script language="javascript">
@@ -262,20 +256,7 @@ width:auto;
             <input type="button" value="{$lang.compute_by_mp}" onclick="marketPriceSetted()" />
             {$lang.require_field}</td>
           </tr>
-          {if $user_rank_list}
-          <tr>
-            <td class="label"><a href="javascript:showNotice('noticeUserPrice');" title="{$lang.form_notice}"><img src="images/notice.gif" width="16" height="16" border="0" alt="{$lang.form_notice}"></a>{$lang.lab_user_price}</td>
-            <td>
-              {foreach from=$user_rank_list item=user_rank}
-              {$user_rank.rank_name}<span id="nrank_{$user_rank.rank_id}"></span><input type="text" id="rank_{$user_rank.rank_id}" name="user_price[]" value="{$member_price_list[$user_rank.rank_id]|default:-1}" onkeyup="if(parseInt(this.value)<-1){this.value='-1';};set_price_note({$user_rank.rank_id})" size="8" />
-              <input type="hidden" name="user_rank[]" value="{$user_rank.rank_id}" />
-              {/foreach}
-              <br />
-              <span class="notice-span" {if $help_open}style="display:block" {else} style="display:none" {/if} id="noticeUserPrice">{$lang.notice_user_price}</span>
-            </td>
-          </tr>
-          {/if}
-
+         
           <!--鍟嗗搧浼樻儬浠锋牸-->
           <tr>
             <td class="label"><a href="javascript:showNotice('volumePrice');" title="{$lang.form_notice}"><img src="images/notice.gif" width="16" height="16" border="0" alt="{$lang.form_notice}"></a>{$lang.lab_volume_price}</td>
@@ -352,7 +333,7 @@ width:auto;
               {else}
                 <img src="images/no.gif" />
               {/if}
-              <br /><input type="text" size="40" value="{$lang.lab_picture_url}" style="color:#aaa;" onfocus="if (this.value == '{$lang.lab_picture_url}'){this.value='http://';this.style.color='#000';}" name="goods_img_url"/>
+              <br /><input type="text" size="40" value="{$lang.lab_picture_url}" style="color:#aaa;display:none;" onfocus="if (this.value == '{$lang.lab_picture_url}'){this.value='http://';this.style.color='#000';}" name="goods_img_url"/>
             </td>
           </tr>
           <tr id="auto_thumb_1">
@@ -364,7 +345,7 @@ width:auto;
               {else}
                 <img src="images/no.gif" />
               {/if}
-              <br /><input type="text" size="40" value="{$lang.lab_thumb_url}" style="color:#aaa;" onfocus="if (this.value == '{$lang.lab_thumb_url}'){this.value='http://';this.style.color='#000';}" name="goods_thumb_url"/>
+              <br /><input type="text" size="40" value="{$lang.lab_thumb_url}" style="color:#aaa;display:none;" onfocus="if (this.value == '{$lang.lab_thumb_url}'){this.value='http://';this.style.color='#000';}" name="goods_thumb_url"/>
               {if $gd > 0}
               <br /><label for="auto_thumb"><input type="checkbox" id="auto_thumb" name="auto_thumb" checked="true" value="1" onclick="handleAutoThumb(this.checked)" />{$lang.auto_thumb}</label>{/if}
             </td>
@@ -443,23 +424,7 @@ width:auto;
           </tr>
         </table>
 
-        <!-- 灞炴€т笌瑙勬牸 -->
-        {if $goods_type_list}
-        <table width="90%" id="properties-table" style="display:none" align="center">
-          <tr>
-              <td class="label"><a href="javascript:showNotice('noticeGoodsType');" title="{$lang.form_notice}"><img src="images/notice.gif" width="16" height="16" border="0" alt="{$lang.form_notice}"></a>{$lang.lab_goods_type}</td>
-              <td>
-                <select name="goods_type" onchange="getAttrList({$goods.goods_id})">
-                  <option value="0">{$lang.sel_goods_type}</option>
-                  {$goods_type_list}
-                </select><br />
-              <span class="notice-span" {if $help_open}style="display:block" {else} style="display:none" {/if} id="noticeGoodsType">{$lang.notice_goods_type}</span></td>
-          </tr>
-          <tr>
-            <td id="tbody-goodsAttr" colspan="2" style="padding:0">{$goods_attr_html}</td>
-          </tr>
-        </table>
-        {/if}
+        
 
        <!--代码修改_start By www.ecshop68.com  将 商品相册 这部分代码完全修改成下面这样-->
         <table width="90%" id="gallery-table" style="display:none" align="center">
