@@ -3,7 +3,7 @@
 <script type="text/javascript" src="../js/calendar.php"></script>
 <link href="../js/calendar/calendar.css" rel="stylesheet" type="text/css" />
 <div class="main-div">
-<form action="excel.php?act=excel" method="post" enctype="multipart/form-data" name="searchForm">
+<form action="excel.php?act=excel" method="post" enctype="multipart/form-data" name="searchForm" onsubmit="return check();">
   <table cellspacing="1" cellpadding="3" width="100%">
     <tr>
       <td><div align="right"><strong>请选择订单状态：</strong></div></td>
@@ -50,6 +50,18 @@ onload = function()
   // 开始检查订单
   startCheckOrder();
 }
+
+function check(){
+    var start_time = document.getElementById("start_time_id").value;
+    var end_time = document.getElementById("end_time_id").value;
+    if(start_time>end_time){
+        alert("下单时间开始时间不能大于结束时间");
+        return false;
+    }else{
+        return true;
+    }    
+}
+
 </script>
 {/literal}
 {include file="pagefooter.htm"}

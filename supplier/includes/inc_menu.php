@@ -64,7 +64,7 @@ $modules['05_dianpu_manage']['08_shipping_list']           = 'shipping.php?act=l
 
 $modules['06_pickup_point_manage']['pickup_point_list']       = 'pickup_point.php?act=list';
 $modules['06_pickup_point_manage']['pickup_point_add']        = 'pickup_point.php?act=add';
-$modules['06_pickup_point_manage']['pickup_point_batch_add']  = 'pickup_point.php?act=batch_add';
+//$modules['06_pickup_point_manage']['pickup_point_batch_add']  = 'pickup_point.php?act=batch_add';
 
 //$modules['10_priv_admin']['admin_logs']             = 'admin_logs.php?act=list';
 $modules['10_priv_admin']['admin_list']             = 'privilege.php?act=list';

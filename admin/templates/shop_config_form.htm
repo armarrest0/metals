@@ -7,7 +7,12 @@
         </td>
         <td>
           {if $var.type eq "text"}
-          <input name="value[{$var.id}]" type="text" value="{$var.value}" size="40" {if $var.code eq 'sms_sign' && $var.value neq ''} readonly="readonly"{/if}/>
+            {if $var.code eq "qq" or $var.code eq "ww" or $var.code eq "watermark_alpha" or $var.code eq "market_price_rate" or $var.code eq "default_storage"or $var.code eq "thumb_width" or $var.code eq "thumb_height" or $var.code eq "top_number" or $var.code eq "comments_number" or $var.code eq "refund_mobile" or $var.code eq "min_goods_amount"}
+                  <input name="value[{$var.id}]" type="text" value="{$var.value}" size="40" id="{$var.code}" onkeyup="value=value.replace(/[^\d\.]/g,'')" />          
+            {else}
+                  <input name="value[{$var.id}]" type="text" value="{$var.value}" size="40" id="{$var.code}" {if $var.code eq 'sms_sign' && $var.value neq ''} readonly="readonly"{/if}/>
+            {/if}
+          
 
           {elseif $var.type eq "password"}
           <input name="value[{$var.id}]" type="password" value="{$var.value}" size="40" />
@@ -110,7 +115,7 @@
                   <label for='invoice_type0'>{$lang.$cfg.invoice_type.type[0]}</label>
                   <input name='invoice_type[]' type='hidden' value='{$cfg.invoice_type.type[0]}'/>
                 </td>
-                <td><input name="invoice_rate[]" type="text" value="{$cfg.invoice_type.rate[0]}" /></td>
+                <td><input name="invoice_rate[]" type="text" value="{$cfg.invoice_type.rate[0]}"  onkeyup="value=value.replace(/[^\d\.]/g,'')" /></td>
               </tr>
               <tr>
                 <td>
@@ -123,7 +128,7 @@
                   <label for='invoice_type1'>{$lang.$cfg.invoice_type.type[1]}</label>
                   <input name='invoice_type[]' type='hidden' value='{$cfg.invoice_type.type[1]}'/>
                 </td>
-                <td><input name="invoice_rate[]" type="text" value="{$cfg.invoice_type.rate[1]}" /></td>
+                <td><input name="invoice_rate[]" type="text" value="{$cfg.invoice_type.rate[1]}"  onkeyup="value=value.replace(/[^\d\.]/g,'')" /></td>
               </tr>
 			  <!--增值税发票_更改_END_www.68ecshop.com-->
             </table>

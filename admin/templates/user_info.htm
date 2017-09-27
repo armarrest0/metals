@@ -92,26 +92,9 @@
   </tr>
   <tr>
   	<td class="label">身份证号:</td>
-    <td><input type="text" name="card" size="40" class="inputBg" value="{$user.card}"/></td>
+    <td><input type="text" name="card" size="40" id="card" class="inputBg" value="{$user.card}"/></td>
   </tr>
-  <tr>
-  	<td class="label">身份证正面:</td>
-    <td>
-    <input type="file" name="face_card"/><br />
-    <div style="padding:10px 0px">
-    {if $user.face_card neq ''}<img src="../{$user.face_card}" width="100" height="100" />{else}暂无{/if}
-    </div>
-    </td>
-  </tr>
-  <tr>
-  	<td class="label">身份证反面:</td>
-    <td>
-    <input type="file" name="back_card" /><br />
-    <div style="padding:10px 0px">
-    {if $user.back_card neq ''}<img src="../{$user.back_card}" width="100" height="100" />{else}暂无{/if}
-    </div>
-    </td>
-  </tr>
+  
   <tr>
   	<td class="label">现居地:</td>
     <td>
@@ -240,6 +223,30 @@ function validate()
     	alert("邮箱和手机号码至少要填写一项！");
     	return false;
     }
+    
+    var sMobile = $("#mobile_phone").val();
+    if(!(/^1[3|4|5|8][0-9]\d{4,8}$/.test(sMobile))){ 
+        alert("手机号码格式不正确！");
+    	return false;
+    }
+    
+    var strEmail = $("#email").val();    
+    if (strEmail.search(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/) != -1)
+    {
+        
+    }else{
+        alert("邮箱格式错误");
+        return false;
+    }
+    
+    var card =  $("#card").val();    
+    var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;  
+    if(reg.test(card) === false)  
+    {  
+        alert("身份证输入不合法");  
+        return  false;  
+    } 
+    
 	
     if (document.forms['theForm'].elements['act'].value == "insert")
     {

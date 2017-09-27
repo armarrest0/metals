@@ -249,7 +249,7 @@ $_LANG['pricecut'] = '降价通知列表';
 /* 代码增加_start By www.ecshop68.com */
 $modules['17_pickup_point_manage']['pickup_point_list'] = 'pickup_point.php?act=list';
 $modules['17_pickup_point_manage']['pickup_point_add'] = 'pickup_point.php?act=add';
-$modules['17_pickup_point_manage']['pickup_point_batch_add'] = 'pickup_point.php?act=batch_add';
+//$modules['17_pickup_point_manage']['pickup_point_batch_add'] = 'pickup_point.php?act=batch_add';
 /* 代码增加_end By www.ecshop68.com */
 
 /* 代码增加_start By www.68ecshop.com */

@@ -7,8 +7,13 @@
         </td>
         <td>
           {if $var.type eq "text"}
-          <input name="value[{$var.id}]" type="text" value="{$var.value}" size="40" />
-
+            {if $var.code eq "qq"}
+                  <input name="value[{$var.id}]" type="text" value="{$var.value}" size="40" id="{$var.code}" onkeyup="value=value.replace(/[^\d\.]/g,'')" />
+            {elseif $var.code eq "ww"}
+                  <input name="value[{$var.id}]" type="text" value="{$var.value}" size="40" id="{$var.code}" onkeyup="value=value.replace(/[^\d\.]/g,'')" />
+            {else}
+                  <input name="value[{$var.id}]" type="text" value="{$var.value}" size="40" id="{$var.code}"  />
+            {/if}
           {elseif $var.type eq "password"}
           <input name="value[{$var.id}]" type="password" value="{$var.value}" size="40" />
 

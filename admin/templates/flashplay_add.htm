@@ -20,7 +20,7 @@
   </tr>
   <tr>
     <td class="label">{$lang.schp_sort}</td>
-    <td><input name="img_sort" type="text" value="{$rt.img_sort}" size="4" maxlength="3"/></td>
+    <td><input name="img_sort" type="text" value="{$rt.img_sort}" size="4" maxlength="3"  onkeyup="value=value.replace(/[^\d\.]/g,'')" /></td>
   </tr>
   <tr align="center">
     <td colspan="2">
